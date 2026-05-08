@@ -1,0 +1,24 @@
+# Harvester VM Network desired state placeholder.
+# This network should be an UntaggedNetwork attached to Cluster Network "mgmt".
+# Verify the exact Harvester CRD apiVersion/kind in your Harvester cluster before applying.
+#
+# Expected values:
+# - Name: lan-untagged
+# - Type: UntaggedNetwork
+# - Cluster Network: mgmt
+# - Purpose: Talos VM LAN access
+#
+# Example shape only:
+# apiVersion: network.harvesterhci.io/v1beta1
+# kind: NetworkAttachmentDefinition
+# metadata:
+#   name: lan-untagged
+#   namespace: talos-cluster
+# spec:
+#   config: |
+#     {
+#       "cniVersion": "0.3.1",
+#       "type": "bridge",
+#       "bridge": "mgmt-br",
+#       "promiscMode": true
+#     }

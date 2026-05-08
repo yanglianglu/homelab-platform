@@ -1,0 +1,8 @@
+# Harvester storage class desired state placeholder.
+# Keep storage policy notes here until the exact Harvester StorageClass settings are finalized.
+#
+# Expected values:
+# - Name: fast
+# - Purpose: Talos VM OS disks and future performance-sensitive volumes
+#
+# Do not paste a live StorageClass export with runtime metadata.

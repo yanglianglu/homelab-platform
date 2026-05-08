@@ -1,0 +1,18 @@
+clusterName: homelab-talos
+endpoint: https://192.168.1.178:6443
+talosVersion: v1.13.0
+kubernetesVersion: v1.36.0
+installDisk: /dev/vda
+
+controlPlaneNode:
+  name: talos-cp-01
+  ip: 192.168.1.178
+
+network:
+  podCIDR: 10.42.0.0/16
+  serviceCIDR: 10.43.0.0/16
+
+harvester:
+  namespace: talos-cluster
+  vmNetwork: lan-untagged
+  clusterNetwork: mgmt

@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: talos-cluster
+  labels:
+    homelab.platform/layer: harvester
+    homelab.platform/purpose: talos-vms

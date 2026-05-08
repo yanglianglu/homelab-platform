@@ -1,0 +1,41 @@
+name: Validate YAML
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  validate-yaml:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install YAML parser
+        run: python -m pip install pyyaml
+
+      - name: Validate YAML syntax
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import sys
+          import yaml
+
+          ignored_parts = {".git"}
+          failed = False
+
+          for path in sorted(Path(".").rglob("*.y*ml")):
+              if ignored_parts.intersection(path.parts):
+                  continue
+              try:
+                  with path.open("r", encoding="utf-8") as handle:
+                      list(yaml.safe_load_all(handle))
+                  print(f"OK {path}")
+              except Exception as exc:
+                  failed = True
+                  print(f"FAIL {path}: {exc}", file=sys.stderr)
+
+          sys.exit(1 if failed else 0)
+          PY

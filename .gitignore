@@ -1,0 +1,38 @@
+# Talos generated secrets/configs
+controlplane.yaml
+worker.yaml
+talosconfig
+kubeconfig
+secrets.yaml
+
+# Talos generated output folders
+talos/clusters/*/generated/*.yaml
+talos/clusters/*/generated/talosconfig
+talos/clusters/*/generated/kubeconfig
+talos/clusters/*/generated/secrets.yaml
+
+# Talos source patches with these names are safe to commit.
+!talos/clusters/*/patches/controlplane.yaml
+!talos/clusters/*/patches/worker.yaml
+
+# Secret/key material
+*.key
+*.pem
+*.crt
+*.p12
+*.pfx
+*.der
+*.jks
+*.keystore
+*.kubeconfig
+*.sops.dec.yaml
+*.token
+*.agekey
+age.key
+id_rsa
+id_ed25519
+
+# Local environment files
+.env
+.env.*
+.envrc

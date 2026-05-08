@@ -1,0 +1,20 @@
+name: Validate Talos
+
+on:
+  pull_request:
+    paths:
+      - "talos/**"
+      - ".github/workflows/validate-talos.yaml"
+
+jobs:
+  talos-validation-placeholder:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Explain validation boundary
+        run: |
+          echo "Talos validation should avoid using real secrets in GitHub-hosted runners."
+          echo "Keep talosconfig, generated machine configs, secrets.yaml, and kubeconfig out of Git unless encrypted."
+          echo "Run full talosctl validation locally from talos/clusters/homelab when generated files are present."

@@ -20,7 +20,19 @@ general-purpose gateway to every application, data, sandbox, Harvester, or Talos
 secret.
 
 The Infisical machine identity behind the initial `ClusterSecretStore` should be
-limited in Infisical to platform-level paths such as `/platform/*`.
+limited in Infisical to platform bootstrap paths such as `/github` now and
+`/platform/*` later.
+
+Current bootstrap implementation:
+
+| Item | Value |
+| --- | --- |
+| Infisical project slug | `homelab-platform-cs-zx` |
+| Infisical environment slug | `prod` |
+| Infisical secret path | `/github` |
+| ClusterSecretStore | `infisical-platform` |
+| Generated Argo CD Secret | `argocd/argocd-github-app-repo-creds` |
+| GitHub App | `homelab-yanglianglu` |
 
 Later, when apps, data services, or sandbox workloads need stronger isolation,
 add namespace-scoped `SecretStore` objects for those domains. This keeps the
@@ -45,6 +57,11 @@ fit once real app and data domains need their own boundaries.
 
 The first implementation uses Infisical Universal Auth.
 
+This is the right first path for the current home-lab topology because the
+cluster is private and Infisical Cloud does not have a deliberate path back to
+the Kubernetes API server for TokenReview. Universal Auth only requires
+outbound connectivity from External Secrets Operator to Infisical Cloud.
+
 Universal Auth requires a `clientId` and `clientSecret`. Those values are the
 bootstrap credential for External Secrets Operator and must be created manually
 as a Kubernetes Secret in the cluster. Do not commit that Kubernetes Secret to
@@ -61,10 +78,11 @@ Recommended bootstrap location:
 For `ClusterSecretStore`, references to the bootstrap credential must include
 the namespace because the store itself is cluster-scoped.
 
-Kubernetes Auth is the preferred future direction because it can use Kubernetes
-service account identity instead of a static client secret. It is deferred until
-the baseline is stable because it requires additional service account,
-TokenReview, and RBAC setup.
+Kubernetes Auth is a future option because it can use Kubernetes service
+account identity instead of a static client secret. It is deferred unless the
+Kubernetes API is intentionally reachable by Infisical, or Infisical is
+self-hosted inside the environment, because it requires TokenReview/RBAC and a
+secure API reachability model.
 
 ## Domain Boundaries
 
@@ -96,6 +114,60 @@ This includes:
 Any existing credential found in Git or Notion should be reported to the owner
 before being moved, deleted, redacted, or rewritten.
 
+## Argo CD GitHub App Credential
+
+The `ExternalSecret` in this directory creates the Argo CD repository credential
+Secret from Infisical.
+
+Source of truth:
+
+| Field | Value |
+| --- | --- |
+| Infisical path | `/github` |
+| Target namespace | `argocd` |
+| Target Secret | `argocd-github-app-repo-creds` |
+| Argo CD label | `argocd.argoproj.io/secret-type: repo-creds` |
+
+Required Infisical keys:
+
+- `url`
+- `type`
+- `githubAppID`
+- `githubAppInstallationID`
+- `githubAppPrivateKey`
+
+The `type` value should be `git`. The `url` value should match the intended
+repository credential scope. The current implementation uses the GitHub account
+prefix `https://github.com/yanglianglu`, which lets one Argo CD repo-credential
+Secret cover the `homelab-platform` repo URL used by the root Application.
+
+## Bootstrap Order
+
+Argo CD cannot sync this repo until its GitHub repository credential exists, so
+this secret baseline is applied once from the local checkout.
+
+1. Ensure `external-secrets/infisical-universal-auth` exists.
+2. Install External Secrets Operator manually.
+3. Apply this directory with `kubectl`.
+4. Confirm `ClusterSecretStore/infisical-platform` is Ready.
+5. Confirm `argocd/argocd-github-app-repo-creds` is generated.
+6. Confirm Argo CD can compare and sync the root app.
+
+Safe key-only validation commands:
+
+```bash
+kubectl --context homelab-talos -n external-secrets get secret infisical-universal-auth \
+  -o go-template='{{range $k, $_ := .data}}{{println $k}}{{end}}'
+
+kubectl --context homelab-talos -n argocd get secret argocd-github-app-repo-creds \
+  -o jsonpath='{.metadata.labels.argocd\.argoproj\.io/secret-type}'
+
+kubectl --context homelab-talos -n argocd get secret argocd-github-app-repo-creds \
+  -o go-template='{{range $k, $_ := .data}}{{println $k}}{{end}}'
+```
+
+Do not print decoded values unless debugging with explicit approval.
+
 ## Alternatives Considered
 
 | Option | Summary | Decision |
@@ -110,5 +182,5 @@ before being moved, deleted, redacted, or rewritten.
 - Notion: GitOps and Secrets
 - Linear: `FIF-18`
 - External Secrets Operator Infisical provider: https://external-secrets.io/main/provider/infisical/
-- External Secrets Operator ClusterSecretStore: https://external-secrets.io/v0.14.2/api/clustersecretstore/
+- External Secrets Operator ClusterSecretStore: https://external-secrets.io/main/api/clustersecretstore/
 - Infisical Kubernetes Auth: https://infisical.com/docs/documentation/platform/identities/kubernetes-auth

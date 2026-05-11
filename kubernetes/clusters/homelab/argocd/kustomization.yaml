@@ -7,4 +7,4 @@ resources:
   - applications/platform/namespaces.yaml
   - applications/platform/policies.yaml
   - applications/platform/external-secrets.yaml
-  - applications/platform/secrets.yaml
+  - applications/platform/secret-management.yaml

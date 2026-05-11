@@ -1,32 +1,34 @@
 # Runbook: Apply Talos Config
 
-Use this after the `talos-cp-01` VM exists and is booted from the Talos ISO.
+Use this after the `cp-01` VM exists and is booted from the Talos ISO.
 
 ## Local Steps
 
-This is the exact sequence used for the first control-plane node:
+This is the macOS shell sequence for the first control-plane node:
 
-```powershell
-cd C:\Users\91725\OneDrive\Documents
+```bash
+cd /Users/yanglianglu/Documents/GitHub/homelab-platform/talos/clusters/homelab
 
-talosctl get disks --insecure --nodes 192.168.1.178
+talosctl get disks --insecure --nodes 192.168.1.181
 
-talosctl gen config homelab-talos https://192.168.1.178:6443 `
-  --install-disk /dev/vda `
-  --config-patch "@.\cluster-network.yaml" `
+talosctl gen config homelab-talos https://192.168.1.181:6443 \
+  --install-disk /dev/vda \
+  --config-patch "@patches/cluster-network.yaml" \
+  --config-patch-control-plane "@patches/controlplane-cp-01.yaml" \
+  --output-dir generated \
   --force
 
-Select-String -Path .\controlplane.yaml -Pattern "10.42.0.0|10.43.0.0"
+rg "10.42.0.0|10.43.0.0" generated/controlplane.yaml
 
-talosctl validate --config .\controlplane.yaml --mode metal --strict
+talosctl validate --config generated/controlplane.yaml --mode metal --strict
 
-talosctl apply-config --insecure `
-  --nodes 192.168.1.178 `
-  --file .\controlplane.yaml
+talosctl apply-config --insecure \
+  --nodes 192.168.1.181 \
+  --file generated/controlplane.yaml
 
-$env:TALOSCONFIG = (Resolve-Path .\talosconfig).Path
-talosctl config endpoint 192.168.1.178
-talosctl config node 192.168.1.178
+export TALOSCONFIG="$PWD/generated/talosconfig"
+talosctl config endpoint 192.168.1.181
+talosctl config node 192.168.1.181
 
 talosctl version
 talosctl get services
@@ -34,9 +36,9 @@ talosctl get addresses
 talosctl get routes
 
 talosctl bootstrap
-talosctl kubeconfig .
+talosctl kubeconfig generated
 
-kubectl --kubeconfig .\kubeconfig get pods -A -o wide
+kubectl --kubeconfig generated/kubeconfig get pods -A -o wide
 talosctl health
 ```
 
@@ -46,4 +48,4 @@ talosctl health
 - Do not regenerate configs with new PKI after the cluster is active unless intentionally rebuilding the cluster.
 - Do not commit plaintext generated secrets, `talosconfig`, `controlplane.yaml`, `worker.yaml`, `secrets.yaml`, or kubeconfig.
 - Review generated files before applying.
-- The repository scripts under `talos/clusters/homelab/scripts/` keep the same workflow in a safer repeatable location.
+- The repository scripts under `talos/clusters/homelab/scripts/` keep the same macOS shell workflow in a safer repeatable location.

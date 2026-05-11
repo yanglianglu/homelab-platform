@@ -11,8 +11,8 @@ flowchart TB
   usw["USW-Aggregation<br/>Management IP: TBD"]
 
   abundance["the-abundance<br/>Harvester node<br/>192.168.1.241<br/>10G SFP+"]
-  elation["the-elation<br/>Harvester node<br/>IP: TBD<br/>10G SFP+"]
-  remembrance["the-remembrance<br/>Harvester node<br/>IP: TBD<br/>1G RJ45"]
+  elation["the-elation<br/>Harvester node<br/>192.168.1.250<br/>10G SFP+"]
+  enigmata["the-enigmata<br/>Harvester node<br/>192.168.1.244<br/>1G RJ45"]
 
   harvesterVip["Harvester VIP/UI<br/>192.168.1.50"]
 
@@ -20,10 +20,10 @@ flowchart TB
   att -->|"sfp8, RJ45 via module"| usw
   usw -->|"sfp1, 10G DAC"| abundance
   usw -->|"sfp2, 10G DAC"| elation
-  usw -->|"sfp3, 1G RJ45 module"| remembrance
+  usw -->|"sfp3, 1G RJ45 module"| enigmata
   abundance -.-> harvesterVip
   elation -.-> harvesterVip
-  remembrance -.-> harvesterVip
+  enigmata -.-> harvesterVip
 ```
 
 ## Harvester And Talos Logical Topology
@@ -32,8 +32,8 @@ flowchart TB
 flowchart TB
   subgraph physical["Physical Nodes"]
     abundance["the-abundance<br/>192.168.1.241"]
-    elation["the-elation<br/>IP TBD"]
-    remembrance["the-remembrance<br/>IP TBD"]
+    elation["the-elation<br/>192.168.1.250"]
+    enigmata["the-enigmata<br/>192.168.1.244"]
   end
 
   subgraph harvester["Harvester"]
@@ -45,9 +45,10 @@ flowchart TB
   end
 
   subgraph talos["Talos / Kubernetes VMs"]
-    cp["talos-cp-01<br/>control-plane<br/>192.168.1.178"]
-    w1["talos-worker-01<br/>worker<br/>IP proposed: 192.168.1.179"]
-    w2["talos-worker-02<br/>worker<br/>IP proposed: 192.168.1.180"]
+    cp["cp-01<br/>control-plane<br/>192.168.1.181"]
+    oldcp["talos-cp-01<br/>old control-plane<br/>192.168.1.178<br/>pending retirement"]
+    w1["worker-01<br/>Medium worker<br/>IP proposed: 192.168.1.179"]
+    w2["worker-02<br/>Medium worker<br/>IP proposed: 192.168.1.180"]
   end
 
   subgraph k8s["homelab-talos Kubernetes"]
@@ -57,12 +58,13 @@ flowchart TB
 
   abundance --> vip
   elation --> vip
-  remembrance --> vip
+  enigmata --> vip
   vip --> mgmt
   mgmt --> vmnet
   abundance --> cp
+  abundance -. retained .-> oldcp
   elation --> w1
-  remembrance --> w2
+  enigmata --> w2
   cp --> pods
   cp --> svcs
   w1 --> pods
@@ -76,5 +78,7 @@ flowchart TB
 - The home lab is on a flat `192.168.1.0/24` LAN for now.
 - No dedicated firewall/router is planned yet.
 - AT&T router remains the default gateway.
-- `the-abundance`, `the-elation`, and `the-remembrance` are intended to become the three physical Harvester nodes.
-- The first Talos VM is active on `the-abundance`; one worker VM per remaining physical node is planned.
+- `the-abundance`, `the-elation`, and `the-enigmata` are the three verified physical Harvester nodes.
+- `cp-01` is the active Talos control-plane VM on `the-abundance`; old `talos-cp-01` is retained until retirement.
+- One worker VM per remaining physical node is planned.
+- Older references to `the-remembrance` are stale unless that host is reintroduced later.

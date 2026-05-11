@@ -6,16 +6,17 @@ Inventory and capacity notes for the home lab hardware.
 
 | Host | Role | IP | Primary Link | Status | Notes |
 | --- | --- | --- | --- | --- | --- |
-| `the-abundance` | Harvester physical node | `192.168.1.241` | 10G SFP+ | active | Current known Harvester node |
-| `the-elation` | Harvester physical node | `TBD` | 10G SFP+ | planned | Intended second physical node |
-| `the-remembrance` | Harvester physical node | `TBD` | 1G RJ45 via SFP/RJ45 module | planned | Intended third physical node |
+| `the-abundance` | Harvester physical node | `192.168.1.241` | 10G SFP+ | active | Verified Ready in Harvester |
+| `the-elation` | Harvester physical node | `192.168.1.250` | 10G SFP+ | active | Verified Ready in Harvester |
+| `the-enigmata` | Harvester physical node | `192.168.1.244` | 1G RJ45 via SFP/RJ45 module | active | Verified Ready in Harvester; replaces stale `the-remembrance` references |
 
 ## VM Sizing Baseline
 
 | VM | vCPU | Memory | Disk | Notes |
 | --- | ---: | ---: | ---: | --- |
-| `talos-cp-01` | 4 | 8 Gi | 100 Gi | First Talos control-plane node on `the-abundance` |
-| `talos-worker-01` | TBD | TBD | TBD | Planned worker VM on `the-elation` |
-| `talos-worker-02` | TBD | TBD | TBD | Planned worker VM on `the-remembrance` |
+| `cp-01` | 4 | 8 Gi | 100 Gi | Active Talos control-plane node on `the-abundance`; OS disk uses `slow` |
+| `talos-cp-01` | 4 | 8 Gi | 100 Gi | Old Talos control-plane node on `the-abundance`; pending retirement |
+| `worker-01` | 4 | 12 Gi | 100 Gi | Planned Medium Talos worker VM on `the-elation`; OS disk should use `slow` |
+| `worker-02` | 4 | 12 Gi | 100 Gi | Planned Medium Talos worker VM on `the-enigmata`; OS disk should use `slow` |
 
 Add CPU, memory, disk, NIC, firmware, and BIOS notes here as the lab grows.

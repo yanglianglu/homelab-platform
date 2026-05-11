@@ -2,16 +2,36 @@
 
 This runbook captures the intended Harvester-side VM settings for the first Talos control plane VM.
 
+## Replacement VM Plan
+
+The replacement control-plane VM is `cp-01`. It was created alongside the old `talos-cp-01`, verified, and should remain in service before the old VM is retired.
+
+Bootstrap manifest:
+
+```text
+harvester/vms/cp-01.bootstrap.yaml
+```
+
+Planned differences from old `talos-cp-01`:
+
+- VM name: `cp-01`
+- OS disk: `cp-01-os-disk`
+- OS disk StorageClass: `slow`
+- Talos ISO volume: `cp-01-talos-iso`
+- Static IP: `192.168.1.181`
+
+Do not delete old `talos-cp-01` until `cp-01` has been reviewed as the active replacement and any needed data/config has been confirmed unnecessary.
+
 ## VM Settings
 
 | Setting | Value |
 | --- | --- |
-| Name | `talos-cp-01` |
+| Name | `cp-01` |
 | Namespace | `talos-cluster` |
 | VM Network | `lan-untagged` |
 | Network model | `virtio` |
-| IP | `192.168.1.178` |
-| MAC | `52:a8:b1:09:a7:8f` |
+| IP | `192.168.1.181` |
+| MAC | `96:af:ea:cd:f9:21` |
 | CPU | `4` |
 | Memory | `8 Gi` |
 | OS disk | `100 Gi` |
@@ -31,7 +51,7 @@ This runbook captures the intended Harvester-side VM settings for the first Talo
 1. Confirm the `talos-cluster` namespace exists.
 2. Confirm the `lan-untagged` VM network exists under Cluster Network `mgmt`.
 3. Upload or reference `talos-metal-amd64-v1.13.0.iso`.
-4. Create VM `talos-cp-01` in namespace `talos-cluster`.
+4. Create VM `cp-01` in namespace `talos-cluster`.
 5. Set CPU to `4` and memory to `8 Gi`.
 6. Attach the Talos ISO as a CD-ROM.
 7. Add a `100 Gi` OS disk using the `virtio` bus.
@@ -39,4 +59,4 @@ This runbook captures the intended Harvester-side VM settings for the first Talo
 9. Enable UEFI and EFI persistent state.
 10. Disable Secure Boot, TPM, and QEMU guest agent.
 11. Leave SSH key, cloud-init user-data, and cloud-init network-data blank.
-12. Confirm the VM receives or uses `192.168.1.178`.
+12. Confirm the VM receives or uses `192.168.1.181`.

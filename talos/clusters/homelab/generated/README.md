@@ -14,6 +14,6 @@ These files contain cluster credentials, certificates, and tokens.
 
 For now, store generated files locally outside Git, for example:
 
-`C:\homelab-secrets\talos-homelab\`
+`~/Documents/secret/talos-homelab/`
 
 Future option: encrypt generated secrets with SOPS + age before committing.

@@ -1,0 +1,15 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: sandbox
+  namespace: argocd
+spec:
+  description: Experiments that may break
+  sourceRepos:
+    - https://github.com/yanglianglu/homelab-platform.git
+  destinations:
+    - namespace: '*'
+      server: https://kubernetes.default.svc
+  namespaceResourceWhitelist:
+    - group: '*'
+      kind: '*'

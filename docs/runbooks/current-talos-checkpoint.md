@@ -7,9 +7,9 @@ This checkpoint documents the first successful Talos control-plane bootstrap.
 | Item | Value |
 | --- | --- |
 | Cluster name | `homelab-talos` |
-| Control-plane node | `talos-cp-01` |
-| Control-plane IP | `192.168.1.178` |
-| Kubernetes API endpoint | `https://192.168.1.178:6443` |
+| Control-plane node | `cp-01` |
+| Control-plane IP | `192.168.1.181` |
+| Kubernetes API endpoint | `https://192.168.1.181:6443` |
 | Talos version | `v1.13.0` |
 | Kubernetes version | `v1.36.0` |
 | Install disk | `/dev/vda` |
@@ -18,16 +18,37 @@ This checkpoint documents the first successful Talos control-plane bootstrap.
 
 ## Verification Commands
 
-```powershell
-kubectl get nodes -o wide
-kubectl get pods -A -o wide
+```bash
+kubectl --context homelab-talos get nodes -o wide
+kubectl --context homelab-talos get pods -A -o wide
 talosctl health
+```
+
+## Latest Verification
+
+Last checked: 2026-05-10 10:49 America/Chicago.
+
+Node readiness:
+
+```text
+cp-01   Ready   control-plane   192.168.1.181   Talos v1.13.0   Kubernetes v1.36.0
+```
+
+Core pod summary:
+
+```text
+coredns                         2/2 pods Running
+kube-apiserver-cp-01            Running
+kube-controller-manager-cp-01   Running
+kube-scheduler-cp-01            Running
+kube-flannel                    Running
+kube-proxy                      Running
 ```
 
 ## Expected State
 
-- `talos-cp-01` is `Ready`.
-- Node IP is `192.168.1.178`.
+- `cp-01` is `Ready`.
+- Node IP is `192.168.1.181`.
 - Core pods are running:
   - `coredns`
   - `kube-apiserver`

@@ -20,19 +20,20 @@ This repository manages my Harvester + Talos + Kubernetes home lab. It keeps the
 
 | Item | Value |
 | --- | --- |
-| Harvester node IP | `192.168.1.241` |
+| Harvester node IPs | `192.168.1.241` (`the-abundance`), `192.168.1.250` (`the-elation`), `192.168.1.244` (`the-enigmata`) |
 | Harvester VIP/UI | `192.168.1.50` |
 | Harvester VM namespace | `talos-cluster` |
 | Harvester VM network | `lan-untagged` |
-| First Talos VM | `talos-cp-01` |
-| First Talos node IP | `192.168.1.178` |
+| Active Talos VM | `cp-01` |
+| Active Talos node IP | `192.168.1.181` |
 | Talos cluster name | `homelab-talos` |
-| Talos Kubernetes API endpoint | `https://192.168.1.178:6443` |
+| Talos Kubernetes API endpoint | `https://192.168.1.181:6443` |
 | Talos version | `v1.13.0` |
+| Retained old Talos VM | `talos-cp-01` at `192.168.1.178`, pending retirement |
 
 ## Current Milestone
 
-`talos-cp-01` has been created on Harvester, configured as the first Talos control-plane node, bootstrapped, and confirmed healthy. Core Kubernetes pods are running.
+`cp-01` has been created on Harvester, configured as the fresh Talos control-plane node, bootstrapped, and confirmed healthy. Core Kubernetes pods are running. The old `talos-cp-01` VM remains available until it is explicitly retired.
 
 ## Repository Boundaries
 
@@ -42,9 +43,24 @@ This repository manages my Harvester + Talos + Kubernetes home lab. It keeps the
 - `kubernetes/` is for post-bootstrap Kubernetes platform services and workloads.
 - `secrets/` is a placeholder only. Use encryption before storing real secrets.
 
+## Operating Workflow
+
+Planning, knowledge capture, implementation, and review should follow `docs/operating-workflow.md`.
+Documentation source-of-truth rules live in `docs/documentation-strategy.md`.
+Architecture decisions are indexed in `docs/adrs.md`.
+
 ## First Workflow
 
 1. Create Harvester VM infrastructure.
 2. Generate and apply Talos machine config.
 3. Bootstrap Kubernetes once from the first control-plane node.
 4. Apply manifests from `kubernetes/clusters/homelab`.
+
+## Local macOS Access
+
+Harvester kubeconfig is kept outside this repository. The local convention is:
+
+- kubeconfig path: `~/.kube/harvester.yaml`
+- shell alias: `kh="KUBECONFIG=$HOME/.kube/harvester.yaml kubectl"`
+
+See `docs/runbooks/macos-kubeconfig.md` for setup and verification.

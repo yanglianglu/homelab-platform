@@ -1,0 +1,4 @@
+interface:
+  display_name: "Harvester Cluster Status"
+  short_description: "Read-only Harvester cluster health reporting"
+  default_prompt: "Use $harvester-cluster-status to inspect my Harvester cluster with read-only Kubernetes API calls and produce a structured health report."

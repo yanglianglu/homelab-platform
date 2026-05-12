@@ -13,6 +13,8 @@ into a running workload in the `apps` namespace.
 - Service type: `ClusterIP`
 - Secrets: none
 - Ingress/TLS: deferred to Stage 4
+- Scheduling: tolerates the single-node control-plane taint until worker nodes
+  are available
 
 ## Verification
 

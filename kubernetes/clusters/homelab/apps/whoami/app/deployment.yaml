@@ -25,6 +25,10 @@ spec:
         runAsGroup: 65532
         seccompProfile:
           type: RuntimeDefault
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
       containers:
         - name: whoami
           image: traefik/whoami:v1.11.0

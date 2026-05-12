@@ -39,7 +39,6 @@ kubernetes/
   clusters/
     homelab/
       kustomization.yaml
-      root/
       projects/
       platform/
       apps/

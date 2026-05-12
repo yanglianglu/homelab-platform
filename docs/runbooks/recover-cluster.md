@@ -53,7 +53,7 @@ VirtualMachineBackups: none
 VirtualMachineSnapshots: none
 ScheduleVMBackups: none
 cp-01 VM: Running / Ready
-talos-cp-01 VM: retained, pending retirement
+talos-cp-01 VM: retired
 ```
 
 Implication:

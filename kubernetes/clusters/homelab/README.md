@@ -25,7 +25,6 @@ flowchart LR
 | Directory | Purpose |
 | --- | --- |
 | `kustomization.yaml` | App-of-apps entry point for this cluster |
-| `root/` | Notes about why the cluster root lives at `homelab/` |
 | `projects/` | Argo CD AppProject guardrails |
 | `platform/` | Shared platform services and policies, organized by capability |
 | `apps/` | User-facing and portfolio applications |

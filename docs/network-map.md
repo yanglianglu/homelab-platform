@@ -46,7 +46,6 @@ flowchart TB
 
   subgraph talos["Talos / Kubernetes VMs"]
     cp["cp-01<br/>control-plane<br/>192.168.1.181"]
-    oldcp["talos-cp-01<br/>old control-plane<br/>192.168.1.178<br/>pending retirement"]
     w1["worker-01<br/>Medium worker<br/>IP proposed: 192.168.1.179"]
     w2["worker-02<br/>Medium worker<br/>IP proposed: 192.168.1.180"]
   end
@@ -62,7 +61,6 @@ flowchart TB
   vip --> mgmt
   mgmt --> vmnet
   abundance --> cp
-  abundance -. retained .-> oldcp
   elation --> w1
   enigmata --> w2
   cp --> pods
@@ -79,6 +77,7 @@ flowchart TB
 - No dedicated firewall/router is planned yet.
 - AT&T router remains the default gateway.
 - `the-abundance`, `the-elation`, and `the-enigmata` are the three verified physical Harvester nodes.
-- `cp-01` is the active Talos control-plane VM on `the-abundance`; old `talos-cp-01` is retained until retirement.
+- `cp-01` is the active Talos control-plane VM on `the-abundance`.
+- Old `talos-cp-01` has been retired; `192.168.1.178` should be checked before reuse.
 - One worker VM per remaining physical node is planned.
 - Older references to `the-remembrance` are stale unless that host is reintroduced later.

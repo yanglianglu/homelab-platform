@@ -15,7 +15,6 @@ Inventory and capacity notes for the home lab hardware.
 | VM | vCPU | Memory | Disk | Notes |
 | --- | ---: | ---: | ---: | --- |
 | `cp-01` | 4 | 8 Gi | 100 Gi | Active Talos control-plane node on `the-abundance`; OS disk uses `slow` |
-| `talos-cp-01` | 4 | 8 Gi | 100 Gi | Old Talos control-plane node on `the-abundance`; pending retirement |
 | `worker-01` | 4 | 12 Gi | 100 Gi | Planned Medium Talos worker VM on `the-elation`; OS disk should use `slow` |
 | `worker-02` | 4 | 12 Gi | 100 Gi | Planned Medium Talos worker VM on `the-enigmata`; OS disk should use `slow` |
 

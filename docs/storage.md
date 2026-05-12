@@ -30,5 +30,5 @@ See `harvester/storageclasses/storage-policy.md` for the Harvester-side storage 
 ## Boundaries
 
 - Harvester storage definitions belong under `harvester/storageclasses/`.
-- Kubernetes storage classes, CSI settings, and persistent volume policies belong under `kubernetes/clusters/homelab/infrastructure/storage/`.
+- Kubernetes storage classes, CSI settings, and persistent volume policies belong under `kubernetes/clusters/homelab/platform/storage/`.
 - Do not store live runtime exports with `status`, `uid`, `resourceVersion`, or `managedFields` as source of truth.

@@ -26,7 +26,7 @@ Human-readable network notes for the home lab. This file documents intended addr
 - Harvester and Talos use separate pod and service CIDRs.
 - Overlapping CIDRs can be technically possible when networks are isolated, but they are not recommended because troubleshooting and routing become harder.
 - Talos VM traffic is expected to land on the physical LAN through the Harvester `lan-untagged` VM network.
-- Old `talos-cp-01` remains at `192.168.1.178` until retirement.
+- Old `talos-cp-01` at `192.168.1.178` has been retired. Reuse that IP only after checking DHCP/reservation state.
 - Keep router/DHCP reservations and static IP decisions documented here.
 
 ## Inventory Files

@@ -3,6 +3,8 @@ kind: AppProject
 metadata:
   name: platform
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-10"
 spec:
   description: Shared platform services for the homelab cluster
   sourceRepos:

@@ -19,7 +19,7 @@ are ready.
 ```bash
 kubectl --context homelab-talos apply --server-side --force-conflicts -k kubernetes/bootstrap/argocd/install
 kubectl --context homelab-talos -n argocd rollout status deployment/argocd-server
-kubectl --context homelab-talos apply -f kubernetes/bootstrap/argocd/root-app/homelab-root-application.yaml
+kubectl --context homelab-talos apply -f kubernetes/bootstrap/argocd/root/homelab-root-application.yaml
 ```
 
 If the GitHub repository is private, Argo CD will not be able to compare or sync

@@ -3,12 +3,14 @@ kind: AppProject
 metadata:
   name: apps
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-10"
 spec:
   description: Portfolio and user-facing applications
   sourceRepos:
     - https://github.com/yanglianglu/homelab-platform.git
   destinations:
-    - namespace: '*'
+    - namespace: apps
       server: https://kubernetes.default.svc
   namespaceResourceWhitelist:
     - group: '*'

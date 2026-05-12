@@ -1,14 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: platform-namespaces
+  name: homelab-root
   namespace: argocd
 spec:
-  project: platform
+  project: default
   source:
     repoURL: https://github.com/yanglianglu/homelab-platform.git
     targetRevision: main
-    path: kubernetes/clusters/homelab/platform/namespaces
+    path: kubernetes/clusters/homelab
   destination:
     server: https://kubernetes.default.svc
-    namespace: default
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - ServerSideApply=true

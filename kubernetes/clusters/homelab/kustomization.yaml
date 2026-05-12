@@ -7,3 +7,4 @@ resources:
   - platform/20-infisical/application.yaml
   - platform/30-argocd-repo-access/application.yaml
   - platform/40-policies/application.yaml
+  - apps/whoami/application.yaml

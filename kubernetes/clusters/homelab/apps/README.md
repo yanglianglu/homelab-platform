@@ -2,7 +2,10 @@
 
 User-facing and portfolio application manifests live here.
 
-Use one folder per app:
+Create one folder per app only when there is real deployable content or a
+near-term implementation issue. Avoid placeholder-only app folders.
+
+Expected app folder shape:
 
 ```text
 apps/
@@ -11,9 +14,16 @@ apps/
     app/
     config/
     storage/
-    secrets/
+    external-secrets/
 ```
 
-Do not create dev/prod splits by default. Use branch checks, local tests, policy guardrails, Argo CD diff/sync, and sandbox deployments.
+Do not create dev/prod splits by default. Use branch checks, local tests, policy
+guardrails, Argo CD diff/sync, and sandbox deployments.
 
-Heavy streaming, data warehouse, and AI workloads should run as dedicated single-purpose VMs under `harvester/`, not as oversized shared Kubernetes workloads.
+Planned application ideas stay in Notion/Linear until they are ready for GitOps
+manifests. Current candidates include the portfolio app, data lake control
+plane, chat-with-data, and analytics demos.
+
+Heavy streaming, data warehouse, and AI workloads should run as dedicated
+single-purpose VMs under `harvester/`, not as oversized shared Kubernetes
+workloads.

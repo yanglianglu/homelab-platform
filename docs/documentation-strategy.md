@@ -61,30 +61,27 @@ Linear = execution status and prioritization
 | Operating workflow | Primary index for the repo workflow contract | Mirrored as `Homelab Operating Workflow` | Keep both aligned when workflow changes |
 | Documentation strategy | Primary index for placement rules | Mirrored as `Homelab Documentation Strategy` | Keep both aligned when placement rules change |
 | ADRs | Lightweight index only | Primary ADR content | `FIF-5` completed |
-| Network notes | Primary for operational network facts while the cluster is being built | Summaries in Network/System Catalog pages | `FIF-8` updates stale 3-node inventory |
-| IP plan | Primary while IP assignments affect operations | Later may become Systems Catalog summary | `FIF-8` updates stale node names/IPs |
-| Port map | Primary while switch ports affect operations | Later may become Systems Catalog summary | `FIF-8` updates topology if needed |
-| Hardware inventory | Primary while hardware facts affect deployment | Mirror to Systems Catalog | `FIF-8` or later Systems Catalog issue |
-| Storage notes | Primary for storage classes and operational expectations | Summarize under Harvester/storage system pages | `FIF-9` replaces placeholder storage notes |
-| Talos docs/runbooks | Primary for exact commands, scripts, and recovery steps | Link from Talos system page and runbook hub | `FIF-11`, `FIF-12`, `FIF-13` verify access and health |
-| Harvester desired state | Primary for desired-state summaries and operator notes | Link from Harvester system page | `FIF-9` replaces placeholder network/storage notes |
-| Kubernetes folder | Primary for future GitOps manifests | Link from Platform domain page | `FIF-16`, `FIF-17`, `FIF-18` build GitOps baseline |
+| Network notes | Primary for operational network facts while the cluster is being built | Summaries in Network/System Catalog pages | Keep retired IPs and planned workers current |
+| IP plan | Primary while IP assignments affect operations | Later may become Systems Catalog summary | Move retired addresses out of active assignments |
+| Port map | Primary while switch ports affect operations | Later may become Systems Catalog summary | Update after USW-Aggregation adoption |
+| Hardware inventory | Primary while hardware facts affect deployment | Mirror to Systems Catalog | Keep VM sizing and retired VMs current |
+| Storage notes | Primary for storage classes and operational expectations | Summarize under Harvester/storage system pages | Keep aligned with `harvester/storageclasses/` |
+| Talos docs/runbooks | Primary for exact commands, scripts, and recovery steps | Link from Talos system page and runbook hub | Keep `cp-01` and worker procedures current |
+| Harvester desired state | Primary for desired-state summaries and operator notes | Link from Harvester system page | Remove retired desired-state files |
+| Kubernetes folder | Primary for GitOps manifests | Link from Platform domain page | Keep capability layout and sync-wave docs current |
 | Secrets policy | Primary for repo safety rules and External Secrets Operator conventions | Summarize in security policy page | `FIF-18` chooses Infisical + External Secrets Operator |
 
-## Files Needing Immediate Cleanup
+## Repo Cleanup Rules
 
-The audit found no files that should be removed from GitHub today. The main problem is stale or placeholder content, not misplaced content.
+The latest cleanup removed stale old-VM desired state and obsolete GitOps layout folders. The remaining cleanup problem is stale or overly sparse content, not misplaced deployment files.
 
-Immediate cleanup is tracked in Linear:
+Use these rules for future cleanup:
 
-| Linear issue | Cleanup |
-| --- | --- |
-| `FIF-8` | Update Harvester inventory docs with the live 3-node state |
-| `FIF-9` | Replace Harvester network and storage placeholders with verified desired-state notes |
-| `FIF-11` | Configure local `kubectl` access for `homelab-talos` |
-| `FIF-12` | Configure `talosctl` access and verify cluster health |
-| `FIF-13` | Confirm guest Kubernetes core pods live |
-| `FIF-18` | Choose initial secrets approach for GitOps |
+- Keep folders that contain deployable state, scripts, runbooks, or useful operating notes.
+- Avoid placeholder-only folders when a parent README can hold the planning note.
+- Move long-form explanation to Notion when it is not needed for command-line work.
+- Remove retired desired-state files after the live object is intentionally retired.
+- Keep historical context only when it prevents accidental recreation or IP reuse.
 
 ## Future Notion-Primary Candidates
 

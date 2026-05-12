@@ -17,5 +17,10 @@ kubectl --context homelab-talos apply --server-side -k kubernetes/bootstrap/exte
 After Argo CD can read the repo, the ongoing desired state is represented by:
 
 ```text
-kubernetes/clusters/homelab/argocd/applications/platform/external-secrets.yaml
+kubernetes/clusters/homelab/platform/10-external-secrets/application.yaml
 ```
+
+The bootstrap path uses the raw upstream `v2.4.1` release manifest. The Argo
+CD-managed steady-state path uses the Helm chart version `2.4.1` and
+`values.yaml`. If they temporarily differ during recovery, the Argo CD
+Application is the source of truth after repo access works.

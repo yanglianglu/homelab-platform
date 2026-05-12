@@ -12,7 +12,8 @@ This repository uses Argo CD as the GitOps controller for the `homelab-talos` gu
 - Do not commit plaintext secrets, kubeconfigs, private keys, or app credentials.
 - Secret values live outside Git. The selected pattern is Infisical plus
   External Secrets Operator; see
-  `kubernetes/clusters/homelab/platform/secrets/README.md`.
+  `kubernetes/clusters/homelab/platform/20-infisical/README.md` and
+  `kubernetes/clusters/homelab/platform/30-argocd-repo-access/README.md`.
 
 ## Deployment Model
 
@@ -37,7 +38,8 @@ kubernetes/
     argocd/
   clusters/
     homelab/
-      argocd/
+      kustomization.yaml
+      projects/
       platform/
       apps/
       sandbox/

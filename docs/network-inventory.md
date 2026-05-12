@@ -21,12 +21,11 @@ No dedicated firewall is planned at this stage. The AT&T router remains the gate
 | --- | --- | --- | --- | --- | --- |
 | `att-router` | Router / gateway | `192.168.1.254` | AT&T Fiber Router | active | Current default gateway |
 | `usw-aggregation` | 10G aggregation switch | `TBD` | UniFi USW-Aggregation | not set up | Connected directly to AT&T router |
-| `the-abundance` | Physical Harvester node | `192.168.1.241` | TBD | active | Hosts current Harvester environment, `cp-01`, and retained old `talos-cp-01` |
+| `the-abundance` | Physical Harvester node | `192.168.1.241` | TBD | active | Hosts current Harvester environment and `cp-01` |
 | `the-elation` | Physical Harvester node | `192.168.1.250` | TBD | active | Verified Ready in Harvester |
 | `the-enigmata` | Physical Harvester node | `192.168.1.244` | TBD | active | Verified Ready in Harvester; replaces stale `the-remembrance` references |
 | `harvester-vip` | Harvester UI/API VIP | `192.168.1.50` | Harvester VIP | active | Shared Harvester access IP |
 | `cp-01` | Talos control-plane VM | `192.168.1.181` | Talos v1.13.0 | active | Fresh replacement control plane; bootstrapped and healthy |
-| `talos-cp-01` | Old Talos control-plane VM | `192.168.1.178` | Talos v1.13.0 | retained | Pending retirement |
 | `worker-01` | Talos worker VM | `192.168.1.179` | Talos v1.13.0 | planned | Medium worker VM on `the-elation` |
 | `worker-02` | Talos worker VM | `192.168.1.180` | Talos v1.13.0 | planned | Medium worker VM on `the-enigmata` |
 
@@ -46,3 +45,4 @@ No dedicated firewall is planned at this stage. The AT&T router remains the gate
 - Confirm physical node hardware models, CPU, memory, disk, and NIC interface names.
 - Confirm final MAC addresses when `worker-01` and `worker-02` are created.
 - Confirm whether the `the-enigmata` link should remain 1G or be upgraded later.
+- Confirm whether retired IP `192.168.1.178` is released or reserved before reuse.

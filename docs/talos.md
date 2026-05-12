@@ -19,9 +19,9 @@ Talos turns the Harvester VMs into Kubernetes nodes. The source files for the `h
 
 ## Milestone
 
-The fresh control-plane node, `cp-01`, is bootstrapped and healthy. Talos API checks, service/address/route inspection, Kubernetes bootstrap, kubeconfig generation, and core pod checks have completed.
+The active control-plane node, `cp-01`, is bootstrapped and healthy. Talos API checks, service/address/route inspection, Kubernetes bootstrap, kubeconfig generation, and core pod checks have completed.
 
-The old `talos-cp-01` VM at `192.168.1.178` is retained temporarily and should be retired only after the new `cp-01` workflow has been reviewed.
+The old `talos-cp-01` VM at `192.168.1.178` has been retired and its Harvester desired-state file has been removed from Git.
 
 ## Secret Handling
 

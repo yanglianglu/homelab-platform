@@ -29,11 +29,11 @@ This repository manages my Harvester + Talos + Kubernetes home lab. It keeps the
 | Talos cluster name | `homelab-talos` |
 | Talos Kubernetes API endpoint | `https://192.168.1.181:6443` |
 | Talos version | `v1.13.0` |
-| Retained old Talos VM | `talos-cp-01` at `192.168.1.178`, pending retirement |
+| Retired old Talos VM | `talos-cp-01` at `192.168.1.178` has been removed |
 
 ## Current Milestone
 
-`cp-01` has been created on Harvester, configured as the fresh Talos control-plane node, bootstrapped, and confirmed healthy. Core Kubernetes pods are running. The old `talos-cp-01` VM remains available until it is explicitly retired.
+`cp-01` has been created on Harvester, configured as the active Talos control-plane node, bootstrapped, and confirmed healthy. Core Kubernetes pods are running. The old `talos-cp-01` VM has been retired and should not be recreated unless a future recovery plan explicitly calls for it.
 
 ## Repository Boundaries
 

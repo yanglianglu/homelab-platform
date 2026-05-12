@@ -1,6 +1,5 @@
-# Bootstrap manifest for the replacement Talos control-plane VM.
-# This is intended to create a fresh VM named cp-01 without modifying the old
-# talos-cp-01 VM. It uses:
+# Bootstrap manifest for the active Talos control-plane VM.
+# This is intended to create a fresh VM named cp-01. It uses:
 # - Talos ISO image image-kpz5h as a CD-ROM
 # - A fresh 100Gi slow-backed OS disk
 # - lan-untagged VM network

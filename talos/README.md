@@ -37,6 +37,6 @@ scripts/bootstrap.sh
 
 The current recovery preference is rebuild first, snapshot only for short-term rollback, and VM backup only after a Harvester backup target exists.
 
-Do not retire old `talos-cp-01` until `cp-01` has been reviewed as the active replacement and any needed state has been confirmed unnecessary.
+`cp-01` is the active control-plane node. The old `talos-cp-01` VM has been retired, so do not add desired state for it back to Git unless a future recovery plan explicitly needs a historical reference.
 
 See `docs/runbooks/talos-vm-recovery-strategy.md`.

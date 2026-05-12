@@ -2,9 +2,9 @@
 
 This runbook captures the intended Harvester-side VM settings for the first Talos control plane VM.
 
-## Replacement VM Plan
+## Active VM Plan
 
-The replacement control-plane VM is `cp-01`. It was created alongside the old `talos-cp-01`, verified, and should remain in service before the old VM is retired.
+The active control-plane VM is `cp-01`. It replaced the old `talos-cp-01`, which has now been retired.
 
 Bootstrap manifest:
 
@@ -12,15 +12,13 @@ Bootstrap manifest:
 harvester/vms/cp-01.bootstrap.yaml
 ```
 
-Planned differences from old `talos-cp-01`:
+Key settings:
 
 - VM name: `cp-01`
 - OS disk: `cp-01-os-disk`
 - OS disk StorageClass: `slow`
 - Talos ISO volume: `cp-01-talos-iso`
 - Static IP: `192.168.1.181`
-
-Do not delete old `talos-cp-01` until `cp-01` has been reviewed as the active replacement and any needed data/config has been confirmed unnecessary.
 
 ## VM Settings
 

@@ -19,9 +19,9 @@ Use Argo CD as the GitOps controller.
 Use an app-of-apps bootstrap model:
 
 ```text
-kubernetes/bootstrap/argocd/root-app/homelab-root-application.yaml
-  -> kubernetes/clusters/homelab/argocd/root/
-  -> platform/apps/sandbox Argo CD Applications
+kubernetes/bootstrap/argocd/root/homelab-root-application.yaml
+  -> kubernetes/clusters/homelab/
+  -> projects plus platform capability Applications
 ```
 
 Start with explicit Argo CD Applications. Defer ApplicationSet automation until directory conventions are proven.
@@ -38,7 +38,10 @@ Start with explicit Argo CD Applications. Defer ApplicationSet automation until 
 
 - The first Argo CD install is still a manual bootstrap step.
 - Argo CD becomes part of the platform baseline.
-- Application and AppProject manifests live under `kubernetes/clusters/homelab/argocd/`.
+- The root app points at `kubernetes/clusters/homelab/` so default Kustomize
+  load restrictions can remain enabled.
+- AppProjects live under `kubernetes/clusters/homelab/projects/`.
+- Platform Applications live beside the capability they manage under `kubernetes/clusters/homelab/platform/*/application.yaml`.
 - Secrets are not stored in plaintext Git.
 - The single-environment model requires stronger pre-merge validation and policy guardrails.
 

@@ -18,6 +18,35 @@ The default flow is:
 Idea -> Notion spec/decision -> Linear project/issues -> GitHub branch/PR -> CI/deploy -> Notion runbook/update -> Linear done
 ```
 
+## Collaboration Contract
+
+For homelab work, implementation does not begin just because an issue is next in
+Linear or the user says to proceed. The default collaboration mode is:
+
+```text
+Explain -> discuss options -> agree on approach -> implement -> verify -> update docs/Linear
+```
+
+Before making repo, cluster, Linear state, or product/tooling decisions, Codex
+must first give the user the full picture:
+
+- what the issue is trying to accomplish
+- why it matters in the platform sequence
+- what choices are available
+- the tradeoffs, risks, and blast radius of each choice
+- what implementation would change
+- what verification would prove success
+
+Only after that discussion should Codex ask for explicit approval to implement.
+This is especially important for product/tool choices, access/security
+decisions, network exposure, GitOps changes, Kubernetes cluster changes, and
+anything that becomes durable platform policy.
+
+Exceptions are limited to read-only investigation, status checks, and commands
+that the user explicitly asks to run. If the user asks "what is next" or
+"proceed next", interpret that as permission to explain and prepare, not as
+permission to decide and implement.
+
 ## Domain Model
 
 Organize work around platform domains, but deliver through small vertical slices.

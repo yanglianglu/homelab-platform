@@ -28,7 +28,11 @@ Guardrails happen before and during deploy:
 - Argo CD diff/sync/health
 - resource requests, limits, probes, and rollback paths
 
-Use `sandbox/` for experiments. Use dedicated single-purpose VMs for heavy streaming, data warehouse, and AI workloads instead of forcing the shared Kubernetes worker pool to carry them.
+Use `network/` for edge exposure, DNS, and tunnel services. Use
+`observability/` for metrics, dashboards, exporters, and alerts. Use `sandbox/`
+for experiments. Use dedicated single-purpose VMs for heavy streaming, data
+warehouse, and AI workloads instead of forcing the shared Kubernetes worker pool
+to carry them.
 
 ## Layout
 
@@ -41,6 +45,8 @@ kubernetes/
       kustomization.yaml
       projects/
       platform/
+      network/
+      observability/
       apps/
       sandbox/
 ```

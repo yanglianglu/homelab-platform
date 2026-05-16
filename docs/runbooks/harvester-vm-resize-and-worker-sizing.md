@@ -56,7 +56,9 @@ OS disk should use `slow`. Workload data should use Kubernetes PVCs, not the Tal
 | VM | Host | Size | vCPU | Memory | OS disk | IP | Reason |
 | --- | --- | --- | ---: | ---: | ---: | --- | --- |
 | `worker-01` | `the-elation` | Medium | 4 | 12 Gi | 100 Gi | `192.168.1.179` | General Kubernetes platform/app worker |
-| `worker-02` | `the-enigmata` | Medium | 4 | 12 Gi | 100 Gi | `192.168.1.180` | Second general worker and scheduling/failure-spread target |
+| `worker-02` | `the-enigmata` | Small | 2 | 8 Gi | 80 Gi | `192.168.1.180` | Smaller scheduling/failure-spread worker on the smallest host |
+
+`worker-03` is deferred until scheduling pressure or workload metrics prove the need.
 
 Heavy streaming, data warehouse, AI serving, and other resource-dominant workloads should use dedicated single-purpose VMs instead of driving the shared Kubernetes worker size. HA and read/write split are deferred unless a specific workload proves the need.
 
@@ -70,7 +72,7 @@ Use these outside the shared Kubernetes worker pool when a workload has dominant
 | Streaming VM | 4-8 | 16-32 Gi | `nvme` for hot queues, `slow` for retained/archive data | ADS-B ingestion, stream processors, Kafka/Redpanda-style experiments |
 | AI VM | Workload/GPU dependent | 32-64 Gi | NVMe preferred for model/cache data | vLLM, Ollama, embedding/vector experiments |
 
-For the home server, prefer one dedicated VM per large workload family. Do not design HA/read-write split until there is a clear operational reason.
+For the home server, prefer one dedicated VM per large workload family. `data-01` starts on `the-abundance` at 8 vCPU / 32 Gi with 8-10 TiB retained data and 1 TiB hot/temp NVMe. Do not design HA/read-write split until there is a clear operational reason.
 
 ## Resize Principles
 

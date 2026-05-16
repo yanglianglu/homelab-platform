@@ -13,9 +13,10 @@ Recommended initial worker placement:
 | Worker | Host | Size | IP |
 | --- | --- | --- | --- |
 | `worker-01` | `the-elation` | Medium | `192.168.1.179` |
-| `worker-02` | `the-enigmata` | Medium | `192.168.1.180` |
+| `worker-02` | `the-enigmata` | Small | `192.168.1.180` |
+| `worker-03` | TBD | deferred | TBD |
 
-Large streaming, data warehouse, and AI workloads should run as dedicated single-purpose VMs instead of forcing the shared Kubernetes worker pool to become oversized. HA and read/write split are deferred unless a specific workload proves the need.
+Large streaming, data warehouse, and AI workloads should run as dedicated single-purpose VMs instead of forcing the shared Kubernetes worker pool to become oversized. `worker-03` is deferred until scheduling pressure or workload metrics prove the need.
 
 Storage rules:
 

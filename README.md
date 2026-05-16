@@ -43,6 +43,17 @@ This repository manages my Harvester + Talos + Kubernetes home lab. It keeps the
 - `kubernetes/` is for post-bootstrap Kubernetes platform services and workloads.
 - `secrets/` is a placeholder only. Use encryption before storing real secrets.
 
+## Growth Model
+
+The next platform shape is documented in `docs/architecture/gradual-vm-growth-plan.md`.
+
+The short version:
+
+- Grow from one Talos control-plane VM to three control-plane VMs.
+- Add two initial worker VMs before deploying heavier platform services.
+- Keep large data workloads on a dedicated VM such as `data-01`, not inside the shared Kubernetes worker pool.
+- Add a third worker only after metrics show the need.
+
 ## Operating Workflow
 
 Planning, knowledge capture, implementation, and review should follow `docs/operating-workflow.md`.

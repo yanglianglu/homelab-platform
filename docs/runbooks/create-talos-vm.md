@@ -9,8 +9,12 @@ The active control-plane VM is `cp-01`. It replaced the old `talos-cp-01`, which
 Bootstrap manifest:
 
 ```text
-harvester/vms/cp-01.bootstrap.yaml
+harvester/vms/talos/control-plane/cp-01.bootstrap.yaml
 ```
+
+The repo manifest represents the installed/post-bootstrap state. During first
+install, the Talos ISO may be attached temporarily. After installation, detach
+the ISO or ensure the OS disk is the first boot device before any VM restart.
 
 Key settings:
 
@@ -51,10 +55,11 @@ Key settings:
 3. Upload or reference `talos-metal-amd64-v1.13.0.iso`.
 4. Create VM `cp-01` in namespace `talos-cluster`.
 5. Set CPU to `4` and memory to `8 Gi`.
-6. Attach the Talos ISO as a CD-ROM.
+6. Attach the Talos ISO as a temporary CD-ROM for first install only.
 7. Add a `100 Gi` OS disk using the `virtio` bus.
 8. Attach VM Network `lan-untagged` using network model `virtio`.
 9. Enable UEFI and EFI persistent state.
 10. Disable Secure Boot, TPM, and QEMU guest agent.
 11. Leave SSH key, cloud-init user-data, and cloud-init network-data blank.
 12. Confirm the VM receives or uses `192.168.1.181`.
+13. After Talos is installed, detach the ISO or move the OS disk before the ISO in boot order.

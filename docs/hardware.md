@@ -16,6 +16,7 @@ Inventory and capacity notes for the home lab hardware.
 | --- | ---: | ---: | ---: | --- |
 | `cp-01` | 4 | 8 Gi | 100 Gi | Active Talos control-plane node on `the-abundance`; OS disk uses `slow` |
 | `worker-01` | 4 | 12 Gi | 100 Gi | Planned Medium Talos worker VM on `the-elation`; OS disk should use `slow` |
-| `worker-02` | 4 | 12 Gi | 100 Gi | Planned Medium Talos worker VM on `the-enigmata`; OS disk should use `slow` |
+| `worker-02` | 2 | 8 Gi | 80 Gi | Planned Small Talos worker VM on `the-enigmata`; OS disk should use `slow` |
+| `data-01` | 8 | 32 Gi | 100 Gi OS + 8-10 TiB data + 1 TiB hot/temp | Planned dedicated data VM on `the-abundance` |
 
 Add CPU, memory, disk, NIC, firmware, and BIOS notes here as the lab grows.

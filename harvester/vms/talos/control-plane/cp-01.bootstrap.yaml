@@ -1,8 +1,8 @@
-# Bootstrap manifest for the active Talos control-plane VM.
-# This is intended to create a fresh VM named cp-01. It uses:
-# - Talos ISO image image-kpz5h as a CD-ROM
-# - A fresh 100Gi slow-backed OS disk
-# - lan-untagged VM network
+# Desired manifest for the active Talos control-plane VM after bootstrap.
+# The Talos ISO PVC is kept below for provenance, but the active VM boots from
+# the installed OS disk. Do not put the ISO before the OS disk after Talos has
+# been installed, or a VM restart can boot into the installer/live environment
+# instead of the configured control-plane node.
 #
 # Do not add runtime fields such as uid, resourceVersion, creationTimestamp,
 # managedFields, finalizers, or status.
@@ -73,12 +73,8 @@ spec:
           threads: 1
         devices:
           disks:
-            - name: talos-iso
-              bootOrder: 1
-              cdrom:
-                bus: sata
             - name: os-disk
-              bootOrder: 2
+              bootOrder: 1
               disk:
                 bus: virtio
           inputs:
@@ -116,9 +112,6 @@ spec:
           name: default
       terminationGracePeriodSeconds: 120
       volumes:
-        - name: talos-iso
-          persistentVolumeClaim:
-            claimName: cp-01-talos-iso
         - name: os-disk
           persistentVolumeClaim:
             claimName: cp-01-os-disk

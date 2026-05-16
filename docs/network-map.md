@@ -45,9 +45,16 @@ flowchart TB
   end
 
   subgraph talos["Talos / Kubernetes VMs"]
+    api["homelab-talos-api<br/>planned VIP<br/>192.168.1.184"]
     cp["cp-01<br/>control-plane<br/>192.168.1.181"]
+    cp2["cp-02<br/>control-plane planned<br/>192.168.1.182"]
+    cp3["cp-03<br/>control-plane planned<br/>192.168.1.183"]
     w1["worker-01<br/>Medium worker<br/>IP proposed: 192.168.1.179"]
-    w2["worker-02<br/>Medium worker<br/>IP proposed: 192.168.1.180"]
+    w2["worker-02<br/>Small worker<br/>IP proposed: 192.168.1.180"]
+  end
+
+  subgraph data["Dedicated Data VMs"]
+    data01["data-01<br/>ClickHouse / graph planned<br/>IP TBD"]
   end
 
   subgraph k8s["homelab-talos Kubernetes"]
@@ -61,9 +68,17 @@ flowchart TB
   vip --> mgmt
   mgmt --> vmnet
   abundance --> cp
+  elation --> cp2
+  enigmata --> cp3
   elation --> w1
   enigmata --> w2
+  abundance --> data01
+  api --> cp
+  api --> cp2
+  api --> cp3
   cp --> pods
+  cp2 --> pods
+  cp3 --> pods
   cp --> svcs
   w1 --> pods
   w2 --> pods

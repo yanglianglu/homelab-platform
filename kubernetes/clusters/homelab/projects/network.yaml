@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: network
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-10"
+spec:
+  description: DNS, tunnels, and edge exposure for the homelab cluster
+  sourceRepos:
+    - https://github.com/yanglianglu/homelab-platform.git
+  destinations:
+    - namespace: network-edge
+      server: https://kubernetes.default.svc
+  namespaceResourceWhitelist:
+    - group: '*'
+      kind: '*'

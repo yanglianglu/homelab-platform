@@ -18,6 +18,8 @@ flowchart LR
   Root --> Infisical["platform/20-infisical"]
   Root --> RepoAccess["platform/30-argocd-repo-access"]
   Root --> Policies["platform/40-policies"]
+  Root --> Network["network/"]
+  Root --> Observability["observability/"]
 ```
 
 ## Domains
@@ -27,6 +29,8 @@ flowchart LR
 | `kustomization.yaml` | App-of-apps entry point for this cluster |
 | `projects/` | Argo CD AppProject guardrails |
 | `platform/` | Shared platform services and policies, organized by capability |
+| `network/` | DNS, Cloudflare Tunnel, and edge exposure services |
+| `observability/` | VictoriaMetrics, Grafana, exporters, and alerts |
 | `apps/` | User-facing and portfolio applications |
 | `sandbox/` | Experiments that may break |
 

@@ -13,6 +13,10 @@ Current domains:
 
 Platform changes should be reviewed carefully because they can affect every app.
 
-Future platform capabilities such as ingress, cert-manager, external-dns, and
-observability should get their own numbered capability folder when they have an
-Argo CD Application or concrete resources to manage.
+Future platform capabilities such as ingress and cert-manager should get their
+own numbered capability folder when they have an Argo CD Application or concrete
+resources to manage.
+
+Network edge services such as Cloudflare Tunnel and external-dns live under
+`../network/`. Observability services such as VictoriaMetrics and Grafana live
+under `../observability/`.

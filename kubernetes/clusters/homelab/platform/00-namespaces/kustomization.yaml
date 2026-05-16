@@ -3,6 +3,8 @@ kind: Kustomization
 resources:
   - argocd.yaml
   - external-secrets.yaml
+  - network-edge.yaml
+  - observability.yaml
   - platform.yaml
   - apps.yaml
   - sandbox.yaml

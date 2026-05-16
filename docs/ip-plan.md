@@ -29,7 +29,11 @@ This file tracks home lab subnets, reserved addresses, active assignments, and p
 | --- | --- | --- | --- | --- |
 | `TBD` | `usw-aggregation` | UniFi switch management | planned | Set during UniFi adoption |
 | `192.168.1.179` | `worker-01` | Talos worker VM | proposed | Planned Medium worker on `the-elation` |
-| `192.168.1.180` | `worker-02` | Talos worker VM | proposed | Planned Medium worker on `the-enigmata` |
+| `192.168.1.180` | `worker-02` | Talos worker VM | proposed | Planned Small worker on `the-enigmata` |
+| `192.168.1.182` | `cp-02` | Talos control-plane VM | proposed | Planned control-plane on `the-elation` |
+| `192.168.1.183` | `cp-03` | Talos control-plane VM | proposed | Planned control-plane on `the-enigmata` |
+| `192.168.1.184` | `homelab-talos-api` | Kubernetes API VIP | proposed | Stable API endpoint after control-plane HA |
+| `TBD` | `data-01` | Dedicated data VM | planned | Assign after VM network and OS plan are finalized |
 
 ## Retired / Hold Before Reuse
 
@@ -40,6 +44,6 @@ This file tracks home lab subnets, reserved addresses, active assignments, and p
 ## Allocation Notes
 
 - Harvester VIP/UI is shared, but each physical Harvester node should still have a unique management IP.
-- Keep Talos VM IPs near the control-plane IP if available: `192.168.1.179-181`.
+- Keep Talos VM IPs near the control-plane IP if available: `192.168.1.179-184`.
 - Avoid assigning Harvester, Talos, switch, or monitoring addresses from an unmanaged DHCP pool without reservations.
 - `the-enigmata` is the third verified Harvester node. Older notes that referenced `the-remembrance` should be treated as stale unless that host is reintroduced later.

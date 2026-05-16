@@ -27,7 +27,10 @@ No dedicated firewall is planned at this stage. The AT&T router remains the gate
 | `harvester-vip` | Harvester UI/API VIP | `192.168.1.50` | Harvester VIP | active | Shared Harvester access IP |
 | `cp-01` | Talos control-plane VM | `192.168.1.181` | Talos v1.13.0 | active | Fresh replacement control plane; bootstrapped and healthy |
 | `worker-01` | Talos worker VM | `192.168.1.179` | Talos v1.13.0 | planned | Medium worker VM on `the-elation` |
-| `worker-02` | Talos worker VM | `192.168.1.180` | Talos v1.13.0 | planned | Medium worker VM on `the-enigmata` |
+| `worker-02` | Talos worker VM | `192.168.1.180` | Talos v1.13.0 | planned | Small worker VM on `the-enigmata` |
+| `cp-02` | Talos control-plane VM | `192.168.1.182` | Talos v1.13.0 | planned | Control-plane VM on `the-elation` |
+| `cp-03` | Talos control-plane VM | `192.168.1.183` | Talos v1.13.0 | planned | Control-plane VM on `the-enigmata` |
+| `homelab-talos-api` | Kubernetes API VIP | `192.168.1.184` | n/a | planned | Stable API endpoint after HA control plane |
 
 ## Node Link Plan
 

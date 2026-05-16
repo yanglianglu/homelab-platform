@@ -5,6 +5,7 @@ resources:
   - external-secrets.yaml
   - network-edge.yaml
   - observability.yaml
+  - data-platform.yaml
   - platform.yaml
   - apps.yaml
   - sandbox.yaml

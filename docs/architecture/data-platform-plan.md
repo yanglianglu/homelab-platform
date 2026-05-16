@@ -1,24 +1,43 @@
 # Data Platform Plan
 
-Large analytical and graph workloads use a dedicated VM before they use the shared Kubernetes worker pool.
+Large analytical and graph workloads use a dedicated Talos worker in the Kubernetes cluster. `data-01` is part of `homelab-talos`, but it is tainted and pinned so it does not behave like a general worker.
 
-## Initial Data VM
+## Initial Data Node
 
-| VM | Host | Initial size | Role |
+| Node | Host | Initial size | Role |
 | --- | --- | ---: | --- |
-| `data-01` | `the-abundance` | 8 CPU / 32 Gi | ClickHouse and future graph workloads |
+| `data-01` | `the-abundance` | 8 CPU / 32 Gi | Tainted Kubernetes data worker |
 
 `the-abundance` is the primary data host because it has the large HDD/NVMe capacity.
+
+## Scheduling Model
+
+- Talos role: worker.
+- Kubernetes label: `homelab.local/node-class=data`.
+- Kubernetes label: `homelab.local/storage-locality=the-abundance`.
+- Kubernetes taint: `data-platform=true:NoSchedule`.
+- Only `data-platform` workloads should tolerate this taint.
 
 ## Workload Boundaries
 
 | Workload | Initial placement | Notes |
 | --- | --- | --- |
-| ClickHouse | `data-01` | Main OLAP engine for 10-30 TiB analysis |
+| ClickHouse | `data-01` | Main OLAP engine for 10-30 TiB analysis; production ingestion waits for monitoring and storage validation |
 | Graph database | Deferred on `data-01` | Select engine and working set before allocating 1-10 TiB |
 | Dashboards | Kubernetes observability domain | Grafana belongs in the guest cluster |
 | Metrics | Kubernetes observability domain | VictoriaMetrics starts in the guest cluster |
-| Large raw/archive data | `data-01` or external storage | Do not assume VM-local storage is a backup |
+| Large raw/archive data | `data-01` or external storage | Do not assume node-local storage is a backup |
+
+## Storage Policy
+
+| Storage | Class | Initial size | Purpose |
+| --- | --- | ---: | --- |
+| OS disk | `slow` | 100 Gi | Rebuildable Talos OS disk |
+| Retained data | `slow` | 10 TiB | Production-ready Exos HDD-backed data volume |
+| Hot/temp | `the-abundance-nvme` | 1 TiB | ClickHouse temp, merges, and hot working set |
+| Replicated infrastructure | `fast-ha` | TBD | Approval-gated only |
+
+The standalone Linux data VM remains the rejected alternative for now. The chosen model is Kubernetes-native, but with strict node placement and local storage assumptions.
 
 ## Growth Rules
 

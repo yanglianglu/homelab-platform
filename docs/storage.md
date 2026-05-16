@@ -9,7 +9,7 @@ Storage design notes for Harvester volumes and Kubernetes storage classes.
 - Default persistent Harvester storage class: `slow`
 - `slow` is HDD-backed and selected by `diskSelector: hdd,seagate`.
 - The HDD Longhorn disks on `the-abundance` must keep both `hdd` and `seagate` disk tags for `slow` and the current Talos ISO image StorageClass to provision successfully.
-- Shared fast PVCs should use `nvme` once that StorageClass is created.
+- Shared fast PVCs should use `nvme` only after that class is intentionally created.
 - Node-specific NVMe storage classes exist for temporary, cache, scratch, or explicitly pinned performance-sensitive workloads.
 - `fast-ha` is approval-gated and must not be used without explicit owner approval.
 
@@ -17,7 +17,7 @@ Storage design notes for Harvester volumes and Kubernetes storage classes.
 
 | StorageClass | Role | Notes |
 | --- | --- | --- |
-| `slow` | Main persistent default | Use for durable baseline storage and most application PVCs |
+| `slow` | Main persistent default | Production-ready Exos HDD-backed storage for durable baseline storage and most application PVCs |
 | `nvme` | Shared fast PVCs | Create and use for general fast storage that does not need HA replication |
 | `the-abundance-nvme` | Node-specific NVMe | Use only for temporary/cache/performance workloads pinned to `the-abundance` |
 | `the-elation-nvme` | Node-specific NVMe | Use only for temporary/cache/performance workloads pinned to `the-elation` |

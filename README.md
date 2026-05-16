@@ -51,7 +51,7 @@ The short version:
 
 - Grow from one Talos control-plane VM to three control-plane VMs.
 - Add two initial worker VMs before deploying heavier platform services.
-- Keep large data workloads on a dedicated VM such as `data-01`, not inside the shared Kubernetes worker pool.
+- Keep large data workloads on the dedicated `data-01` Talos data worker, not on the shared general worker pool.
 - Add a third worker only after metrics show the need.
 
 ## Operating Workflow

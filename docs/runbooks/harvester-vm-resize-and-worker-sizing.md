@@ -30,8 +30,8 @@ Current guest control plane:
 
 | StorageClass | Use |
 | --- | --- |
-| `slow` | Talos OS disks and normal durable HDD-backed PVCs |
-| `nvme` | Shared fast PVCs once created |
+| `slow` | Default production-ready Exos HDD-backed storage for Talos OS disks, retained data, and normal durable PVCs |
+| `nvme` | Shared fast PVCs only after that class is intentionally created |
 | `fast-ha` | Approval-gated only; use only after explicit discussion |
 | `the-abundance-nvme` | Node-local temporary/cache workloads on `the-abundance` |
 | `the-elation-nvme` | Node-local temporary/cache workloads on `the-elation` |
@@ -60,19 +60,19 @@ OS disk should use `slow`. Workload data should use Kubernetes PVCs, not the Tal
 
 `worker-03` is deferred until scheduling pressure or workload metrics prove the need.
 
-Heavy streaming, data warehouse, AI serving, and other resource-dominant workloads should use dedicated single-purpose VMs instead of driving the shared Kubernetes worker size. HA and read/write split are deferred unless a specific workload proves the need.
+Heavy streaming, data warehouse, AI serving, and other resource-dominant workloads should not drive the shared Kubernetes worker size. `data-01` is the exception: it is Kubernetes-native but isolated as a tainted data worker.
 
-## Dedicated Workload VM Classes
+## Dedicated Workload Node Classes
 
-Use these outside the shared Kubernetes worker pool when a workload has dominant CPU, memory, disk, network, or GPU behavior.
+Use these outside the shared general worker pool when a workload has dominant CPU, memory, disk, network, or GPU behavior.
 
 | Class | vCPU | Memory | Storage starting point | Use |
 | --- | ---: | ---: | --- | --- |
-| Data VM | 6-12 | 32-64 Gi | `slow` for retained data, `nvme` for hot data | ClickHouse, data warehouse, large analytical stores |
+| Data worker | 8-12 | 32-64 Gi | `slow` for retained data, `<node-name>-nvme` for hot/temp data | ClickHouse, data warehouse, large analytical stores |
 | Streaming VM | 4-8 | 16-32 Gi | `nvme` for hot queues, `slow` for retained/archive data | ADS-B ingestion, stream processors, Kafka/Redpanda-style experiments |
 | AI VM | Workload/GPU dependent | 32-64 Gi | NVMe preferred for model/cache data | vLLM, Ollama, embedding/vector experiments |
 
-For the home server, prefer one dedicated VM per large workload family. `data-01` starts on `the-abundance` at 8 vCPU / 32 Gi with 8-10 TiB retained data and 1 TiB hot/temp NVMe. Do not design HA/read-write split until there is a clear operational reason.
+For the home server, prefer one dedicated node/VM per large workload family. `data-01` starts on `the-abundance` at 8 vCPU / 32 Gi with 10 TiB retained data on `slow` and 1 TiB hot/temp storage on `the-abundance-nvme`. Do not design HA/read/write split until there is a clear operational reason.
 
 ## Resize Principles
 

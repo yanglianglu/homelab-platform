@@ -6,4 +6,4 @@ This directory stores durable plans and architecture decisions that shape the re
 | --- | --- |
 | `gradual-vm-growth-plan.md` | Staged VM capacity plan for control plane, workers, and `data-01` |
 | `homelab-repo-organization-plan.md` | Repo ownership and directory layout rules |
-| `data-platform-plan.md` | Dedicated data VM and ClickHouse/graph placement model |
+| `data-platform-plan.md` | Dedicated Kubernetes data worker and ClickHouse/graph placement model |

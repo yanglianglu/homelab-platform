@@ -1,6 +1,6 @@
-# data-01 Plan
+# Rejected Alternative: Standalone data-01
 
-`data-01` is the dedicated VM for large analytical and graph workloads.
+This file preserves the previous standalone Linux VM idea. The accepted plan is now `data-01` as a Talos worker in `homelab-talos`.
 
 ## Initial Size
 
@@ -24,7 +24,8 @@
 
 ## Boundaries
 
-- ClickHouse starts on this VM, not in the Kubernetes worker pool.
+- Rejected: ClickHouse starts on a standalone Linux VM outside Kubernetes.
+- Accepted: ClickHouse starts on tainted Talos worker `data-01` inside Kubernetes.
 - Graph database sizing remains deferred until the graph engine and working set are defined.
 - Monitor `data-01` before large ingestion begins.
 - Do not treat VM-local or single-replica storage as a backup.

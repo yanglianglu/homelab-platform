@@ -8,7 +8,7 @@ Do not paste live StorageClass objects with `uid`, `resourceVersion`, `creationT
 
 | StorageClass | Backing intent | Default? | Use for | Avoid for |
 | --- | --- | --- | --- | --- |
-| `slow` | HDD-backed Longhorn storage selected by `diskSelector: hdd,seagate` | Yes | Main persistent workloads, general app PVCs, durable baseline storage | High-write scratch workloads that do not need HDD durability |
+| `slow` | Production-ready Exos HDD-backed Longhorn storage selected by `diskSelector: hdd,seagate` | Yes | Main persistent workloads, general app PVCs, durable baseline storage, retained data | High-write scratch workloads that do not need HDD durability |
 | `nvme` | Shared NVMe-backed Longhorn storage selected by `diskSelector: nvme` | No | Shared fast PVCs that do not need HA replication | Critical state that requires HA replicas |
 | `the-abundance-nvme` | Node-specific NVMe on `the-abundance` | No | Temporary/cache/performance-sensitive workloads pinned to `the-abundance` | Data that must survive node loss or move freely |
 | `the-elation-nvme` | Node-specific NVMe on `the-elation` | No | Temporary/cache/performance-sensitive workloads pinned to `the-elation` | Data that must survive node loss or move freely |
@@ -18,7 +18,7 @@ Do not paste live StorageClass objects with `uid`, `resourceVersion`, `creationT
 
 ## Desired Usage
 
-- Use `slow` as the default persistent storage class.
+- Use `slow` as the default persistent storage class. Despite the name, it is the production-ready Exos HDD-backed baseline.
 - Use `nvme` as the standard shared fast PVC class once created.
 - Use node-specific NVMe classes only when the workload is intentionally tied to a node or the data is temporary, cached, or rebuildable.
 - Do not use `fast-ha` without explicit owner approval.

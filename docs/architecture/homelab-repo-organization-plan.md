@@ -50,8 +50,8 @@ docs/
 ## Ownership Rules
 
 - `harvester/vms/talos/control-plane/` owns `cp-01`, `cp-02`, and `cp-03` VM desired state.
-- `harvester/vms/talos/workers/` owns `worker-01`, `worker-02`, and future workers.
-- `harvester/vms/data/` owns `data-01`.
+- `harvester/vms/talos/workers/` owns `worker-01`, `worker-02`, `data-01`, and future workers.
+- `harvester/vms/data/` owns rejected standalone data VM history.
 - `talos/clusters/homelab/patches/` owns per-node Talos config: hostname, static IP, role, and interface.
 - `kubernetes/clusters/homelab/platform/` owns cluster plumbing: namespaces, secrets, policies, ingress, and cert-manager.
 - `kubernetes/clusters/homelab/network/` owns DNS, Cloudflare Tunnel, and edge exposure.

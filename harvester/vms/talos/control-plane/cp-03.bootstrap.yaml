@@ -1,8 +1,6 @@
-# Desired manifest for the active Talos control-plane VM after bootstrap.
-# The Talos ISO PVC is kept below for provenance, but the active VM boots from
-# the installed OS disk. Do not put the ISO before the OS disk after Talos has
-# been installed, or a VM restart can boot into the installer/live environment
-# instead of the configured control-plane node.
+# Bootstrap desired manifest for Talos control-plane VM cp-03.
+# The ISO is temporary for first install. After Talos is installed, detach the
+# ISO and set the OS disk as bootOrder 1.
 #
 # Do not add runtime fields such as uid, resourceVersion, creationTimestamp,
 # managedFields, finalizers, or status.
@@ -10,7 +8,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: cp-01-talos-iso
+  name: cp-03-talos-iso
   namespace: talos-cluster
   annotations:
     harvesterhci.io/imageId: talos-cluster/image-kpz5h
@@ -26,7 +24,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: cp-01-os-disk
+  name: cp-03-os-disk
   namespace: talos-cluster
 spec:
   accessModes:
@@ -40,21 +38,21 @@ spec:
 apiVersion: kubevirt.io/v1
 kind: VirtualMachine
 metadata:
-  name: cp-01
+  name: cp-03
   namespace: talos-cluster
   labels:
     harvesterhci.io/creator: harvester
     harvesterhci.io/os: linux
     homelab.io/cluster: talos
     homelab.io/platform: harvester
-    homelab.io/placement-host: the-abundance
+    homelab.io/placement-host: the-enigmata
     homelab.io/role: control-plane
 spec:
   runStrategy: RerunOnFailure
   template:
     metadata:
       labels:
-        harvesterhci.io/vmName: cp-01
+        harvesterhci.io/vmName: cp-03
     spec:
       affinity:
         nodeAffinity:
@@ -68,11 +66,11 @@ spec:
                   - key: kubernetes.io/hostname
                     operator: In
                     values:
-                      - the-abundance
+                      - the-enigmata
                   - key: homelab.local/placement
                     operator: In
                     values:
-                      - the-abundance
+                      - the-enigmata
       architecture: amd64
       domain:
         cpu:
@@ -82,8 +80,12 @@ spec:
           threads: 1
         devices:
           disks:
-            - name: os-disk
+            - name: talos-iso
               bootOrder: 1
+              cdrom:
+                bus: sata
+            - name: os-disk
+              bootOrder: 2
               disk:
                 bus: virtio
           inputs:
@@ -114,13 +116,16 @@ spec:
             cpu: 400m
             memory: 5461Mi
       evictionStrategy: LiveMigrateIfPossible
-      hostname: cp-01
+      hostname: cp-03
       networks:
         - multus:
             networkName: talos-cluster/lan-untagged
           name: default
       terminationGracePeriodSeconds: 120
       volumes:
+        - name: talos-iso
+          persistentVolumeClaim:
+            claimName: cp-03-talos-iso
         - name: os-disk
           persistentVolumeClaim:
-            claimName: cp-01-os-disk
+            claimName: cp-03-os-disk

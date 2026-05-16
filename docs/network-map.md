@@ -53,8 +53,8 @@ flowchart TB
     w2["worker-02<br/>Small worker<br/>IP proposed: 192.168.1.180"]
   end
 
-  subgraph data["Dedicated Data VMs"]
-    data01["data-01<br/>ClickHouse / graph planned<br/>IP TBD"]
+  subgraph data["Dedicated Data Worker"]
+    data01["data-01<br/>Talos data worker<br/>192.168.1.185"]
   end
 
   subgraph k8s["homelab-talos Kubernetes"]

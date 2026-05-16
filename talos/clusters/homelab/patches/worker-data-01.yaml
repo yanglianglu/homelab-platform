@@ -1,0 +1,23 @@
+machine:
+  nodeLabels:
+    homelab.local/node-class: data
+    homelab.local/storage-locality: the-abundance
+  nodeTaints:
+    data-platform: "true:NoSchedule"
+  network:
+    nameservers:
+      - 192.168.1.254
+      - 1.1.1.1
+    interfaces:
+      - interface: enp1s0
+        dhcp: false
+        addresses:
+          - 192.168.1.185/24
+        routes:
+          - network: 0.0.0.0/0
+            gateway: 192.168.1.254
+---
+apiVersion: v1alpha1
+kind: HostnameConfig
+auto: off
+hostname: data-01

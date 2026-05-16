@@ -7,7 +7,7 @@ Build the homelab in controlled stages instead of creating all maximum-size VMs 
 ```text
 3 Talos control-plane VMs
 2 initial Talos worker VMs
-1 dedicated data VM for ClickHouse / graph workloads
+1 dedicated Talos data worker for ClickHouse / graph workloads
 optional 3rd worker later, only if metrics justify it
 ```
 
@@ -38,20 +38,22 @@ optional 3rd worker later, only if metrics justify it
 
 Defer `worker-03` until scheduling pressure or workload metrics prove the need.
 
-## Stage 4: Add Dedicated Data VM
+## Stage 4: Add Dedicated Data Worker
 
 | Host | VM | Initial size | Purpose |
 | --- | --- | ---: | --- |
-| `the-abundance` | `data-01` | 8 CPU / 32 Gi | ClickHouse and future graph/data workloads |
+| `the-abundance` | `data-01` | 8 CPU / 32 Gi | Tainted Kubernetes data worker |
 
 Initial storage:
 
-| Disk | Size | Purpose |
-| --- | ---: | --- |
-| OS disk | 100 Gi | VM operating system |
-| ClickHouse data | 8-10 TiB | Main OLAP storage |
-| Hot/temp NVMe | 1 TiB | ClickHouse temp, merges, hot working set |
-| Graph storage | deferred or 1 TiB | Only after graph workload shape is known |
+| Disk | StorageClass | Size | Purpose |
+| --- | --- | ---: | --- |
+| OS disk | `slow` | 100 Gi | Talos operating system |
+| ClickHouse retained data | `slow` | 10 TiB | Main OLAP storage on production-ready Exos HDD |
+| Hot/temp NVMe | `the-abundance-nvme` | 1 TiB | ClickHouse temp, merges, hot working set |
+| Graph storage | deferred | TBD | Only after graph workload shape is known |
+
+`data-01` joins `homelab-talos` as a worker with `data-platform=true:NoSchedule`.
 
 ## Stage 5: Platform Services
 

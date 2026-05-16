@@ -1,0 +1,21 @@
+machine:
+  nodeLabels:
+    homelab.local/node-class: general
+    homelab.local/storage-locality: the-enigmata
+  network:
+    nameservers:
+      - 192.168.1.254
+      - 1.1.1.1
+    interfaces:
+      - interface: enp1s0
+        dhcp: false
+        addresses:
+          - 192.168.1.180/24
+        routes:
+          - network: 0.0.0.0/0
+            gateway: 192.168.1.254
+---
+apiVersion: v1alpha1
+kind: HostnameConfig
+auto: off
+hostname: worker-02

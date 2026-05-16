@@ -1,13 +1,13 @@
-# Dedicated Data VMs
+# Data VM History
 
-This directory owns Harvester-side plans and future desired state for dedicated data workload VMs.
+This directory records the rejected standalone data VM alternative.
 
-Large ClickHouse, graph database, streaming, and AI/data workloads should run here as single-purpose VMs before they are considered for the shared Kubernetes worker pool.
+The current decision is that `data-01` joins `homelab-talos` as a tainted Talos worker, with Harvester desired state under `harvester/vms/talos/workers/data-01.bootstrap.yaml`.
 
-Initial target:
+Rejected standalone target:
 
 | VM | Host | Initial size | Purpose | Status |
 | --- | --- | ---: | --- | --- |
-| `data-01` | `the-abundance` | 8 CPU / 32 Gi | ClickHouse and future graph workload | planned |
+| `data-01` | `the-abundance` | 8 CPU / 32 Gi | Standalone Linux ClickHouse and graph workload | rejected alternative |
 
-`data-01` should start small enough to leave Harvester headroom, then grow based on measured CPU, memory, disk, and IO pressure.
+Keep this note so future planning remembers why the data workload is Kubernetes-native but still isolated by taint, placement, and storage locality.

@@ -47,5 +47,7 @@ talosctl health
 - `talosctl bootstrap` should only be run once for the first control-plane node.
 - Do not regenerate configs with new PKI after the cluster is active unless intentionally rebuilding the cluster.
 - Do not commit plaintext generated secrets, `talosconfig`, `controlplane.yaml`, `worker.yaml`, `secrets.yaml`, or kubeconfig.
-- Review generated files before applying.
+- Do not render additional nodes by directly list-merging per-node patches into a generated config that already contains another node's static IP. Use `scripts/render-node-config.rb` so `machine.network.interfaces` and nameservers are replaced for each node.
+- Review generated files without printing secrets. Prefer targeted checks for hostname, IP address, SANs, labels, and taints.
+- Worker node labels and taints may need cluster-admin enforcement after join. In particular, apply `data-01` labels and `data-platform=true:NoSchedule` with `kubectl label node` and `kubectl taint node` rather than relying only on kubelet-owned metadata.
 - The repository scripts under `talos/clusters/homelab/scripts/` keep the same macOS shell workflow in a safer repeatable location.

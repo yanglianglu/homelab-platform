@@ -19,16 +19,14 @@ spec:
         app.kubernetes.io/component: smoke-test
         app.kubernetes.io/part-of: homelab-apps
     spec:
+      nodeSelector:
+        homelab.local/node-class: general
       securityContext:
         runAsNonRoot: true
         runAsUser: 65532
         runAsGroup: 65532
         seccompProfile:
           type: RuntimeDefault
-      tolerations:
-        - key: node-role.kubernetes.io/control-plane
-          operator: Exists
-          effect: NoSchedule
       containers:
         - name: whoami
           image: traefik/whoami:v1.11.0

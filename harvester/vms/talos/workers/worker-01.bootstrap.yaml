@@ -1,4 +1,5 @@
-# Bootstrap desired manifest for Talos worker VM worker-01.
+# Desired manifest for Talos worker VM worker-01 after bootstrap.
+# The Talos ISO PVC is kept for provenance; the VM boots from the installed OS disk.
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -75,12 +76,8 @@ spec:
           threads: 1
         devices:
           disks:
-            - name: talos-iso
-              bootOrder: 1
-              cdrom:
-                bus: sata
             - name: os-disk
-              bootOrder: 2
+              bootOrder: 1
               disk:
                 bus: virtio
           inputs:
@@ -118,9 +115,6 @@ spec:
           name: default
       terminationGracePeriodSeconds: 120
       volumes:
-        - name: talos-iso
-          persistentVolumeClaim:
-            claimName: worker-01-talos-iso
         - name: os-disk
           persistentVolumeClaim:
             claimName: worker-01-os-disk

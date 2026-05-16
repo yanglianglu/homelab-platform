@@ -1,5 +1,6 @@
-# Bootstrap desired manifest for Talos data worker VM data-01.
+# Desired manifest for Talos data worker VM data-01 after bootstrap.
 # data-01 joins homelab-talos as a tainted Kubernetes data node.
+# The Talos ISO PVC is kept for provenance; the VM boots from the installed OS disk.
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -104,12 +105,8 @@ spec:
           threads: 1
         devices:
           disks:
-            - name: talos-iso
-              bootOrder: 1
-              cdrom:
-                bus: sata
             - name: os-disk
-              bootOrder: 2
+              bootOrder: 1
               disk:
                 bus: virtio
             - name: retained-data
@@ -153,9 +150,6 @@ spec:
           name: default
       terminationGracePeriodSeconds: 120
       volumes:
-        - name: talos-iso
-          persistentVolumeClaim:
-            claimName: data-01-talos-iso
         - name: os-disk
           persistentVolumeClaim:
             claimName: data-01-os-disk

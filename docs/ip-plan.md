@@ -21,19 +21,20 @@ This file tracks home lab subnets, reserved addresses, active assignments, and p
 | `192.168.1.250` | `the-elation` | Harvester physical node | active | Verified Ready in Harvester |
 | `192.168.1.244` | `the-enigmata` | Harvester physical node | active | Verified Ready in Harvester |
 | `192.168.1.50` | `harvester-vip` | Harvester VIP/UI | active | Shared Harvester access IP |
-| `192.168.1.181` | `cp-01` | Active Talos control-plane VM | active | Kubernetes API endpoint host |
+| `192.168.1.179` | `worker-01` | Talos worker VM | active | General worker on `the-elation` |
+| `192.168.1.180` | `worker-02` | Talos worker VM | active | General worker on `the-enigmata` |
+| `192.168.1.181` | `cp-01` | Talos control-plane VM | active | Control-plane on `the-abundance`; break-glass node endpoint |
+| `192.168.1.182` | `cp-02` | Talos control-plane VM | active | Control-plane on `the-elation`; manually allocated before bootstrap |
+| `192.168.1.183` | `cp-03` | Talos control-plane VM | active | Control-plane on `the-enigmata` |
+| `192.168.1.184` | `homelab-talos-api` | Kubernetes API VIP | active | Stable LAN-only API endpoint via kube-vip |
+| `192.168.1.185` | `data-01` | Talos data worker VM | active | Tainted data node on `the-abundance` |
 
 ## Planned / Reserved IPs
 
 | IP | Name | Role | Status | Notes |
 | --- | --- | --- | --- | --- |
 | `TBD` | `usw-aggregation` | UniFi switch management | planned | Set during UniFi adoption |
-| `192.168.1.179` | `worker-01` | Talos worker VM | proposed | Planned Medium worker on `the-elation` |
-| `192.168.1.180` | `worker-02` | Talos worker VM | proposed | Planned Small worker on `the-enigmata` |
-| `192.168.1.182` | `cp-02` | Talos control-plane VM | proposed | Planned control-plane on `the-elation` |
-| `192.168.1.183` | `cp-03` | Talos control-plane VM | proposed | Planned control-plane on `the-enigmata` |
-| `192.168.1.184` | `homelab-talos-api` | Kubernetes API VIP | proposed | Stable API endpoint after control-plane HA |
-| `192.168.1.185` | `data-01` | Talos data worker VM | proposed | Planned tainted data node on `the-abundance` |
+| `TBD` | `worker-03` | Optional Talos worker VM | deferred | Add only when metrics justify it |
 
 ## Retired / Hold Before Reuse
 

@@ -7,9 +7,9 @@ Talos turns the Harvester VMs into Kubernetes nodes. The source files for the `h
 | Item | Value |
 | --- | --- |
 | Cluster name | `homelab-talos` |
-| Control-plane endpoint | `https://192.168.1.181:6443` |
-| Node | `cp-01` |
-| Node IP | `192.168.1.181` |
+| Control-plane endpoint | `https://192.168.1.184:6443` |
+| Control-plane nodes | `cp-01`, `cp-02`, `cp-03` |
+| Worker nodes | `worker-01`, `worker-02`, `data-01` |
 | Talos version | `v1.13.0` |
 | Install disk | `/dev/vda` |
 | Pod CIDR | `10.42.0.0/16` |
@@ -19,7 +19,9 @@ Talos turns the Harvester VMs into Kubernetes nodes. The source files for the `h
 
 ## Milestone
 
-The active control-plane node, `cp-01`, is bootstrapped and healthy. Talos API checks, service/address/route inspection, Kubernetes bootstrap, kubeconfig generation, and core pod checks have completed.
+The cluster now has three Talos control-plane VMs, two general workers, and one
+tainted data worker. Kubernetes API access uses the LAN-only kube-vip endpoint
+`192.168.1.184`; individual node IPs remain break-glass access points.
 
 The old `talos-cp-01` VM at `192.168.1.178` has been retired and its Harvester desired-state file has been removed from Git.
 
@@ -40,7 +42,9 @@ See:
 ## Local Access
 
 Guest Kubernetes access uses the context name `homelab-talos` in `~/.kube/config`.
+The normal server endpoint should be `https://192.168.1.184:6443`.
 
-Talos access uses `~/.talos/config`, with default endpoint and node set to `192.168.1.181`.
+Talos access uses `~/.talos/config`; keep individual node IPs available for
+break-glass operations.
 
 See `docs/runbooks/kube-context-switching.md`.

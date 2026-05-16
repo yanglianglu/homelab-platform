@@ -17,6 +17,9 @@ Large analytical and graph workloads use a dedicated Talos worker in the Kuberne
 - Kubernetes label: `homelab.local/storage-locality=the-abundance`.
 - Kubernetes taint: `data-platform=true:NoSchedule`.
 - Only `data-platform` workloads should tolerate this taint.
+- Apply the data label and taint from a cluster-admin context after join. Talos
+  can carry the desired intent, but Kubernetes NodeRestriction can prevent a
+  worker kubelet from setting some scheduling metadata on itself.
 
 ## Workload Boundaries
 
@@ -38,6 +41,16 @@ Large analytical and graph workloads use a dedicated Talos worker in the Kuberne
 | Replicated infrastructure | `fast-ha` | TBD | Approval-gated only |
 
 The standalone Linux data VM remains the rejected alternative for now. The chosen model is Kubernetes-native, but with strict node placement and local storage assumptions.
+
+Current disk map:
+
+| Guest disk | Harvester PVC | Purpose |
+| --- | --- | --- |
+| `/dev/vda` | `data-01-os-disk` | Talos OS |
+| `/dev/vdb` | `data-01-retained-data` | Retained ClickHouse/data storage |
+| `/dev/vdc` | `data-01-hot-temp` | Hot/temp NVMe-backed storage |
+
+Local PVs remain deferred until Talos mounts those disks at stable paths.
 
 ## Growth Rules
 

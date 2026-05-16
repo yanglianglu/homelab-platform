@@ -8,10 +8,10 @@ execution.
 | Item | Value |
 | --- | --- |
 | Cluster name | `homelab-talos` |
-| Control-plane node | `cp-01` |
-| Control-plane IP | `192.168.1.181` |
-| Current Kubernetes API endpoint | `https://192.168.1.181:6443` |
-| Planned Kubernetes API VIP | `https://192.168.1.184:6443` |
+| Control-plane nodes | `cp-01`, `cp-02`, `cp-03` |
+| General workers | `worker-01`, `worker-02` |
+| Data worker | `data-01` |
+| Current Kubernetes API endpoint | `https://192.168.1.184:6443` |
 | Talos version | `v1.13.0` |
 | Kubernetes version | `v1.36.0` |
 | Install disk | `/dev/vda` |
@@ -33,14 +33,23 @@ Last checked: 2026-05-16 America/Chicago.
 Node readiness:
 
 ```text
-cp-01   Ready   control-plane   192.168.1.181   Talos v1.13.0   Kubernetes v1.36.0
+cp-01       Ready   control-plane   192.168.1.181   Talos v1.13.0   Kubernetes v1.36.0
+cp-02       Ready   control-plane   192.168.1.182   Talos v1.13.0   Kubernetes v1.36.0
+cp-03       Ready   control-plane   192.168.1.183   Talos v1.13.0   Kubernetes v1.36.0
+worker-01   Ready   worker          192.168.1.179   Talos v1.13.0   Kubernetes v1.36.0
+worker-02   Ready   worker          192.168.1.180   Talos v1.13.0   Kubernetes v1.36.0
+data-01     Ready   data worker     192.168.1.185   Talos v1.13.0   Kubernetes v1.36.0
 ```
 
 Harvester VM state at this checkpoint:
 
 ```text
-cp-01 VM Running/Ready on the-abundance
-cp-02 VM created on the-elation but stopped before Talos config
+cp-01 VM Running/Ready on the-abundance, OS disk first
+cp-02 VM Running/Ready on the-elation, OS disk first
+cp-03 VM Running/Ready on the-enigmata, OS disk first
+worker-01 VM Running/Ready on the-elation, OS disk first
+worker-02 VM Running/Ready on the-enigmata, OS disk first
+data-01 VM Running/Ready on the-abundance, OS disk first, retained/hot disks attached
 ```
 
 Core pod summary:
@@ -56,11 +65,11 @@ kube-proxy                      Running
 
 ## Expected State
 
-- `cp-01` is `Ready`.
-- Node IP is `192.168.1.181`.
-- `cp-01` is pinned back to `the-abundance`.
-- `cp-02` exists in Harvester but is not a Kubernetes node yet.
-- `cp-03`, `worker-01`, `worker-02`, and `data-01` are planned but not yet created as live VMs at this checkpoint.
+- `cp-01`, `cp-02`, and `cp-03` are `Ready` control-plane nodes.
+- `worker-01` and `worker-02` are `Ready` general workers.
+- `data-01` is a `Ready` tainted data worker.
+- `homelab-talos` kubeconfig uses the kube-vip endpoint `192.168.1.184`.
+- All created Talos VMs are pinned to their intended Harvester hosts.
 - Core pods are running:
   - `coredns`
   - `kube-apiserver`
@@ -69,9 +78,9 @@ kube-proxy                      Running
   - `kube-flannel`
   - `kube-proxy`
 
-## Stop Condition
+## Current Stop Condition
 
-Gate 3 stopped at `cp-02` because the VM booted from the Talos ISO without an IPv4
-address in VMI status and was not reachable at `192.168.1.182:50000`. The next
-gate must decide how Talos maintenance networking will be provided for new VMs:
-DHCP reservation, manual console config, or another bootstrap method.
+Do not create data-platform local PVs yet. `data-01` sees the attached disks as
+`vdb` (10 TiB retained data) and `vdc` (1 TiB hot/temp), but the Talos mount
+configuration for `/var/mnt/clickhouse-data` and `/var/mnt/clickhouse-hot` is not
+defined yet.

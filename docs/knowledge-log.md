@@ -9,6 +9,26 @@ Each entry should start with:
 ## [YYYY-MM-DD] type | Title
 ```
 
+## [2026-05-17] status | Observability Acceptance And Placement Cleanup
+
+- Source: live read-only `homelab-talos` checks and the approved placement
+  cleanup gate after Harvester observability was confirmed.
+- Pages touched: `docs/runbooks/current-talos-checkpoint.md`,
+  `docs/architecture/observability-plan.md`,
+  `kubernetes/clusters/homelab/platform/10-external-secrets/README.md`, and
+  `kubernetes/clusters/homelab/platform/10-external-secrets/values.yaml`.
+- Summary: recorded Harvester observability as operational, skipped alerting and
+  logging for now, confirmed `whoami` runs on `worker-01`, confirmed `data-01`
+  remains tainted for data workloads, and removed steady-state External Secrets
+  control-plane tolerations from GitOps values.
+- Contradictions: Argo CD still runs with bootstrap-era control-plane placement;
+  this remains a separate migration gate instead of being mixed into the ESO
+  cleanup.
+- Open questions: Argo CD worker migration, guest Kubernetes observability,
+  ClickHouse PVC pilot, and legacy `data-01` PVC deletion.
+- Validation: live read-only node, pod, and Argo CD checks passed before the
+  GitOps edit.
+
 ## [2026-05-16] workflow | Adopt LLM Knowledge Wiki Pattern
 
 - Source: user-provided LLM Wiki pattern and existing homelab operating model.

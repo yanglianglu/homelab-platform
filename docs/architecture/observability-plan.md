@@ -20,6 +20,7 @@ Harvester `rancher-monitoring` is enabled in the Harvester management cluster.
 | Alertmanager PVC | `5Gi` on `harvester-longhorn` |
 | Grafana PVC | `2Gi` on `harvester-longhorn` |
 | External notifications | Not configured |
+| Acceptance status | Confirmed operational on 2026-05-17 America/Chicago |
 
 Proxy endpoints through the Harvester VIP:
 
@@ -72,9 +73,13 @@ read-only datasource if that improves navigation.
 
 ## Next Gates
 
-1. Review default Harvester alerts without external notifications.
-2. Add guest Kubernetes observability with small VictoriaMetrics/Grafana
+1. Add guest Kubernetes observability with small VictoriaMetrics/Grafana
    resources.
-3. Add data-platform dashboards and alerts before ClickHouse ingestion.
-4. Decide whether a single Grafana should display both Harvester and guest
+2. Add data-platform dashboards and alerts before ClickHouse ingestion.
+3. Decide whether a single Grafana should display both Harvester and guest
    datasources.
+
+Deferred by operator decision on 2026-05-17:
+
+- Minimal alert routing and notification tuning.
+- Harvester `rancher-logging`.

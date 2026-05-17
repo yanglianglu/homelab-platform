@@ -28,7 +28,7 @@ talosctl health
 
 ## Latest Verification
 
-Last checked: 2026-05-16 America/Chicago.
+Last checked: 2026-05-17 America/Chicago.
 
 Node readiness:
 
@@ -72,6 +72,16 @@ Prometheus, Grafana, and Alertmanager proxy health checks passed
 external alert notifications not configured
 ```
 
+Workload placement:
+
+```text
+apps/whoami runs on worker-01
+data-01 is tainted data-platform=true:NoSchedule
+data-01 only runs required system DaemonSets
+External Secrets steady-state values no longer tolerate control-plane nodes
+Argo CD still has bootstrap-era control-plane placement and needs a separate migration gate
+```
+
 Core pod summary, abbreviated:
 
 ```text
@@ -104,12 +114,15 @@ Do not create data-platform local PVs. The storage direction is Harvester CSI
 first. `data-01` now sees only `/dev/vda`; the legacy 10 TiB retained-data PVC
 and 1 TiB hot-temp PVC are detached from the VM and retained only as rollback.
 
-Next storage gate:
+Next platform gates:
 
-1. Review Harvester monitoring alerts without external notification routing.
-2. Add guest Kubernetes observability for CSI, Argo CD, node, namespace, and
+1. Let Argo CD reconcile External Secrets without control-plane tolerations and
+   confirm ESO pods move to general workers.
+2. Plan Argo CD workload placement separately; it is currently a bootstrap-era
+   platform exception.
+3. Add guest Kubernetes observability for CSI, Argo CD, node, namespace, and
    data-platform workload health.
-3. Run a ClickHouse-specific PVC pilot before large ingestion.
-4. Decide whether to delete the detached legacy `data-01` PVCs.
-5. Run a controlled Harvester host-maintenance CSI drill only as a separate
+4. Run a ClickHouse-specific PVC pilot before large ingestion.
+5. Decide whether to delete the detached legacy `data-01` PVCs.
+6. Run a controlled Harvester host-maintenance CSI drill only as a separate
    approved operation.

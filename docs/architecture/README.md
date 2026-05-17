@@ -9,3 +9,4 @@ This directory stores durable plans and architecture decisions that shape the re
 | `data-platform-plan.md` | Dedicated Kubernetes data worker and ClickHouse/graph placement model |
 | `harvester-csi-client-cluster-plan.md` | CSI-first guest storage model and proof gates for `homelab-talos` |
 | `observability-plan.md` | Harvester monitoring and guest Kubernetes observability boundary |
+| `internal-gateway-api-plan.md` | Internal-only Gateway API, cert-manager, trust-manager, and HTTPS route plan |

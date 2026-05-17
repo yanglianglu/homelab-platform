@@ -20,7 +20,7 @@ interfaces to the public internet.
 | Existing LAN only | Keep for local use | Fine at home, but not a remote admin pattern |
 | Tailscale | Choose first | Fast setup, no inbound router ports, device identity, subnet routing path |
 | Raw WireGuard | Defer | More manual key/routing work before the platform baseline is stable |
-| Cloudflare Tunnel | Not for admin baseline | Useful for selected apps later, but not for broad LAN/admin access |
+| Cloudflare Tunnel | Not for admin baseline | Deferred until after the internal-only Gateway API route is proven |
 
 ## Initial Target Shape
 
@@ -44,7 +44,7 @@ Keep these private:
 | Harvester UI/API | `192.168.1.50` | Harvester VIP |
 | Harvester nodes | `192.168.1.241`, `192.168.1.250`, `192.168.1.244` | Node-level management |
 | Talos control plane | `192.168.1.181` | `talosctl` and Kubernetes API endpoint host |
-| Kubernetes API | context `homelab-talos` | Use kubeconfig, never public ingress |
+| Kubernetes API | context `homelab-talos` | Use kubeconfig, never public Gateway or Ingress |
 | Argo CD | port-forward first | Do not expose until identity-aware access exists |
 | Router/switch/DNS | LAN-only addresses | Keep management private |
 | Observability/admin dashboards | TBD | Require identity-aware access before exposure |
@@ -53,7 +53,7 @@ Keep these private:
 
 - Do not open random inbound ports on the AT&T router for admin access.
 - Do not expose Harvester, Talos, Kubernetes API, or Argo CD directly through
-  public ingress.
+  public Gateway routes or legacy Ingress.
 - Do not store Tailscale auth keys, WireGuard private keys, kubeconfigs, or
   admin credentials in Git.
 - Prefer device/user identity and least privilege over shared long-lived secrets.
@@ -96,6 +96,7 @@ kubectl --context homelab-talos -n argocd port-forward svc/argocd-server 8080:44
 
 ## Follow-Ups
 
-- Define DNS and Cloudflare Tunnel exposure model.
-- Install ingress controller and cert-manager for the first HTTPS route.
+- Define the internal DNS and Gateway address model.
+- Install Gateway API, Envoy Gateway, cert-manager, and trust-manager for the
+  first internal HTTPS route.
 - Protect the first dashboard or test app with identity-aware access.

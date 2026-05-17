@@ -38,7 +38,8 @@ Implementation includes:
 - committing or pushing code
 - editing repo docs or manifests
 - applying Kubernetes resources
-- changing Argo CD, External Secrets, Talos, Harvester, DNS, VPN, or ingress
+- changing Argo CD, External Secrets, Talos, Harvester, DNS, VPN, Gateway API,
+  or legacy Ingress
 - updating Linear status to In Progress, Done, or changing issue intent
 - choosing a durable tool or product as platform policy
 - creating or changing security/access/network policy

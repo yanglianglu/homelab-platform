@@ -127,7 +127,7 @@ Its purpose is intentionally narrow:
 
 - prove GitHub to Argo CD to Kubernetes works
 - use the real `apps` AppProject path
-- avoid ingress, TLS, and secrets
+- avoid external routing, TLS, and secrets
 - expose only a `ClusterIP` Service
 
 Useful checks:
@@ -290,6 +290,6 @@ Remaining follow-up themes:
 
 - create/finish Linear execution views
 - decide admin VPN access pattern
-- define DNS and Cloudflare Tunnel exposure model
-- install ingress controller and cert-manager
+- define internal DNS and Gateway address model
+- install Gateway API, Envoy Gateway, cert-manager, and trust-manager
 - protect the first dashboard or app with identity-aware access

@@ -31,7 +31,7 @@ flowchart LR
 | `kustomization.yaml` | App-of-apps entry point for this cluster |
 | `projects/` | Argo CD AppProject guardrails |
 | `platform/` | Shared platform services and policies, organized by capability |
-| `network/` | DNS, Cloudflare Tunnel, and edge exposure services |
+| `network/` | Internal DNS, Gateway API routing, Envoy Gateway entry points, and selected exposure paths |
 | `observability/` | VictoriaMetrics, Grafana, exporters, and alerts |
 | `data-platform/` | Data-platform storage and future ClickHouse/graph workloads |
 | `apps/` | User-facing and portfolio applications |

@@ -12,7 +12,7 @@ into a running workload in the `apps` namespace.
 - Namespace: `apps`
 - Service type: `ClusterIP`
 - Secrets: none
-- Ingress/TLS: deferred to Stage 4
+- Gateway API/TLS: deferred to Stage 4 internal HTTPS route
 - Scheduling: normal app workload; should run on worker capacity, not on
   control-plane nodes except during an explicitly approved bootstrap exception
 

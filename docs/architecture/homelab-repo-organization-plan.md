@@ -53,8 +53,8 @@ docs/
 - `harvester/vms/talos/workers/` owns `worker-01`, `worker-02`, `data-01`, and future workers.
 - `harvester/vms/data/` owns rejected standalone data VM history.
 - `talos/clusters/homelab/patches/` owns per-node Talos config: hostname, static IP, role, and interface.
-- `kubernetes/clusters/homelab/platform/` owns cluster plumbing: namespaces, secrets, policies, ingress, and cert-manager.
-- `kubernetes/clusters/homelab/network/` owns DNS, Cloudflare Tunnel, and edge exposure.
+- `kubernetes/clusters/homelab/platform/` owns cluster plumbing: namespaces, secrets, policies, cert-manager, trust-manager, and cluster-scoped Gateway API foundations.
+- `kubernetes/clusters/homelab/network/` owns internal DNS, Envoy Gateway entry points, Gateway API routing policy, and any future selected exposure path.
 - `kubernetes/clusters/homelab/observability/` owns VictoriaMetrics, Grafana, exporters, and alerts.
 - `kubernetes/clusters/homelab/apps/` owns normal application workloads.
 - `docs/architecture/` owns durable plans like VM capacity, data platform, and service placement.

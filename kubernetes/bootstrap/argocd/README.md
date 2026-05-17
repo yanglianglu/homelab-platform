@@ -16,8 +16,8 @@ application-controller StatefulSet so GitOps control pods run on `worker-01` or
 `worker-02`, not on control-plane nodes or the tainted `data-01` data worker.
 
 Initial access is local-only through `kubectl port-forward`. Do not expose Argo
-CD through ingress or Cloudflare Tunnel until auth, TLS, and secret management
-are ready.
+CD through Gateway API, legacy Ingress, or Cloudflare Tunnel until auth, TLS,
+and secret management are ready.
 
 ## First Install Flow
 

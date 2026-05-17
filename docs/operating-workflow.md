@@ -46,7 +46,7 @@ allowed before implementation approval.
 | platform | Kubernetes system services, GitOps, secrets, policies, storage classes |
 | harvester | VM desired state, storage classes, networks, images |
 | talos | node bootstrap, machine config, control-plane and worker lifecycle |
-| network | DNS, VPN, tunnels, ingress, routing |
+| network | DNS, VPN, internal Gateway API, routing, and selected exposure paths |
 | observability | metrics, logs, dashboards, exporters, alerts |
 | security | identity, secrets, access control, hardening |
 | data | ClickHouse, graph workloads, datasets, data services |
@@ -103,7 +103,9 @@ or PR handoff.
 Current baseline:
 
 ```text
-Harvester -> Talos HA control plane -> workers -> Argo CD -> External Secrets / Infisical -> whoami smoke app -> Harvester CSI proof on data-01
+Harvester -> Talos HA control plane -> workers -> Argo CD
+-> External Secrets / Infisical -> whoami smoke app
+-> Harvester CSI proof on data-01 -> guest observability baseline
 ```
 
 Next platform gates:
@@ -111,9 +113,11 @@ Next platform gates:
 1. Roll the Harvester CSI mountpoint extension to all Talos nodes.
 2. Sync the Argo CD managed Harvester CSI app from Git.
 3. Run larger CSI drills before approving large ClickHouse PVCs.
-4. Add observability before large ClickHouse ingestion.
-5. Add ingress, cert-manager, DNS, and Cloudflare Tunnel after platform storage
-   and observability are stable.
+4. Use the guest observability baseline to debug Gateway/TLS work and larger
+   ClickHouse planning.
+5. Add internal Gateway API routing with Envoy Gateway, cert-manager,
+   trust-manager, and internal DNS after platform storage and observability are
+   stable. Keep Cloudflare and public exposure as a separate future decision.
 
 ## Definition Of Done
 

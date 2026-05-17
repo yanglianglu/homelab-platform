@@ -23,9 +23,9 @@ Use these domains consistently:
 
 - `argocd`: GitOps controller, root app, child apps, repo access
 - `external-secrets`: External Secrets Operator resources and secret delivery wiring
-- `network`: DNS, Cloudflare Tunnel, edge exposure, and network services
-- `ingress`: ingress controller resources and routing entry points
-- `cert-manager`: issuers, certificates, and TLS automation
+- `network`: DNS, internal Gateway API, Envoy Gateway routing, and selected exposure paths
+- `gateway`: GatewayClass, Gateway, HTTPRoute, BackendTLSPolicy, and routing entry points
+- `cert-manager`: issuers, certificates, trust-manager bundles, and TLS automation
 - `observability`: VictoriaMetrics, Grafana, exporters, dashboards, and alerts
 - `data-platform`: ClickHouse, graph workloads, data services, and related operators
 

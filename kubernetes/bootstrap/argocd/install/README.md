@@ -18,8 +18,8 @@ kubectl --context homelab-talos apply --server-side --force-conflicts -k kuberne
 ```
 
 Keep this install local-only at first. Use port-forward for UI access and defer
-ingress, Cloudflare Tunnel, TLS, and identity-aware access until the security
-baseline is ready.
+Gateway API exposure, legacy Ingress, Cloudflare Tunnel, TLS, and
+identity-aware access until the security baseline is ready.
 
 Current cluster note: old control-plane tolerations may remain in live
 Deployment and StatefulSet templates because the bootstrap install originally ran

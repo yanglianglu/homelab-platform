@@ -42,9 +42,11 @@ The current direction is CSI-first storage instead:
 1. Roll the Talos mountpoint extension to all nodes as the universal CSI host contract.
 2. Sync the Argo CD managed Harvester CSI app from Git.
 3. Run CSI expansion, restart, reboot, cleanup, and performance drills.
-4. Add observability before large ClickHouse ingestion.
-5. Add ingress, cert-manager, and Cloudflare Tunnel after the platform baseline
-   is stable.
+4. Use the guest observability baseline to debug Gateway/TLS work and larger
+   ClickHouse planning.
+5. Add internal Gateway API routing with Envoy Gateway, cert-manager,
+   trust-manager, and internal DNS after the platform baseline is stable. Keep
+   Cloudflare and public exposure as a separate future decision.
 6. Add `worker-03` only when scheduling pressure or workload metrics justify it.
 
 ## Acceptance Criteria

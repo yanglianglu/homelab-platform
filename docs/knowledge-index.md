@@ -31,6 +31,7 @@ page changes role.
 | `docs/architecture/data-platform-plan.md` | Data worker and ClickHouse or graph placement model |
 | `docs/architecture/harvester-csi-client-cluster-plan.md` | CSI-first guest storage plan and proof gates |
 | `docs/architecture/homelab-repo-organization-plan.md` | Repo ownership and directory layout rules |
+| `docs/architecture/internal-gateway-api-plan.md` | Internal-only Gateway API, Envoy Gateway, cert-manager, trust-manager, and HTTPS route plan |
 
 ## Platform Layers
 

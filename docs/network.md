@@ -36,8 +36,8 @@ Deferred alternatives:
 
 - Raw WireGuard is a reasonable future option if self-hosted VPN control becomes
   more important than operational speed.
-- Cloudflare Tunnel is for selected app exposure, not baseline admin access to
-  Harvester, Talos, Kubernetes, or network equipment.
+- Cloudflare Tunnel is deferred. The first secure app route should be
+  internal-only Gateway API, not public exposure.
 - Existing LAN-only access remains valid when physically at home, but it is not
   the remote admin access pattern.
 
@@ -50,11 +50,29 @@ Admin-only surfaces include:
   identity-aware access layer exists
 - Router, switch, DNS, and future observability/admin dashboards
 
-Do not expose admin surfaces directly through public ingress or Cloudflare
-Tunnel as part of Stage 4. Public app exposure, DNS, TLS, and identity-aware app
+Do not expose admin surfaces through public Gateway routes, legacy Ingress, or
+Cloudflare Tunnel as part of Stage 4. Public app exposure and identity-aware app
 protection are separate follow-up decisions.
 
 Operational details live in `docs/runbooks/admin-access.md`.
+
+## Internal Gateway API Track
+
+The first HTTPS application route is internal-only:
+
+- Gateway API, implemented by Envoy Gateway
+- cert-manager for Gateway and backend certificates
+- trust-manager for internal CA bundle distribution
+- internal CA first, not public ACME
+- internal DNS only
+- HTTPS from client to Gateway
+- HTTPS from Gateway to backend, verified with `BackendTLSPolicy`
+
+No Cloudflare Tunnel, NGINX Ingress, public DNS, public ACME, service mesh, or
+plaintext backend is part of the first route.
+
+The durable implementation plan lives in
+`docs/architecture/internal-gateway-api-plan.md`.
 
 ## Notes
 

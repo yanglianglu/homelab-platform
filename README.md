@@ -14,7 +14,8 @@ This repository manages my Harvester + Talos + Kubernetes home lab. It keeps the
 
 3. **Kubernetes deploys workloads after the cluster exists**
    - Platform services and applications are applied after the Kubernetes API is reachable.
-   - Workloads, ingress, storage, monitoring, and apps live under `kubernetes/`.
+   - Workloads, Gateway API routing, storage, monitoring, and apps live under
+     `kubernetes/`.
 
 ## Current Environment
 

@@ -86,7 +86,8 @@ node-exporter Running on all 6 Talos nodes
 Argo CD VMServiceScrape operational
 External Secrets VMPodScrape operational
 CSI visibility provided through kube-state-metrics object state
-no ingress, Cloudflare route, Loki, Tempo, VMCluster, or external alert routing
+no Gateway route, legacy Ingress, Cloudflare route, Loki, Tempo, VMCluster, or
+external alert routing
 ```
 
 Workload placement:

@@ -14,7 +14,7 @@ Domain labels:
 
 - `platform`: Kubernetes, Harvester, GitOps, cluster runtime, platform services
 - `security`: identity, secrets, access control, policy, TLS, hardening
-- `network`: DNS, VPN, tunnel, ingress, routing, network monitoring
+- `network`: DNS, VPN, Gateway API, routing, selected exposure paths, network monitoring
 - `storage`: storage classes, disks, backups, data placement, Longhorn behavior
 - `observability`: metrics, logs, alerts, dashboards, audit visibility
 - `data`: databases, lakehouse, query engines, datasets, governance
@@ -173,12 +173,13 @@ status != Duplicate
 
 ## Historical Labeling Snapshot
 
-This snapshot was captured around the first GitOps smoke app completion. Verify
-live Linear state before treating any issue status as current.
+This snapshot was captured around the first GitOps smoke app completion and was
+updated for the FIF-21 Gateway API rescope on 2026-05-17. Verify live Linear
+state before treating any issue status as current.
 
 - `FIF-19`: `network`, `decision-needed`
 - `FIF-20`: `network`, `decision-needed`
-- `FIF-21`: `network`, `blocked`
+- `FIF-21`: `network`, `ready`
 - `FIF-22`: `security`, `blocked`
 - `FIF-25`: `docs`, `ready`
 - `FIF-7`: `docs`, `blocked`

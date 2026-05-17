@@ -9,6 +9,26 @@ Each entry should start with:
 ## [YYYY-MM-DD] type | Title
 ```
 
+## [2026-05-17] status | Guest Kubernetes Observability Baseline
+
+- Source: approved FIF-36 implementation gate for the `homelab-talos` guest
+  Kubernetes observability baseline.
+- Pages touched: VictoriaMetrics GitOps resources, observability architecture,
+  platform observability query docs, and the Talos checkpoint.
+- Summary: installed `platform-observability` through Argo CD using
+  `victoria-metrics-k8s-stack` `0.78.0` with `VMSingle`, `VMAgent`, Grafana,
+  kube-state-metrics, node-exporter, Argo CD scrapes, and External Secrets
+  scrapes. Grafana remains internal-only.
+- Contradictions: none in current state. Direct Harvester CSI metrics are not
+  exposed, so CSI visibility is intentionally object-state based through
+  kube-state-metrics.
+- Open questions: dashboard tuning, reviewed low-noise alerts, ClickHouse CSI
+  PVC pilot, and future Harvester host-maintenance CSI drill.
+- Validation: Argo CD apps were `Synced/Healthy`; VMSingle and VMAgent were
+  `operational`; node-exporter ran on all six Talos nodes; VictoriaMetrics
+  queries returned node, pod, PVC/PV, Argo CD, External Secrets, CSI, and
+  data-platform signals.
+
 ## [2026-05-17] status | Metrics API And Data PVC Cleanup
 
 - Source: approved request to delete legacy `data-01` rollback PVCs and enable

@@ -73,6 +73,22 @@ Prometheus, Grafana, and Alertmanager proxy health checks passed
 external alert notifications not configured
 ```
 
+Guest Kubernetes observability:
+
+```text
+platform-observability Argo CD app Synced/Healthy
+VictoriaMetrics K8s Stack chart 0.78.0 installed in observability
+VMSingle operational with 20Gi harvester PVC and 14d retention
+VMAgent operational and ingesting samples
+Grafana Running and internal-only
+kube-state-metrics Running
+node-exporter Running on all 6 Talos nodes
+Argo CD VMServiceScrape operational
+External Secrets VMPodScrape operational
+CSI visibility provided through kube-state-metrics object state
+no ingress, Cloudflare route, Loki, Tempo, VMCluster, or external alert routing
+```
+
 Workload placement:
 
 ```text
@@ -119,8 +135,9 @@ and 1 TiB hot-temp PVC have been deleted and removed from desired state.
 
 Next platform gates:
 
-1. Add guest Kubernetes observability for CSI, Argo CD, node, namespace, and
-   data-platform workload health.
+1. Review guest observability dashboards and tune the query set after scrape
+   volume is visible.
 2. Run a ClickHouse-specific PVC pilot before large ingestion.
-3. Run a controlled Harvester host-maintenance CSI drill only as a separate
+3. Add reviewed, low-noise guest alerts only after dashboard review.
+4. Run a controlled Harvester host-maintenance CSI drill only as a separate
    approved operation.

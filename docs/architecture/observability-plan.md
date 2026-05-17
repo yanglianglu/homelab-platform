@@ -35,6 +35,66 @@ Alertmanager:
 https://192.168.1.50/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-alertmanager:9093/proxy/
 ```
 
+Guest Kubernetes observability is enabled inside `homelab-talos`.
+
+This is the first guest-cluster observability baseline. It is not the final
+observability architecture.
+
+| Item | Value |
+| --- | --- |
+| Enabled date | 2026-05-17 America/Chicago |
+| Argo CD application | `platform-observability` |
+| Namespace | `observability` |
+| Chart | `victoria-metrics-k8s-stack` `0.78.0` |
+| VictoriaMetrics app version | `v1.143.0` |
+| Storage | `VMSingle` 20 Gi PVC on guest StorageClass `harvester` |
+| Retention | `14d` |
+| Grafana exposure | ClusterIP only; no ingress and no Cloudflare route |
+| Alerting | Disabled/deferred |
+| Logs/traces | Not installed |
+| Harvester scraping | Not configured |
+| Acceptance status | Confirmed operational on 2026-05-17 America/Chicago |
+
+Enabled guest components:
+
+- VictoriaMetrics Operator
+- `VMSingle`
+- `VMAgent`
+- Grafana
+- kube-state-metrics
+- node-exporter
+- Argo CD `VMServiceScrape`
+- External Secrets `VMPodScrape`
+
+Direct Harvester CSI metrics are not exposed by the current guest CSI
+deployment. CSI visibility comes from guest Kubernetes object state:
+
+- Harvester CSI pod status in `kube-system`
+- PVC and PV phase
+- StorageClass inventory
+- VolumeAttachment state
+- pod scheduling and restart state
+
+Internal access:
+
+```bash
+kubectl --context homelab-talos -n observability port-forward svc/platform-observability-grafana 3000:80
+kubectl --context homelab-talos -n observability port-forward svc/vmsingle-platform-observability-victoria-metrics-k8s-stack 8428:8428
+```
+
+Rollback:
+
+1. Remove or disable `platform-observability` from Git.
+2. Let Argo CD prune the application.
+3. Confirm `kubectl --context homelab-talos get pods -A` remains healthy.
+4. Confirm Metrics Server still answers `kubectl --context homelab-talos top nodes`.
+5. Confirm Harvester `rancher-monitoring` remains unchanged.
+
+Implementation note: the `observability` namespace enforces privileged Pod
+Security because node-exporter requires host network, host PID, and hostPath
+access. This privilege is scoped to the guest observability namespace and does
+not grant public exposure.
+
 ## Ownership Boundary
 
 Harvester monitoring owns infrastructure visibility:
@@ -73,10 +133,11 @@ read-only datasource if that improves navigation.
 
 ## Next Gates
 
-1. Add guest Kubernetes observability with small VictoriaMetrics/Grafana
-   resources.
-2. Add data-platform dashboards and alerts before ClickHouse ingestion.
-3. Decide whether a single Grafana should display both Harvester and guest
+1. Review the first guest dashboards and query set after real scrape volume is
+   visible.
+2. Add data-platform dashboards and reviewed alerts before ClickHouse ingestion.
+3. Run the ClickHouse CSI PVC pilot only after observability remains stable.
+4. Decide whether a single Grafana should display both Harvester and guest
    datasources.
 
 Deferred by operator decision on 2026-05-17:

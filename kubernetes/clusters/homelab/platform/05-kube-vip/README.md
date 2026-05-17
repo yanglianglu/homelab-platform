@@ -15,17 +15,18 @@ available for break-glass access.
 
 The `kube-vip-service-lb` DaemonSet enables kube-vip Service LoadBalancer mode
 on the general worker nodes only. It is intended for internal LoadBalancer
-Services such as the future Envoy Gateway Service.
+Services such as Envoy Gateway Services.
 
-Initial planned VIP:
+Active VIPs:
 
-| IP | Intended owner | Notes |
+| IP | Owner | Notes |
 | --- | --- | --- |
-| `192.168.1.187` | internal Envoy Gateway | `192.168.1.186` responded to ping; reserve `.187` in LAN/DHCP before Gateway Service sync |
+| `192.168.1.187` | `apps/internal-https` Envoy Gateway | Advertised by kube-vip through `kube-vip.io/loadbalancerIPs` on the generated Envoy Service |
 
 Guardrails:
 
 - keep this internal-only
 - do not use it for Harvester, Talos, Kubernetes API, or Argo CD admin exposure
 - verify the VIP is reserved and unused before live sync
-- require an explicit live gate before syncing this change
+- express Envoy Gateway service IP ownership through GitOps, not manual Service
+  patching

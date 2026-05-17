@@ -17,6 +17,8 @@ Human-readable network notes for the home lab. This file documents intended addr
 | Talos control-plane IPs | `192.168.1.181` (`cp-01`), `192.168.1.182` (`cp-02`), `192.168.1.183` (`cp-03`) |
 | Talos pod CIDR | `10.42.0.0/16` |
 | Talos service CIDR | `10.43.0.0/16` |
+| Internal Gateway VIP | `192.168.1.187` (`homelab-gateway-vip`) |
+| First internal Gateway hostname | `whoami.home.arpa` |
 
 ## Admin Access Pattern
 
@@ -64,7 +66,7 @@ The first HTTPS application route is internal-only:
 - cert-manager for Gateway and backend certificates
 - trust-manager for internal CA bundle distribution
 - internal CA first, not public ACME
-- internal DNS only
+- internal DNS only; `whoami.home.arpa` must resolve to `192.168.1.187`
 - HTTPS from client to Gateway
 - HTTPS from Gateway to backend, verified with `BackendTLSPolicy`
 
@@ -73,6 +75,11 @@ plaintext backend is part of the first route.
 
 The durable implementation plan lives in
 `docs/architecture/internal-gateway-api-plan.md`.
+
+Current state: the first route is live in Kubernetes and the VIP is advertised
+by kube-vip. The remaining client-facing task is to add internal DNS for
+`whoami.home.arpa` and install/trust the internal CA on client machines that
+should browse the route without warnings.
 
 ## Notes
 

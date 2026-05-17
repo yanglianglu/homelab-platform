@@ -22,7 +22,8 @@ internal client -> Envoy Gateway -> HTTPS backend service
 | Routing API | Gateway API |
 | Gateway implementation | Envoy Gateway |
 | Gateway address model | kube-vip Service LoadBalancer VIP |
-| Initial Gateway VIP | `192.168.1.187` planned; `192.168.1.186` responded to ping during preflight |
+| Initial Gateway VIP | `192.168.1.187`, advertised by kube-vip |
+| First hostname | `whoami.home.arpa` |
 | Client to Gateway | HTTPS |
 | Gateway to backend service | HTTPS with certificate verification |
 | Backend TLS policy | `BackendTLSPolicy` |
@@ -32,6 +33,31 @@ internal client -> Envoy Gateway -> HTTPS backend service
 | DNS | Internal-only hostname and address |
 | Deployment model | Argo CD / GitOps |
 | Service mesh | Excluded for this issue |
+
+## Current State
+
+The Gateway, certificates, trust bundle, HTTPS backend, `HTTPRoute`, and
+`BackendTLSPolicy` are live through Argo CD.
+
+Verified live state:
+
+- `apps-whoami-tls` is Synced and Healthy.
+- `Gateway/apps/internal-https` is Accepted and Programmed on
+  `192.168.1.187`.
+- Envoy Gateway created a LoadBalancer Service with
+  `kube-vip.io/loadbalancerIPs: 192.168.1.187`.
+- kube-vip advertises `192.168.1.187` for the generated Envoy Service.
+- `Certificate/whoami-home-arpa-gateway` and
+  `Certificate/whoami-tls-backend` are Ready.
+- `HTTPRoute/apps/whoami-tls` is Accepted and ResolvedRefs=True.
+- `BackendTLSPolicy/apps/whoami-tls` is Accepted and ResolvedRefs=True.
+- A trusted curl test through the Gateway returns the HTTPS backend response.
+
+Remaining before Linear closeout:
+
+- Add internal DNS for `whoami.home.arpa -> 192.168.1.187`.
+- Install or otherwise trust the internal CA on client machines that should
+  browse the route without certificate warnings.
 
 ## Scope
 
@@ -71,7 +97,7 @@ backend certificate before forwarding traffic.
 ## Acceptance Criteria
 
 - kube-vip Service LoadBalancer pods are healthy on general workers.
-- Internal Gateway VIP is reserved and unused before live sync.
+- Internal Gateway VIP is reserved, assigned, and advertised by kube-vip.
 - Envoy Gateway controller and data plane are healthy.
 - Gateway API CRDs include the standard resources needed for `Gateway`,
   `HTTPRoute`, and `BackendTLSPolicy`.
@@ -82,7 +108,8 @@ backend certificate before forwarding traffic.
 - `HTTPRoute` is accepted and routes the internal hostname to the test service.
 - `BackendTLSPolicy` is accepted and makes Envoy use verified HTTPS upstream.
 - Internal DNS resolves the hostname to the internal Gateway address.
-- Client trust for the internal CA is documented.
+- Client trust for the internal CA is documented and applied to the intended
+  admin client.
 - Rollback order is documented before live sync.
 
 ## Rollback Order
@@ -97,11 +124,12 @@ backend certificate before forwarding traffic.
 
 ## Open Implementation Details
 
-These details must be settled during the implementation plan before live sync:
+The cluster-side implementation is settled. The remaining open detail is the
+client-side DNS and trust path:
 
-- internal hostname, likely under a private home-domain such as `home.arpa`
-- initial CA storage model: cluster-generated CA Secret first, or an
+- preferred internal DNS owner for `home.arpa`
+- whether the first client trust proof should use a local hosts entry, router
+  DNS, a dedicated resolver, or a future cluster-hosted DNS service
+- whether the internal CA should stay cluster-generated or later move to an
   externally managed/intermediate CA delivered through Infisical and External
   Secrets Operator
-- exact namespace placement for Envoy Gateway, cert-manager, trust-manager,
-  the Gateway resource, and the test app

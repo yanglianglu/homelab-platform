@@ -28,12 +28,12 @@ This file tracks home lab subnets, reserved addresses, active assignments, and p
 | `192.168.1.183` | `cp-03` | Talos control-plane VM | active | Control-plane on `the-enigmata` |
 | `192.168.1.184` | `homelab-talos-api` | Kubernetes API VIP | active | Stable LAN-only API endpoint via kube-vip |
 | `192.168.1.185` | `data-01` | Talos data worker VM | active | Tainted data node on `the-abundance` |
+| `192.168.1.187` | `homelab-gateway-vip` | Internal Envoy Gateway VIP | active | Advertised by kube-vip for `whoami.home.arpa`; client DNS record still required |
 
 ## Planned / Reserved IPs
 
 | IP | Name | Role | Status | Notes |
 | --- | --- | --- | --- | --- |
-| `192.168.1.187` | `homelab-gateway-vip` | Internal Envoy Gateway VIP | planned | `192.168.1.186` responded to ping; reserve `.187` in LAN/DHCP before Gateway Service sync |
 | `TBD` | `usw-aggregation` | UniFi switch management | planned | Set during UniFi adoption |
 | `TBD` | `worker-03` | Optional Talos worker VM | deferred | Add only when metrics justify it |
 
@@ -48,5 +48,6 @@ This file tracks home lab subnets, reserved addresses, active assignments, and p
 - Harvester VIP/UI is shared, but each physical Harvester node should still have a unique management IP.
 - Keep Talos VM IPs near the control-plane IP if available: `192.168.1.179-185`.
 - Keep internal Gateway VIPs adjacent to the Talos VM range when possible, with
-  explicit LAN/DHCP reservation before live sync.
+  explicit LAN/DHCP reservation before live sync and a matching internal DNS
+  record before user-facing closeout.
 - Avoid assigning Harvester, Talos, switch, or monitoring addresses from an unmanaged DHCP pool without reservations.

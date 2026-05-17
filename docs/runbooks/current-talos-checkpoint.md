@@ -63,6 +63,15 @@ CSI proof on data-01 passed provisioning, resize, reboot, detach, and cleanup
 legacy data-01 PVCs detached from VM and retained as rollback
 ```
 
+Harvester observability:
+
+```text
+rancher-monitoring addon enabled in cattle-monitoring-system
+AddonDeploySuccessful
+Prometheus, Grafana, and Alertmanager proxy health checks passed
+external alert notifications not configured
+```
+
 Core pod summary, abbreviated:
 
 ```text
@@ -97,8 +106,10 @@ and 1 TiB hot-temp PVC are detached from the VM and retained only as rollback.
 
 Next storage gate:
 
-1. Add observability for CSI, Longhorn, node disk, and data-platform workload health.
-2. Run a ClickHouse-specific PVC pilot before large ingestion.
-3. Decide whether to delete the detached legacy `data-01` PVCs.
-4. Run a controlled Harvester host-maintenance CSI drill only as a separate
+1. Review Harvester monitoring alerts without external notification routing.
+2. Add guest Kubernetes observability for CSI, Argo CD, node, namespace, and
+   data-platform workload health.
+3. Run a ClickHouse-specific PVC pilot before large ingestion.
+4. Decide whether to delete the detached legacy `data-01` PVCs.
+5. Run a controlled Harvester host-maintenance CSI drill only as a separate
    approved operation.

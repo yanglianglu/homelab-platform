@@ -82,16 +82,18 @@ application to `data-01`.
 
 ## Production Gates
 
-Harvester CSI is the standard PVC path for general workloads. It is not yet
-approved for large ClickHouse data until observability, alerting, and a
-ClickHouse-specific storage drill exist.
+Harvester CSI is the standard PVC path for general workloads. Harvester-level
+monitoring is enabled, but large ClickHouse data still requires guest
+observability, alert review, and a ClickHouse-specific storage drill.
 
 Required next gates:
 
-1. Add observability for node, disk, Longhorn, CSI, and data-platform workload health.
-2. Run a ClickHouse-specific pilot using PVCs before large ingestion.
-3. Decide whether to delete the detached legacy `data-01` 10 TiB and 1 TiB PVCs.
-4. Run a controlled Harvester host-maintenance CSI drill only with a separate
+1. Review Harvester monitoring alerts without external notification routing.
+2. Add guest Kubernetes observability for CSI, Argo CD, node, namespace, and
+   data-platform workload health.
+3. Run a ClickHouse-specific pilot using PVCs before large ingestion.
+4. Decide whether to delete the detached legacy `data-01` 10 TiB and 1 TiB PVCs.
+5. Run a controlled Harvester host-maintenance CSI drill only with a separate
    approval gate.
 
 ## Secret Rules

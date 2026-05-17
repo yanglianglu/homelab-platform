@@ -33,6 +33,7 @@ This file tracks home lab subnets, reserved addresses, active assignments, and p
 
 | IP | Name | Role | Status | Notes |
 | --- | --- | --- | --- | --- |
+| `192.168.1.187` | `homelab-gateway-vip` | Internal Envoy Gateway VIP | planned | `192.168.1.186` responded to ping; reserve `.187` in LAN/DHCP before Gateway Service sync |
 | `TBD` | `usw-aggregation` | UniFi switch management | planned | Set during UniFi adoption |
 | `TBD` | `worker-03` | Optional Talos worker VM | deferred | Add only when metrics justify it |
 
@@ -46,4 +47,6 @@ This file tracks home lab subnets, reserved addresses, active assignments, and p
 
 - Harvester VIP/UI is shared, but each physical Harvester node should still have a unique management IP.
 - Keep Talos VM IPs near the control-plane IP if available: `192.168.1.179-185`.
+- Keep internal Gateway VIPs adjacent to the Talos VM range when possible, with
+  explicit LAN/DHCP reservation before live sync.
 - Avoid assigning Harvester, Talos, switch, or monitoring addresses from an unmanaged DHCP pool without reservations.

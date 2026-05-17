@@ -31,6 +31,7 @@ No dedicated firewall is planned at this stage. The AT&T router remains the gate
 | `cp-02` | Talos control-plane VM | `192.168.1.182` | Talos v1.13.0 | active | Control-plane VM on `the-elation` |
 | `cp-03` | Talos control-plane VM | `192.168.1.183` | Talos v1.13.0 | active | Control-plane VM on `the-enigmata` |
 | `homelab-talos-api` | Kubernetes API VIP | `192.168.1.184` | n/a | active | Stable kube-vip API endpoint |
+| `homelab-gateway-vip` | Internal Envoy Gateway VIP | `192.168.1.187` | n/a | planned | `.186` responded to ping; reserve `.187` before Gateway Service sync |
 
 ## Node Link Plan
 
@@ -49,3 +50,4 @@ No dedicated firewall is planned at this stage. The AT&T router remains the gate
 - Confirm final MAC addresses when `worker-01` and `worker-02` are created.
 - Confirm whether the `the-enigmata` link should remain 1G or be upgraded later.
 - Confirm whether retired IP `192.168.1.178` is released or reserved before reuse.
+- Reserve `192.168.1.187` before enabling the internal Envoy Gateway Service.

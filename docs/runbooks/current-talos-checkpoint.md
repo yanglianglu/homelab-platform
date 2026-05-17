@@ -79,6 +79,7 @@ apps/whoami runs on worker-01
 data-01 is tainted data-platform=true:NoSchedule
 data-01 only runs required system DaemonSets
 External Secrets steady-state values select homelab.local/node-class=general
+External Secrets pods run on worker-01 and worker-02 after Argo refresh
 Argo CD still has bootstrap-era control-plane placement and needs a separate migration gate
 ```
 
@@ -116,13 +117,11 @@ and 1 TiB hot-temp PVC are detached from the VM and retained only as rollback.
 
 Next platform gates:
 
-1. Let Argo CD reconcile External Secrets with general-worker node selectors and
-   confirm ESO pods move to `worker-01` or `worker-02`.
-2. Plan Argo CD workload placement separately; it is currently a bootstrap-era
+1. Plan Argo CD workload placement separately; it is currently a bootstrap-era
    platform exception.
-3. Add guest Kubernetes observability for CSI, Argo CD, node, namespace, and
+2. Add guest Kubernetes observability for CSI, Argo CD, node, namespace, and
    data-platform workload health.
-4. Run a ClickHouse-specific PVC pilot before large ingestion.
-5. Decide whether to delete the detached legacy `data-01` PVCs.
-6. Run a controlled Harvester host-maintenance CSI drill only as a separate
+3. Run a ClickHouse-specific PVC pilot before large ingestion.
+4. Decide whether to delete the detached legacy `data-01` PVCs.
+5. Run a controlled Harvester host-maintenance CSI drill only as a separate
    approved operation.

@@ -22,6 +22,11 @@ Placement note: steady-state ESO workloads use
 `worker-01` or `worker-02`, not on control-plane nodes or the tainted `data-01`
 data worker.
 
+The general-worker node selector is the effective placement contract. Old
+control-plane toleration fields may remain visible in live Deployment templates
+because of prior server-side apply ownership, but they do not override the node
+selector.
+
 Bootstrap note: `kubernetes/bootstrap/external-secrets/install` is manual and
 break-glass only after Argo CD can read the repo. The Argo CD Application here is
 the steady-state owner.

@@ -40,4 +40,6 @@ The live VM repair is a deliberate mutating operation:
 4. Confirm `192.168.1.181` returns.
 5. Confirm Talos and Kubernetes APIs are reachable.
 
-Do not create `cp-02`, `cp-03`, or workers until this gate passes.
+Do not rely on `cp-01` as a healthy control-plane endpoint until this repair
+gate passes. In the current HA cluster, use the kube-vip endpoint and the other
+control-plane nodes for normal API access while investigating `cp-01`.

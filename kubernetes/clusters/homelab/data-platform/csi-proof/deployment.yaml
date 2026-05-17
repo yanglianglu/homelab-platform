@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: csi-proof
+  namespace: data-platform
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: csi-proof
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: csi-proof
+    spec:
+      nodeSelector:
+        homelab.local/node-class: data
+        homelab.local/storage-locality: the-abundance
+      tolerations:
+        - key: data-platform
+          operator: Equal
+          value: "true"
+          effect: NoSchedule
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: app
+          image: busybox:1.37
+          imagePullPolicy: IfNotPresent
+          command:
+            - sh
+            - -c
+            - |
+              set -eu
+              while true; do
+                date -Iseconds >> /data/proof.log
+                tail -n 5 /data/proof.log
+                sleep 30
+              done
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: proof
+              mountPath: /data
+      volumes:
+        - name: proof
+          persistentVolumeClaim:
+            claimName: csi-proof-harvester-default

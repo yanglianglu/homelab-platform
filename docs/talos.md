@@ -16,12 +16,17 @@ Talos turns the Harvester VMs into Kubernetes nodes. The source files for the `h
 | Service CIDR | `10.43.0.0/16` |
 | Bootstrap status | Completed |
 | Health status | Completed successfully |
+| CSI host extension | `harvester-csi-mountpoint` is the required universal node contract |
 
 ## Milestone
 
 The cluster now has three Talos control-plane VMs, two general workers, and one
 tainted data worker. Kubernetes API access uses the LAN-only kube-vip endpoint
 `192.168.1.184`; individual node IPs remain break-glass access points.
+
+The repo-local `harvester-csi-mountpoint` extension lets Harvester CSI complete
+`NodeUnstageVolume` cleanup on Talos. It is now treated as a universal Talos
+node contract, not a `data-01` special case.
 
 The old `talos-cp-01` VM at `192.168.1.178` has been retired and its Harvester desired-state file has been removed from Git.
 
@@ -38,6 +43,7 @@ See:
 - `docs/runbooks/recover-cluster.md`
 - `docs/runbooks/talos-vm-recovery-strategy.md`
 - `docs/runbooks/create-talos-vm.md`
+- `docs/runbooks/talos-harvester-csi-mountpoint-fix.md`
 
 ## Local Access
 

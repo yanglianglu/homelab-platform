@@ -45,12 +45,12 @@ flowchart TB
   end
 
   subgraph talos["Talos / Kubernetes VMs"]
-    api["homelab-talos-api<br/>planned VIP<br/>192.168.1.184"]
+    api["homelab-talos-api<br/>VIP<br/>192.168.1.184"]
     cp["cp-01<br/>control-plane<br/>192.168.1.181"]
-    cp2["cp-02<br/>control-plane planned<br/>192.168.1.182"]
-    cp3["cp-03<br/>control-plane planned<br/>192.168.1.183"]
-    w1["worker-01<br/>Medium worker<br/>IP proposed: 192.168.1.179"]
-    w2["worker-02<br/>Small worker<br/>IP proposed: 192.168.1.180"]
+    cp2["cp-02<br/>control-plane<br/>192.168.1.182"]
+    cp3["cp-03<br/>control-plane<br/>192.168.1.183"]
+    w1["worker-01<br/>worker<br/>192.168.1.179"]
+    w2["worker-02<br/>worker<br/>192.168.1.180"]
   end
 
   subgraph data["Dedicated Data Worker"]
@@ -94,5 +94,5 @@ flowchart TB
 - `the-abundance`, `the-elation`, and `the-enigmata` are the three verified physical Harvester nodes.
 - `cp-01` is the active Talos control-plane VM on `the-abundance`.
 - Old `talos-cp-01` has been retired; `192.168.1.178` should be checked before reuse.
-- One worker VM per remaining physical node is planned.
-- Older references to `the-remembrance` are stale unless that host is reintroduced later.
+- `cp-01`, `cp-02`, `cp-03`, `worker-01`, `worker-02`, and `data-01` are active Talos VMs.
+- `worker-03` remains deferred until metrics justify it.

@@ -48,7 +48,8 @@ Perform observation only.
    - CDI/DataVolumes: import/clone phases, StorageProfiles, clone strategy, smart-clone/snapshot/copy state, host-assisted pods.
    - Longhorn: manager/engine/instance-manager pods, Longhorn nodes/disks/tags/capacity, volumes/robustness/replicas/engines, settings, recurring jobs, backing images.
    - Network/VIP: kube-vip owner/placement, management service VIP data, Multus, Whereabouts, Canal, network attachment definitions, IP pools.
-   - Workload namespaces: especially `talos-cluster` and a VM named `talos-cp-01` when present.
+   - Workload namespaces: especially `talos-cluster`, current Talos VMs
+     (`cp-*`, `worker-*`, `data-01`), and retired `talos-cp-01` only if present.
 
 5. Correlate before judging.
    - Treat `Completed` pods as normal for jobs unless events indicate failure.

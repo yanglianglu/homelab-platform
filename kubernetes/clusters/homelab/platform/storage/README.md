@@ -4,9 +4,21 @@ Kubernetes-side storage policies and CSI-related resources live here.
 
 Harvester StorageClasses are documented under `harvester/storageclasses/`.
 
-Approved storage intent:
+Approved guest-cluster storage intent:
 
-- `slow`: production-ready Exos HDD-backed default.
-- `nvme`: shared fast PVC class, only after intentionally created.
-- node-specific NVMe classes: temporary/cache/local workloads.
-- `fast-ha`: approval-gated only.
+- `harvester`: Harvester `slow`, `Delete`, default workload PVCs.
+- `harvester-slow-retain`: Harvester `slow`, `Retain`, for ClickHouse retained data.
+- `harvester-slow-delete`: Harvester `slow`, `Delete`, for disposable app/test PVCs.
+- `harvester-abundance-nvme-delete`: Harvester `the-abundance-nvme`, `Delete`, for data-platform temp/cache/hot data pinned to `data-01`.
+- `harvester-fast-ha-retain`: Harvester `fast-ha`, `Retain`, approval-gated only.
+
+Harvester CSI is the preferred guest-cluster storage interface. The small
+`data-01` proof now passes cleanup after the `harvester-csi-mountpoint` Talos
+extension fix. Larger reboot, maintenance, expansion, and performance drills
+are still required before any ClickHouse production PVCs are created.
+
+StorageClass manifests and the Harvester CSI chart Application live under
+`../50-harvester-csi`.
+
+Do not detach the legacy `data-01` disks until the larger drills pass and the
+detach plan is explicitly approved.

@@ -24,16 +24,24 @@ This repository manages my Harvester + Talos + Kubernetes home lab. It keeps the
 | Harvester VIP/UI | `192.168.1.50` |
 | Harvester VM namespace | `talos-cluster` |
 | Harvester VM network | `lan-untagged` |
-| Active Talos VM | `cp-01` |
-| Active Talos node IP | `192.168.1.181` |
+| Talos control-plane VMs | `cp-01`, `cp-02`, `cp-03` |
+| Talos worker VMs | `worker-01`, `worker-02`, `data-01` |
 | Talos cluster name | `homelab-talos` |
-| Talos Kubernetes API endpoint | `https://192.168.1.181:6443` |
+| Talos Kubernetes API endpoint | `https://192.168.1.184:6443` |
 | Talos version | `v1.13.0` |
-| Retired old Talos VM | `talos-cp-01` at `192.168.1.178` has been removed |
+| Kubernetes version | `v1.36.0` |
+| Retired old Talos VM | `talos-cp-01` at `192.168.1.178` |
 
 ## Current Milestone
 
-`cp-01` has been created on Harvester, configured as the active Talos control-plane node, bootstrapped, and confirmed healthy. Core Kubernetes pods are running. The old `talos-cp-01` VM has been retired and should not be recreated unless a future recovery plan explicitly calls for it.
+`homelab-talos` now has three control-plane VMs, two general workers, and one
+tainted data worker. Kubernetes API access uses the LAN-only kube-vip endpoint
+`192.168.1.184`.
+
+Harvester CSI is promoted into GitOps through the `platform-harvester-csi` Argo
+CD Application. The guest `harvester` StorageClass remains the default workload
+class and maps to Harvester `slow`. The Talos `harvester-csi-mountpoint`
+extension is the universal CSI node contract before broad CSI-backed scheduling.
 
 ## Repository Boundaries
 
@@ -45,12 +53,12 @@ This repository manages my Harvester + Talos + Kubernetes home lab. It keeps the
 
 ## Growth Model
 
-The next platform shape is documented in `docs/architecture/gradual-vm-growth-plan.md`.
+The platform growth model is documented in `docs/architecture/gradual-vm-growth-plan.md`.
 
 The short version:
 
-- Grow from one Talos control-plane VM to three control-plane VMs.
-- Add two initial worker VMs before deploying heavier platform services.
+- Keep three Talos control-plane VMs spread across the three Harvester hosts.
+- Use `worker-01` and `worker-02` for general workloads.
 - Keep large data workloads on the dedicated `data-01` Talos data worker, not on the shared general worker pool.
 - Add a third worker only after metrics show the need.
 

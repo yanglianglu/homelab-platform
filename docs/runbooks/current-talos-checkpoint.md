@@ -1,7 +1,7 @@
 # Runbook: Current Talos Checkpoint
 
-This checkpoint documents the current Talos state during the Gate 1-8 VM growth
-execution.
+This checkpoint documents the current Talos state after the VM growth and
+Harvester CSI proof gates.
 
 ## Cluster State
 
@@ -52,13 +52,23 @@ worker-02 VM Running/Ready on the-enigmata, OS disk first
 data-01 VM Running/Ready on the-abundance, OS disk first, retained/hot disks attached
 ```
 
-Core pod summary:
+Storage compatibility:
+
+```text
+Harvester CSI installed in kube-system and promoted into Argo CD desired state
+CSI controller 3/3 available
+CSI node DaemonSet 6/6 available
+data-01 Talos extension harvester-csi-mountpoint active; universal rollout pending
+1 Gi CSI proof on data-01 passed cleanup without manual VolumeAttachment deletion
+```
+
+Core pod summary, abbreviated:
 
 ```text
 coredns                         2/2 pods Running
-kube-apiserver-cp-01            Running
-kube-controller-manager-cp-01   Running
-kube-scheduler-cp-01            Running
+kube-apiserver                  Running on control-plane nodes
+kube-controller-manager         Running on control-plane nodes
+kube-scheduler                  Running on control-plane nodes
 kube-flannel                    Running
 kube-proxy                      Running
 ```
@@ -80,7 +90,19 @@ kube-proxy                      Running
 
 ## Current Stop Condition
 
-Do not create data-platform local PVs yet. `data-01` sees the attached disks as
-`vdb` (10 TiB retained data) and `vdc` (1 TiB hot/temp), but the Talos mount
-configuration for `/var/mnt/clickhouse-data` and `/var/mnt/clickhouse-hot` is not
-defined yet.
+Do not create data-platform local PVs. The storage direction changed to
+Harvester CSI first. `data-01` still has legacy attached disks visible as `vdb`
+(10 TiB retained data) and `vdc` (1 TiB hot/temp), but they should remain unused
+until the CSI path passes larger drills or the local-PV fallback is explicitly
+approved.
+
+Next storage gate:
+
+1. Roll the `harvester-csi-mountpoint` extension to all Talos nodes before
+   broad CSI-backed workload scheduling.
+2. Keep the chart-created default `harvester` StorageClass as the normal
+   workload class mapped to host `slow`.
+3. Run larger CSI drills: PVC expansion, CSI pod restart, `data-01` VM reboot,
+   and a controlled host-maintenance scenario.
+4. Detach the legacy attached disks only after larger drills pass and the
+   detach plan is explicitly approved.

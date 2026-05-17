@@ -8,5 +8,6 @@ resources:
   - platform/20-infisical/application.yaml
   - platform/30-argocd-repo-access/application.yaml
   - platform/40-policies/application.yaml
+  - platform/50-harvester-csi/application.yaml
   - data-platform/application.yaml
   - apps/whoami/application.yaml

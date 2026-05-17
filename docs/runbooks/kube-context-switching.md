@@ -49,7 +49,9 @@ returns the Harvester nodes:
 
 ## Guest Cluster Access
 
-The active Talos node is `cp-01` at `192.168.1.181`. The default Talos config is installed at:
+The normal Kubernetes API endpoint is the kube-vip address
+`https://192.168.1.184:6443`. Individual control-plane node IPs remain
+break-glass endpoints. The default Talos config is installed at:
 
 ```text
 ~/.talos/config

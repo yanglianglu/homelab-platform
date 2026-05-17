@@ -47,4 +47,3 @@ This file tracks home lab subnets, reserved addresses, active assignments, and p
 - Harvester VIP/UI is shared, but each physical Harvester node should still have a unique management IP.
 - Keep Talos VM IPs near the control-plane IP if available: `192.168.1.179-185`.
 - Avoid assigning Harvester, Talos, switch, or monitoring addresses from an unmanaged DHCP pool without reservations.
-- `the-enigmata` is the third verified Harvester node. Older notes that referenced `the-remembrance` should be treated as stale unless that host is reintroduced later.

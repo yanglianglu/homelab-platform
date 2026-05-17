@@ -1,71 +1,57 @@
 # Gradual VM Growth Plan
 
-Build the homelab in controlled stages instead of creating all maximum-size VMs at once.
+This plan records the current staged VM growth model for `homelab-talos`.
 
-## Target Shape
+## Current Shape
 
 ```text
 3 Talos control-plane VMs
-2 initial Talos worker VMs
-1 dedicated Talos data worker for ClickHouse / graph workloads
-optional 3rd worker later, only if metrics justify it
+2 general Talos worker VMs
+1 dedicated Talos data worker
+optional worker-03 later, only if metrics justify it
 ```
 
-## Stage 1: Stabilize Current Control Plane
+| Host | VM | Size | Role | Status |
+| --- | --- | ---: | --- | --- |
+| `the-abundance` | `cp-01` | 4 CPU / 8 Gi | Control plane | active |
+| `the-elation` | `cp-02` | 4 CPU / 8 Gi | Control plane | active |
+| `the-enigmata` | `cp-03` | 4 CPU / 8 Gi | Control plane | active |
+| `the-elation` | `worker-01` | 4 CPU / 12 Gi | General worker | active |
+| `the-enigmata` | `worker-02` | 2 CPU / 8 Gi | General worker | active |
+| `the-abundance` | `data-01` | 8 CPU / 32 Gi | Tainted data worker | active |
 
-- Diagnose why `cp-01` / `192.168.1.181:6443` is unreachable before adding nodes.
-- Confirm Harvester nodes, Longhorn, VM state, and Talos API path.
-- Do not add new nodes until the existing control plane is understood.
+The Kubernetes API uses kube-vip at `192.168.1.184`. Individual node IPs remain
+break-glass endpoints for Talos and incident work.
 
-## Stage 2: Add HA Control Plane
+## Storage Direction
 
-| Host | VM | Initial size | Purpose |
-| --- | --- | ---: | --- |
-| `the-abundance` | `cp-01` | 4 CPU / 8 Gi | Existing control-plane |
-| `the-elation` | `cp-02` | 4 CPU / 8 Gi | New control-plane |
-| `the-enigmata` | `cp-03` | 4 CPU / 8 Gi | New control-plane |
+`data-01` was originally given a 10 TiB retained disk and 1 TiB hot/temp disk.
+The current direction is CSI-first storage instead:
 
-- Add a stable API VIP or load-balanced endpoint.
-- Keep individual node IPs for Talos and break-glass access.
-- Keep Talos OS disks on `slow` as rebuildable disks.
+| Storage | Current use |
+| --- | --- |
+| `slow` | Default production HDD-backed Harvester class |
+| `harvester` | Default guest workload PVCs mapped to host `slow` |
+| `harvester-slow-delete` | Explicit disposable guest PVCs and tests |
+| `harvester-slow-retain` | Future retained data PVCs |
+| `harvester-abundance-nvme-delete` | Future hot/temp/cache PVCs pinned to `data-01` |
+| Legacy attached `data-01` disks | Attached but unused pending larger CSI drills |
 
-## Stage 3: Add Worker Capacity
+## Remaining Growth Gates
 
-| Host | VM | Initial size | Purpose |
-| --- | --- | ---: | --- |
-| `the-elation` | `worker-01` | 4 CPU / 12 Gi | General platform/app worker |
-| `the-enigmata` | `worker-02` | 2 CPU / 8 Gi | Small worker on smaller host |
-
-Defer `worker-03` until scheduling pressure or workload metrics prove the need.
-
-## Stage 4: Add Dedicated Data Worker
-
-| Host | VM | Initial size | Purpose |
-| --- | --- | ---: | --- |
-| `the-abundance` | `data-01` | 8 CPU / 32 Gi | Tainted Kubernetes data worker |
-
-Initial storage:
-
-| Disk | StorageClass | Size | Purpose |
-| --- | --- | ---: | --- |
-| OS disk | `slow` | 100 Gi | Talos operating system |
-| ClickHouse retained data | `slow` | 10 TiB | Main OLAP storage on production-ready Exos HDD |
-| Hot/temp NVMe | `the-abundance-nvme` | 1 TiB | ClickHouse temp, merges, hot working set |
-| Graph storage | deferred | TBD | Only after graph workload shape is known |
-
-`data-01` joins `homelab-talos` as a worker with `data-platform=true:NoSchedule`.
-
-## Stage 5: Platform Services
-
-- Enable Harvester monitoring after core VMs are stable.
-- Add guest-cluster observability: VictoriaMetrics, Grafana, exporters, alerting.
-- Add ingress, cert-manager, and Cloudflare Tunnel only after control-plane HA and workers exist.
+1. Roll the Talos mountpoint extension to all nodes as the universal CSI host contract.
+2. Sync the Argo CD managed Harvester CSI app from Git.
+3. Run CSI expansion, restart, reboot, cleanup, and performance drills.
+4. Add observability before large ClickHouse ingestion.
+5. Add ingress, cert-manager, and Cloudflare Tunnel after the platform baseline
+   is stable.
+6. Add `worker-03` only when scheduling pressure or workload metrics justify it.
 
 ## Acceptance Criteria
 
-- Harvester still has practical headroom after each VM wave.
-- `kubectl get nodes` shows all Talos nodes Ready after each addition.
+- Harvester keeps practical headroom after each VM or storage wave.
+- `kubectl get nodes` shows all Talos nodes Ready.
 - Talos health passes across all control-plane nodes.
-- Kubernetes API access uses the stable endpoint, not only `cp-01`.
-- Workloads schedule on workers, not control-plane nodes, except temporary bootstrap exceptions.
+- Kubernetes API access uses `192.168.1.184`, not only `cp-01`.
+- Normal workloads schedule on workers.
 - `data-01` is monitored before large ingestion begins.

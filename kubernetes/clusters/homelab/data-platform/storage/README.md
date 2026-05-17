@@ -1,18 +1,32 @@
-# data-01 Local PVs
+# Data Platform Storage
 
-Local PV manifests are created only after `data-01` is joined and Talos confirms
-the retained and hot/temp disks are mounted at the expected paths.
+Harvester CSI is the preferred storage path for data-platform workloads.
 
-Current Talos disk map:
+Do not create static local PVs for `data-01` unless the CSI path fails a future
+required gate and the local-PV fallback is explicitly approved.
 
-| Guest disk | Size | Harvester PVC | Intended path |
-| --- | ---: | --- | --- |
-| `/dev/vdb` | 10 TiB | `data-01-retained-data` | `/var/mnt/clickhouse-data` |
-| `/dev/vdc` | 1 TiB | `data-01-hot-temp` | `/var/mnt/clickhouse-hot` |
+Planned data-platform StorageClasses:
 
-Expected paths:
+| StorageClass | Backing Harvester class | Reclaim | Use |
+| --- | --- | --- | --- |
+| `harvester` | `slow` | `Delete` | default workload PVCs |
+| `harvester-slow-retain` | `slow` | `Retain` | ClickHouse retained data |
+| `harvester-abundance-nvme-delete` | `the-abundance-nvme` | `Delete` | ClickHouse temp/cache/hot data |
 
-- `/var/mnt/clickhouse-data`
-- `/var/mnt/clickhouse-hot`
+StorageClass manifests are staged in
+`../../platform/50-harvester-csi`, not in this directory.
 
-Stop if those paths are not backed by the expected Harvester disks.
+Proof gate:
+
+- Harvester CSI is promoted into Argo CD management through
+  `platform/50-harvester-csi`.
+- The small proof PVC passes on `data-01`.
+- Production ClickHouse PVCs still require expansion, reboot, maintenance, and
+  performance drills.
+
+The proof workload is staged in `../csi-proof` and remains an operator-run
+drill workload.
+
+Do not detach the legacy `data-01` disks until larger CSI reboot, maintenance,
+expansion, and performance drills pass and the detach plan is explicitly
+approved.

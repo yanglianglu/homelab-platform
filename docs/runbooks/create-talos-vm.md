@@ -1,44 +1,30 @@
 # Runbook: Create Talos VM
 
-This runbook captures the intended Harvester-side VM settings for the first Talos control plane VM.
+This runbook captures the Harvester-side VM settings for Talos nodes. It is a
+procedure template, not a request to create VMs.
 
-## Active VM Plan
+## Current VM Set
 
-The active control-plane VM is `cp-01`. It replaced the old `talos-cp-01`, which has now been retired.
+| VM | Role | Host | IP | Size |
+| --- | --- | --- | --- | --- |
+| `cp-01` | control plane | `the-abundance` | `192.168.1.181` | 4 CPU / 8 Gi |
+| `cp-02` | control plane | `the-elation` | `192.168.1.182` | 4 CPU / 8 Gi |
+| `cp-03` | control plane | `the-enigmata` | `192.168.1.183` | 4 CPU / 8 Gi |
+| `worker-01` | worker | `the-elation` | `192.168.1.179` | 4 CPU / 12 Gi |
+| `worker-02` | worker | `the-enigmata` | `192.168.1.180` | 2 CPU / 8 Gi |
+| `data-01` | data worker | `the-abundance` | `192.168.1.185` | 8 CPU / 32 Gi |
 
-Bootstrap manifest:
+`worker-03` is deferred until metrics justify it.
 
-```text
-harvester/vms/talos/control-plane/cp-01.bootstrap.yaml
-```
+## Standard Settings
 
-The repo manifest represents the installed/post-bootstrap state. During first
-install, the Talos ISO may be attached temporarily. After installation, detach
-the ISO or ensure the OS disk is the first boot device before any VM restart.
-
-Key settings:
-
-- VM name: `cp-01`
-- OS disk: `cp-01-os-disk`
-- OS disk StorageClass: `slow`
-- Talos ISO volume: `cp-01-talos-iso`
-- Static IP: `192.168.1.181`
-
-## VM Settings
-
-| Setting | Value |
+| Setting | Default |
 | --- | --- |
-| Name | `cp-01` |
 | Namespace | `talos-cluster` |
-| VM Network | `lan-untagged` |
+| VM network | `lan-untagged` |
 | Network model | `virtio` |
-| IP | `192.168.1.181` |
-| MAC | `96:af:ea:cd:f9:21` |
-| CPU | `4` |
-| Memory | `8 Gi` |
-| OS disk | `100 Gi` |
+| OS disk class | `slow` |
 | OS disk bus | `virtio` |
-| Talos ISO | Attached as CD-ROM |
 | UEFI | Enabled |
 | EFI persistent state | Enabled |
 | Secure Boot | Disabled |
@@ -48,18 +34,24 @@ Key settings:
 | Cloud-init user-data | Blank |
 | Cloud-init network-data | Blank |
 
+Talos ISO attachment is temporary for installation. After install, detach the
+ISO or ensure the OS disk is first in boot order before any VM restart.
+
 ## Steps
 
-1. Confirm the `talos-cluster` namespace exists.
+1. Confirm `talos-cluster` namespace exists.
 2. Confirm the `lan-untagged` VM network exists under Cluster Network `mgmt`.
-3. Upload or reference `talos-metal-amd64-v1.13.0.iso`.
-4. Create VM `cp-01` in namespace `talos-cluster`.
-5. Set CPU to `4` and memory to `8 Gi`.
-6. Attach the Talos ISO as a temporary CD-ROM for first install only.
-7. Add a `100 Gi` OS disk using the `virtio` bus.
-8. Attach VM Network `lan-untagged` using network model `virtio`.
-9. Enable UEFI and EFI persistent state.
-10. Disable Secure Boot, TPM, and QEMU guest agent.
-11. Leave SSH key, cloud-init user-data, and cloud-init network-data blank.
-12. Confirm the VM receives or uses `192.168.1.181`.
-13. After Talos is installed, detach the ISO or move the OS disk before the ISO in boot order.
+3. Confirm the Talos ISO image exists.
+4. Create the VM with the intended CPU, memory, host placement, OS disk, and IP.
+5. Attach the Talos ISO only for first install.
+6. Apply the correct Talos machine config for the node role.
+7. After install, boot from OS disk first.
+8. Verify VM Running/Ready, VMI host placement, guest IP, Talos API reachability,
+   and Kubernetes node readiness when relevant.
+
+## Source References
+
+- Control-plane placement: `harvester/vms/talos/control-plane/README.md`
+- Worker placement: `harvester/vms/talos/workers/README.md`
+- Size classes: `harvester/vms/talos/workers/size-classes.md`
+- Talos config workflow: `docs/runbooks/apply-talos-config.md`

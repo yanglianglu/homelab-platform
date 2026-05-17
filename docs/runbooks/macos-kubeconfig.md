@@ -65,4 +65,4 @@ kubectl config use-context harvester
 kubectl config use-context homelab-talos
 ```
 
-See `docs/runbooks/kube-context-switching.md` for the current context-switching workflow and guest-cluster blocker.
+See `docs/runbooks/kube-context-switching.md` for the current context-switching workflow.

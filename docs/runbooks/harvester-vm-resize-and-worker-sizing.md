@@ -68,11 +68,14 @@ Use these outside the shared general worker pool when a workload has dominant CP
 
 | Class | vCPU | Memory | Storage starting point | Use |
 | --- | ---: | ---: | --- | --- |
-| Data worker | 8-12 | 32-64 Gi | `slow` for retained data, `<node-name>-nvme` for hot/temp data | ClickHouse, data warehouse, large analytical stores |
+| Data worker | 8-12 | 32-64 Gi | Harvester CSI PVCs backed by `slow` and node-local NVMe classes | ClickHouse, data warehouse, large analytical stores |
 | Streaming VM | 4-8 | 16-32 Gi | `nvme` for hot queues, `slow` for retained/archive data | ADS-B ingestion, stream processors, Kafka/Redpanda-style experiments |
 | AI VM | Workload/GPU dependent | 32-64 Gi | NVMe preferred for model/cache data | vLLM, Ollama, embedding/vector experiments |
 
-For the home server, prefer one dedicated node/VM per large workload family. `data-01` starts on `the-abundance` at 8 vCPU / 32 Gi with 10 TiB retained data on `slow` and 1 TiB hot/temp storage on `the-abundance-nvme`. Do not design HA/read/write split until there is a clear operational reason.
+For the home server, prefer one dedicated node/VM per large workload family.
+`data-01` starts on `the-abundance` at 8 vCPU / 32 Gi. Its legacy 10 TiB and
+1 TiB attached disks remain unused while the CSI-first model is validated. Do
+not design HA/read/write split until there is a clear operational reason.
 
 ## Resize Principles
 

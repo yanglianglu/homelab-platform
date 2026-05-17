@@ -18,6 +18,8 @@ flowchart LR
   Root --> Infisical["platform/20-infisical"]
   Root --> RepoAccess["platform/30-argocd-repo-access"]
   Root --> Policies["platform/40-policies"]
+  Root --> HarvesterCSI["platform/50-harvester-csi"]
+  Root --> DataPlatform["data-platform/"]
   Root --> Network["network/"]
   Root --> Observability["observability/"]
 ```
@@ -31,6 +33,7 @@ flowchart LR
 | `platform/` | Shared platform services and policies, organized by capability |
 | `network/` | DNS, Cloudflare Tunnel, and edge exposure services |
 | `observability/` | VictoriaMetrics, Grafana, exporters, and alerts |
+| `data-platform/` | Data-platform storage and future ClickHouse/graph workloads |
 | `apps/` | User-facing and portfolio applications |
 | `sandbox/` | Experiments that may break |
 
@@ -46,9 +49,14 @@ Argo CD sync waves make the bootstrap order explicit:
 | `20` | Infisical ClusterSecretStore |
 | `30` | Argo CD repository access ExternalSecret |
 | `40` | Policies |
-| `50` | Future platform services |
-| `60` | Apps |
+| `45` | Harvester CSI |
+| `50` | Apps |
+| `60` | Future platform services |
 | `70` | Sandbox |
+
+`platform/50-harvester-csi` manages Harvester CSI through Argo CD. The guest
+`harvester` StorageClass remains the default workload class and maps to
+Harvester host StorageClass `slow`.
 
 ## Local Validation
 

@@ -93,7 +93,10 @@ kubectl get pvc -A
 
 For each VM, identify namespace, name, printable status, running/stopped state, VMI node placement, launcher pod, disk PVCs, network attachments when visible, live migration status, and storage live migratable condition when visible.
 
-For `talos-cluster`, identify `talos-cp-01`, boot PVC, current StorageClass, whether it is running through `virt-launcher`, and active DataVolume import/clone operations.
+For `talos-cluster`, identify current Talos VMs (`cp-*`, `worker-*`,
+`data-01`), boot PVCs, current StorageClasses, whether each running VM has a
+`virt-launcher` pod, and active DataVolume import/clone operations. Treat
+`talos-cp-01` as retired unless it appears live.
 
 ## G. CDI And DataVolumes
 

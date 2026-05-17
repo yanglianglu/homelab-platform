@@ -14,4 +14,6 @@ This folder stores desired state and operator notes for Harvester-side resources
 
 Do not commit full live exports as source of truth if they include `managedFields`, `uid`, `resourceVersion`, `status`, or other generated runtime metadata.
 
-Heavy ClickHouse, graph, streaming, and AI/data workloads should be represented as dedicated Harvester VMs first. Do not hide resource-dominant systems inside the shared Kubernetes worker pool unless there is a deliberate reason.
+Heavy ClickHouse, graph, streaming, and AI/data workloads should use dedicated
+capacity first. The current data-platform model uses `data-01` as a dedicated
+Talos worker VM in Kubernetes, not as general shared worker capacity.

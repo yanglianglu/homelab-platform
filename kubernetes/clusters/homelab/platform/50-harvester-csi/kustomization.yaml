@@ -1,0 +1,8 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - clustersecretstore-infisical-harvester-csi.yaml
+  - externalsecret-harvester-csi-config.yaml
+  - storageclass-harvester-slow-delete.yaml
+  - storageclass-harvester-slow-retain.yaml
+  - storageclass-harvester-abundance-nvme-delete.yaml

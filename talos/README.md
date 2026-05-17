@@ -6,7 +6,7 @@ It does not store plaintext generated Talos configs. Generated files should be k
 
 Current control-plane endpoint:
 
-- `https://192.168.1.181:6443`
+- `https://192.168.1.184:6443`
 
 ## Safe Source Files
 
@@ -37,6 +37,8 @@ scripts/bootstrap.sh
 
 The current recovery preference is rebuild first, snapshot only for short-term rollback, and VM backup only after a Harvester backup target exists.
 
-`cp-01` is the active control-plane node. The old `talos-cp-01` VM has been retired, so do not add desired state for it back to Git unless a future recovery plan explicitly needs a historical reference.
+`cp-01`, `cp-02`, and `cp-03` are the active control-plane nodes. The old
+`talos-cp-01` VM has been retired, so do not add desired state for it back to
+Git unless a future recovery plan explicitly needs a historical reference.
 
 See `docs/runbooks/talos-vm-recovery-strategy.md`.

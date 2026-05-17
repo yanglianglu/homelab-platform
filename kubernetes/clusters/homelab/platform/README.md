@@ -9,6 +9,7 @@ Current domains:
 - `20-infisical`: Infisical ClusterSecretStore
 - `30-argocd-repo-access`: Argo CD GitHub App repo credential ExternalSecret
 - `40-policies`: policy guardrail staging area
+- `50-harvester-csi`: Argo CD managed Harvester CSI resources and StorageClass policy
 - `storage`: Kubernetes-side storage policy notes
 
 Platform changes should be reviewed carefully because they can affect every app.

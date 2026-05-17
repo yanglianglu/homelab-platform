@@ -187,8 +187,8 @@ ports:
 
 ## Single-Node Scheduling Reality
 
-The cluster currently has one node, `cp-01`, with the standard control-plane
-taint:
+Historical bootstrap note: the cluster originally had one node, `cp-01`, with
+the standard control-plane taint:
 
 ```text
 node-role.kubernetes.io/control-plane:NoSchedule
@@ -196,7 +196,7 @@ node-role.kubernetes.io/control-plane:NoSchedule
 
 Normal app pods will not schedule there unless they tolerate that taint.
 
-For the `whoami` smoke test, this toleration is intentional:
+At that time, the `whoami` smoke test used this toleration:
 
 ```yaml
 tolerations:
@@ -205,9 +205,9 @@ tolerations:
     effect: NoSchedule
 ```
 
-This is a pragmatic single-node bootstrap exception. Once worker nodes exist,
-remove this toleration from regular app workloads and let them schedule onto
-workers.
+This was a pragmatic single-node bootstrap exception. Worker nodes now exist,
+so regular app workloads should schedule onto workers unless a new bootstrap or
+repair gate explicitly approves a control-plane toleration.
 
 ## Debugging Checklist
 

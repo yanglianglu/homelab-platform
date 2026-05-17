@@ -1,0 +1,38 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: platform-harvester-csi
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "45"
+spec:
+  project: platform
+  sources:
+    - repoURL: https://charts.harvesterhci.io
+      chart: harvester-csi-driver
+      targetRevision: 0.1.28
+      helm:
+        releaseName: harvester-csi-driver
+        valueFiles:
+          - $values/kubernetes/clusters/homelab/platform/50-harvester-csi/values.yaml
+    - repoURL: https://github.com/yanglianglu/homelab-platform.git
+      targetRevision: main
+      path: kubernetes/clusters/homelab/platform/50-harvester-csi
+    - repoURL: https://github.com/yanglianglu/homelab-platform.git
+      targetRevision: main
+      ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kube-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      limit: 5
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 3m
+    syncOptions:
+      - ServerSideApply=true

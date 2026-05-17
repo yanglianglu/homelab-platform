@@ -31,6 +31,9 @@ Linear = execution status and prioritization
 | Systems catalog | Notion | Inventory is easier to browse, relate, and update in Notion |
 | Incident notes | Notion, with GitHub links when fixes happen | The learning matters beyond the code change |
 | Exact current IP/device inventory | GitHub if used for operations, Notion if only explanatory | Keep the operational source of truth in one place and link the other |
+| Knowledge-wiki schema, index, and log | GitHub | Codex needs stable repo-local rules before touching Notion or live systems |
+| Compiled knowledge pages | Notion first, GitHub when operationally close to code | Notion is the browsable wiki; GitHub keeps exact operational knowledge near manifests and scripts |
+| Raw research/source material | External source, Notion, or approved local folder | Raw sources should stay immutable and should not enter GitHub unless they are safe and intentionally versioned |
 
 ## Current Repo Docs Classification
 
@@ -39,6 +42,9 @@ Linear = execution status and prioritization
 | `README.md` | Yes | Link from Homelab HQ |
 | `docs/operating-workflow.md` | Yes | Mirror as Notion workflow page |
 | `docs/documentation-strategy.md` | Yes | Mirror or summarize in Notion |
+| `docs/knowledge-wiki.md` | Yes | Mirror or summarize as the Codex-maintained knowledge workflow |
+| `docs/knowledge-index.md` | Yes | Link from Notion HQ or documentation hub after the workflow is adopted |
+| `docs/knowledge-log.md` | Yes | Summarize in Notion only when entries matter to human navigation |
 | `docs/network.md` | Yes | Summarize in Network domain page |
 | `docs/network-map.md` | Yes | Mirror diagrams or link from Notion |
 | `docs/network-inventory.md` | Yes for now | Later decide if Systems Catalog becomes primary |
@@ -61,12 +67,12 @@ Linear = execution status and prioritization
 | Operating workflow | Primary index for the repo workflow contract | Mirrored as `Homelab Operating Workflow` | Keep both aligned when workflow changes |
 | Documentation strategy | Primary index for placement rules | Mirrored as `Homelab Documentation Strategy` | Keep both aligned when placement rules change |
 | ADRs | Lightweight index only | Primary ADR content | `FIF-5` completed |
-| Network notes | Primary for operational network facts while the cluster is being built | Summaries in Network/System Catalog pages | Keep retired IPs and planned workers current |
+| Network notes | Primary for operational network facts while the cluster is being built | Summaries in Network/System Catalog pages | Keep active and reserved IPs current |
 | IP plan | Primary while IP assignments affect operations | Later may become Systems Catalog summary | Move retired addresses out of active assignments |
 | Port map | Primary while switch ports affect operations | Later may become Systems Catalog summary | Update after USW-Aggregation adoption |
 | Hardware inventory | Primary while hardware facts affect deployment | Mirror to Systems Catalog | Keep VM sizing and retired VMs current |
 | Storage notes | Primary for storage classes and operational expectations | Summarize under Harvester/storage system pages | Keep aligned with `harvester/storageclasses/` |
-| Talos docs/runbooks | Primary for exact commands, scripts, and recovery steps | Link from Talos system page and runbook hub | Keep `cp-01` and worker procedures current |
+| Talos docs/runbooks | Primary for exact commands, scripts, and recovery steps | Link from Talos system page and runbook hub | Keep node procedures aligned with the HA control plane |
 | Harvester desired state | Primary for desired-state summaries and operator notes | Link from Harvester system page | Remove retired desired-state files |
 | Kubernetes folder | Primary for GitOps manifests | Link from Platform domain page | Keep capability layout and sync-wave docs current |
 | Secrets policy | Primary for repo safety rules and External Secrets Operator conventions | Summarize in security policy page | `FIF-18` chooses Infisical + External Secrets Operator |
@@ -124,6 +130,12 @@ Use this loop:
 
 ```text
 Do work -> verify result -> update GitHub if operational truth changed -> update Notion if knowledge changed -> update Linear status -> improve workflow if friction appeared
+```
+
+When reusable knowledge is created, also update the knowledge layer:
+
+```text
+New source or durable synthesis -> update relevant page -> update docs/knowledge-index.md if navigation changed -> append docs/knowledge-log.md
 ```
 
 The workflow itself lives in:

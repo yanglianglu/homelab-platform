@@ -10,6 +10,7 @@ spec:
   sourceRepos:
     - https://github.com/yanglianglu/homelab-platform.git
     - https://charts.external-secrets.io
+    - https://charts.harvesterhci.io
   destinations:
     - namespace: '*'
       server: https://kubernetes.default.svc

@@ -13,7 +13,8 @@ Human-readable network notes for the home lab. This file documents intended addr
 | Harvester service CIDR | `10.53.0.0/16` |
 | Harvester Cluster Network | `mgmt` |
 | Harvester VM Network | `lan-untagged` |
-| Talos control-plane IP | `192.168.1.181` (`cp-01`) |
+| Talos API VIP | `192.168.1.184` (`homelab-talos-api`) |
+| Talos control-plane IPs | `192.168.1.181` (`cp-01`), `192.168.1.182` (`cp-02`), `192.168.1.183` (`cp-03`) |
 | Talos pod CIDR | `10.42.0.0/16` |
 | Talos service CIDR | `10.43.0.0/16` |
 

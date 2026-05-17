@@ -1,0 +1,7 @@
+version: v1alpha1
+metadata:
+  name: harvester-csi-mountpoint
+  version: 0.1.0
+  author: homelab-platform
+  description: |
+    Provides /usr/bin/mountpoint for Harvester CSI NodeUnstageVolume on Talos.

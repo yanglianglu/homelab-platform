@@ -19,11 +19,37 @@ Do not paste live StorageClass objects with `uid`, `resourceVersion`, `creationT
 ## Desired Usage
 
 - Use `slow` as the default persistent storage class. Despite the name, it is the production-ready Exos HDD-backed baseline.
+- `slow` is intentionally single-replica in the current homelab model; node or
+  disk downtime is acceptable for this class.
 - Use `nvme` as the standard shared fast PVC class once created.
 - Use node-specific NVMe classes only when the workload is intentionally tied to a node or the data is temporary, cached, or rebuildable.
 - Do not use `fast-ha` without explicit owner approval.
 - Treat `fast` as legacy/experimental until it is removed or redefined.
 - Any important data on NVMe-backed classes needs an explicit backup and recovery story before it is considered durable.
+
+## Guest Cluster Use Through Harvester CSI
+
+Guest Kubernetes clusters should not reference host StorageClasses directly in
+application manifests. The default guest StorageClass is `harvester`, and the
+Harvester CSI chart maps it to host StorageClass `slow`.
+
+Explicit guest classes exist for non-default reclaim behavior or host-specific
+tiers:
+
+| Guest StorageClass | Host StorageClass | Intended reclaim |
+| --- | --- | --- |
+| `harvester` | `slow` | `Delete` |
+| `harvester-slow-retain` | `slow` | `Retain` |
+| `harvester-slow-delete` | `slow` | `Delete` |
+| `harvester-abundance-nvme-delete` | `the-abundance-nvme` | `Delete` |
+| `harvester-fast-ha-retain` | `fast-ha` | `Retain` |
+
+CSI is a lifecycle interface for the guest cluster. It does not add replicas or
+snapshot requirements to `slow`.
+
+Normal workload PVCs should use `harvester` or omit `storageClassName` after
+the cluster default is verified. Named guest StorageClasses are exceptions, not
+the normal workload path.
 
 ## Verified Live Shape
 

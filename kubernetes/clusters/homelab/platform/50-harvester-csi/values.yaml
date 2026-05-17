@@ -1,0 +1,30 @@
+replicasCount: 3
+
+hostStorageClass: slow
+
+cloudConfig:
+  secretName: harvester-csi-config
+
+kubeletRootDir: /var/lib/kubelet
+
+nodeSelector:
+  kubernetes.io/os: linux
+
+tolerations:
+  - effect: NoSchedule
+    key: kubevirt.io/drain
+    operator: Exists
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/control-plane
+    operator: Equal
+  - effect: NoExecute
+    key: node-role.kubernetes.io/etcd
+    operator: Equal
+  - key: cattle.io/os
+    operator: Equal
+    value: "linux"
+    effect: NoSchedule
+  - key: data-platform
+    operator: Equal
+    value: "true"
+    effect: NoSchedule

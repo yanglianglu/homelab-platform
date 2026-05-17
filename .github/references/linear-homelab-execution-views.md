@@ -171,9 +171,10 @@ status != Canceled
 status != Duplicate
 ```
 
-## Current Active Labeling
+## Historical Labeling Snapshot
 
-As of the first GitOps smoke app completion:
+This snapshot was captured around the first GitOps smoke app completion. Verify
+live Linear state before treating any issue status as current.
 
 - `FIF-19`: `network`, `decision-needed`
 - `FIF-20`: `network`, `decision-needed`
@@ -199,9 +200,9 @@ The completed Stage 3 GitOps issues remain labeled by their domain for history:
 5. Create a custom issue view named `Homelab - Domain Board`.
 6. Create a custom issue view named `Homelab - Verify Queue`.
 7. Pin or favorite the views in the order above.
-8. Confirm FIF-19 and FIF-20 appear in `Decision Needed`.
-9. Confirm FIF-21 and FIF-22 appear as blocked Stage 4 work.
-10. Confirm done Stage 3 issues are not cluttering the active views.
+8. Confirm decision-needed issues appear in `Homelab - Decision Needed`.
+9. Confirm blocked issues appear in the stage board.
+10. Confirm done issues do not clutter active views.
 
 ## Connector Limitation
 

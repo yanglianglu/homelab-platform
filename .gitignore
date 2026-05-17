@@ -36,6 +36,10 @@ id_ed25519
 .env
 .env.*
 .envrc
+.infisical.json
+
+# Local build/output artifacts
+_out/
 
 # macOS Finder metadata
 .DS_Store

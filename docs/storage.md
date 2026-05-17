@@ -12,6 +12,12 @@ Storage design notes for Harvester volumes and Kubernetes storage classes.
 - Shared fast PVCs should use `nvme` only after that class is intentionally created.
 - Node-specific NVMe storage classes exist for temporary, cache, scratch, or explicitly pinned performance-sensitive workloads.
 - `fast-ha` is approval-gated and must not be used without explicit owner approval.
+- Guest Kubernetes workload PVCs should use Harvester CSI. The guest
+  `harvester` StorageClass remains the default workload class and maps to host
+  `slow`.
+- The Talos `harvester-csi-mountpoint` extension is a universal node contract:
+  every Talos node should carry it before broad CSI-backed scheduling is
+  allowed.
 
 ## Storage Class Policy
 
@@ -26,6 +32,36 @@ Storage design notes for Harvester volumes and Kubernetes storage classes.
 | `fast-ha` | Replicated NVMe | Approval-gated for important infrastructure only |
 
 See `harvester/storageclasses/storage-policy.md` for the Harvester-side storage policy.
+
+## Guest Cluster CSI Policy
+
+`homelab-talos` uses the default guest StorageClass `harvester` for normal
+workload PVCs. The Harvester CSI chart maps this default guest class to host
+StorageClass `slow`.
+
+Explicit guest StorageClasses are retained for exceptions:
+
+| Guest StorageClass | Host StorageClass | Reclaim | Use |
+| --- | --- | --- | --- |
+| `harvester` | `slow` | `Delete` | default workload PVCs |
+| `harvester-slow-retain` | `slow` | `Retain` | retained database/data PVCs |
+| `harvester-slow-delete` | `slow` | `Delete` | explicit disposable/test PVCs |
+| `harvester-abundance-nvme-delete` | `the-abundance-nvme` | `Delete` | data-platform temp/cache/hot data |
+| `harvester-fast-ha-retain` | `fast-ha` | `Retain` | approval-gated infrastructure only |
+
+CSI does not change the durability model of `slow`: it remains single-replica
+HDD-backed Longhorn storage. CSI is used for Kubernetes-native PVC lifecycle,
+hot-plug automation, and operator compatibility.
+
+The small Harvester CSI proof passes on `data-01` after the
+`harvester-csi-mountpoint` Talos extension. The proof validated provisioning,
+attach, mount, write, restart persistence, scale-to-zero, `NodeUnstageVolume`,
+guest PV deletion, Harvester backend PVC deletion, and final
+`VolumeAttachment` cleanup without manual intervention.
+
+CSI is the preferred general workload storage path. Large ClickHouse data and
+legacy `data-01` disk removal still require larger reboot, maintenance,
+expansion, and performance drills.
 
 ## Boundaries
 

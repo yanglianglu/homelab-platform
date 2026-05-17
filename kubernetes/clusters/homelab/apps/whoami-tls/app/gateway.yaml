@@ -16,7 +16,8 @@ spec:
       tls:
         mode: Terminate
         certificateRefs:
-          - kind: Secret
+          - group: ""
+            kind: Secret
             name: whoami-home-arpa-gateway-tls
       allowedRoutes:
         namespaces:

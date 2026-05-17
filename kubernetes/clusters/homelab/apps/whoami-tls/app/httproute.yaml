@@ -5,11 +5,20 @@ metadata:
   namespace: apps
 spec:
   parentRefs:
-    - name: internal-https
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: internal-https
       sectionName: https
   hostnames:
     - whoami.home.arpa
   rules:
-    - backendRefs:
-        - name: whoami-tls
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - group: ""
+          kind: Service
+          name: whoami-tls
           port: 443
+          weight: 1

@@ -11,3 +11,9 @@ patches:
   - path: patch-control-plane-toleration-statefulset.yaml
     target:
       kind: StatefulSet
+  - path: patch-general-worker-node-selector.yaml
+    target:
+      kind: Deployment
+  - path: patch-general-worker-node-selector-statefulset.yaml
+    target:
+      kind: StatefulSet

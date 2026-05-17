@@ -80,7 +80,8 @@ data-01 is tainted data-platform=true:NoSchedule
 data-01 only runs required system DaemonSets
 External Secrets steady-state values select homelab.local/node-class=general
 External Secrets pods run on worker-01 and worker-02 after Argo refresh
-Argo CD still has bootstrap-era control-plane placement and needs a separate migration gate
+Argo CD core workloads select homelab.local/node-class=general
+Argo CD core pods run on worker-01 and worker-02
 ```
 
 Core pod summary, abbreviated:
@@ -117,11 +118,9 @@ and 1 TiB hot-temp PVC are detached from the VM and retained only as rollback.
 
 Next platform gates:
 
-1. Plan Argo CD workload placement separately; it is currently a bootstrap-era
-   platform exception.
-2. Add guest Kubernetes observability for CSI, Argo CD, node, namespace, and
+1. Add guest Kubernetes observability for CSI, Argo CD, node, namespace, and
    data-platform workload health.
-3. Run a ClickHouse-specific PVC pilot before large ingestion.
-4. Decide whether to delete the detached legacy `data-01` PVCs.
-5. Run a controlled Harvester host-maintenance CSI drill only as a separate
+2. Run a ClickHouse-specific PVC pilot before large ingestion.
+3. Decide whether to delete the detached legacy `data-01` PVCs.
+4. Run a controlled Harvester host-maintenance CSI drill only as a separate
    approved operation.

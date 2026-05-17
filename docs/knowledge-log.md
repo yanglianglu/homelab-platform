@@ -9,6 +9,26 @@ Each entry should start with:
 ## [YYYY-MM-DD] type | Title
 ```
 
+## [2026-05-17] status | Argo CD Worker Placement Migration
+
+- Source: approved Argo CD placement migration gate and live validation in
+  `homelab-talos`.
+- Pages touched: `kubernetes/bootstrap/argocd/install`,
+  `kubernetes/bootstrap/argocd/README.md`, and
+  `docs/runbooks/current-talos-checkpoint.md`.
+- Summary: added `homelab.local/node-class=general` node selectors to Argo CD
+  core Deployments and the application-controller StatefulSet, then reapplied
+  the bootstrap install. All Argo CD core pods now run on `worker-01` or
+  `worker-02`.
+- Contradictions: old control-plane tolerations remain in rendered/live
+  templates for bootstrap history, but the worker node selector is the effective
+  placement contract.
+- Open questions: whether to make Argo CD core self-managed later; guest
+  Kubernetes observability remains the next platform gate.
+- Validation: Kustomize render confirmed worker selectors; rollout status
+  passed for all Argo CD Deployments and the application-controller StatefulSet;
+  Argo CD Applications remained `Synced` and `Healthy`.
+
 ## [2026-05-17] status | Observability Acceptance And Placement Cleanup
 
 - Source: live read-only `homelab-talos` checks and the approved placement

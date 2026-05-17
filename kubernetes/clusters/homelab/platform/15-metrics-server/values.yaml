@@ -1,8 +1,5 @@
 replicas: 1
 
-args:
-  - --kubelet-insecure-tls
-
 nodeSelector:
   homelab.local/node-class: general
 

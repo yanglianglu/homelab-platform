@@ -53,6 +53,7 @@ observability architecture.
 | Alerting | Disabled/deferred |
 | Logs/traces | Not installed |
 | Harvester scraping | Not configured |
+| Metrics API TLS | Metrics Server validates kubelet serving certificates |
 | Acceptance status | Confirmed operational on 2026-05-17 America/Chicago |
 
 Enabled guest components:
@@ -65,6 +66,7 @@ Enabled guest components:
 - node-exporter
 - Argo CD `VMServiceScrape`
 - External Secrets `VMPodScrape`
+- Metrics Server with kubelet serving certificate validation
 
 First custom dashboard set:
 
@@ -117,6 +119,12 @@ Rollback:
 3. Confirm `kubectl --context homelab-talos get pods -A` remains healthy.
 4. Confirm Metrics Server still answers `kubectl --context homelab-talos top nodes`.
 5. Confirm Harvester `rancher-monitoring` remains unchanged.
+
+Metrics Server rollback is separate from observability rollback. If kubelet
+serving certificate validation fails, re-add `--kubelet-insecure-tls` to
+`kubernetes/clusters/homelab/platform/15-metrics-server/values.yaml`, let
+`platform-metrics-server` reconcile, and inspect kubelet-serving CSRs before
+retrying.
 
 Implementation note: the `observability` namespace enforces privileged Pod
 Security because node-exporter requires host network, host PID, and hostPath

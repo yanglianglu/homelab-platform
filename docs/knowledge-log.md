@@ -9,6 +9,24 @@ Each entry should start with:
 ## [YYYY-MM-DD] type | Title
 ```
 
+## [2026-05-17] status | Metrics Server Kubelet TLS Hardening
+
+- Source: approved FIF-35 hardening gate for the `homelab-talos` Metrics API.
+- Pages touched: Metrics Server values, Metrics Server README, Talos
+  checkpoint, and observability architecture.
+- Summary: installed the constrained `platform-kubelet-csr-approver`, enabled
+  Talos kubelet `serverTLSBootstrap` one node at a time, verified all six
+  kubelet-serving CSRs, and removed `--kubelet-insecure-tls` from Metrics
+  Server values.
+- Constraints: approved node set is `cp-01`, `cp-02`, `cp-03`, `worker-01`,
+  `worker-02`, and `data-01`; allowed LAN range is `192.168.1.0/24`; signer is
+  `kubernetes.io/kubelet-serving`.
+- Rollback: re-add `--kubelet-insecure-tls`, let `platform-metrics-server`
+  reconcile, then inspect CSR and certificate state before retrying.
+- Validation: all kubelet-serving CSRs were `Approved,Issued`; Metrics Server
+  remained `Synced/Healthy`; `v1beta1.metrics.k8s.io`, `kubectl top nodes`,
+  and `kubectl top pods -A` worked after hardening.
+
 ## [2026-05-17] status | Guest Kubernetes Observability Baseline
 
 - Source: approved FIF-36 implementation gate for the `homelab-talos` guest

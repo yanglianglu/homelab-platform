@@ -62,6 +62,21 @@ harvester-csi-mountpoint extension active on all Talos nodes
 CSI proof on data-01 passed provisioning, resize, reboot, detach, and cleanup
 legacy data-01 rollback PVCs deleted
 Metrics Server installed for guest metrics.k8s.io API
+Metrics Server validates kubelet serving certificates
+kubelet serverTLSBootstrap active on all Talos nodes
+platform-kubelet-csr-approver Synced/Healthy in kube-system
+six kubelet-serving CSRs Approved,Issued for the expected node identities
+```
+
+Kubelet serving certificate proof:
+
+```text
+cp-01       system:node:cp-01       DNS:cp-01       IP:192.168.1.181
+cp-02       system:node:cp-02       DNS:cp-02       IP:192.168.1.182
+cp-03       system:node:cp-03       DNS:cp-03       IP:192.168.1.183
+worker-01   system:node:worker-01   DNS:worker-01   IP:192.168.1.179
+worker-02   system:node:worker-02   DNS:worker-02   IP:192.168.1.180
+data-01     system:node:data-01     DNS:data-01     IP:192.168.1.185
 ```
 
 Harvester observability:

@@ -1,0 +1,18 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: whoami-home-arpa-gateway
+  namespace: apps
+spec:
+  secretName: whoami-home-arpa-gateway-tls
+  duration: 2160h
+  renewBefore: 360h
+  dnsNames:
+    - whoami.home.arpa
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  issuerRef:
+    name: homelab-internal-ca
+    kind: ClusterIssuer
+    group: cert-manager.io

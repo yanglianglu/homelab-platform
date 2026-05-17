@@ -1,0 +1,16 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: BackendTLSPolicy
+metadata:
+  name: whoami-tls
+  namespace: apps
+spec:
+  targetRefs:
+    - group: ""
+      kind: Service
+      name: whoami-tls
+  validation:
+    hostname: whoami-tls.apps.svc.cluster.local
+    caCertificateRefs:
+      - group: ""
+        kind: ConfigMap
+        name: homelab-internal-ca

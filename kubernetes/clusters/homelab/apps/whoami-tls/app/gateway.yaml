@@ -1,0 +1,23 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: internal-https
+  namespace: apps
+spec:
+  gatewayClassName: envoy-gateway
+  addresses:
+    - type: IPAddress
+      value: 192.168.1.187
+  listeners:
+    - name: https
+      hostname: whoami.home.arpa
+      protocol: HTTPS
+      port: 443
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: whoami-home-arpa-gateway-tls
+      allowedRoutes:
+        namespaces:
+          from: Same

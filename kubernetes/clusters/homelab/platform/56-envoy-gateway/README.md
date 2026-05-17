@@ -8,13 +8,14 @@ This Argo CD Application installs the Envoy Gateway controller.
 - Chart version: `v1.8.0`
 - Repository: `docker.io/envoyproxy`
 - Namespace: `envoy-gateway-system`
+- GatewayClass: `envoy-gateway`
 - Controller name: `gateway.envoyproxy.io/gatewayclass-controller`
 - Scheduling: general workers only
 
 Envoy Gateway is the Gateway API implementation for the internal HTTPS route
-track. This folder installs only the controller. GatewayClass, Gateway,
-HTTPRoute, BackendTLSPolicy, certificates, DNS, and test application resources
-belong to later gates.
+track. This folder installs the controller and the cluster-scoped GatewayClass.
+Gateway listeners, HTTPRoute, BackendTLSPolicy, certificates, DNS, and test
+application resources belong to later gates.
 
 ## Exclusions
 

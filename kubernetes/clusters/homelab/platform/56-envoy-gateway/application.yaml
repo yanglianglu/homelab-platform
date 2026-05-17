@@ -18,6 +18,9 @@ spec:
           - $values/kubernetes/clusters/homelab/platform/56-envoy-gateway/values.yaml
     - repoURL: https://github.com/yanglianglu/homelab-platform.git
       targetRevision: main
+      path: kubernetes/clusters/homelab/platform/56-envoy-gateway/resources
+    - repoURL: https://github.com/yanglianglu/homelab-platform.git
+      targetRevision: main
       ref: values
   destination:
     server: https://kubernetes.default.svc

@@ -20,5 +20,5 @@ are still required before any ClickHouse production PVCs are created.
 StorageClass manifests and the Harvester CSI chart Application live under
 `../50-harvester-csi`.
 
-Do not detach the legacy `data-01` disks until the larger drills pass and the
-detach plan is explicitly approved.
+The legacy `data-01` rollback PVCs were deleted after the CSI-first model became
+the accepted storage path.

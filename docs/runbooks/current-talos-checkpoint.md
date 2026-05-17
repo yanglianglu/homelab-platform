@@ -60,7 +60,8 @@ CSI controller 3/3 available
 CSI node DaemonSet 6/6 available
 harvester-csi-mountpoint extension active on all Talos nodes
 CSI proof on data-01 passed provisioning, resize, reboot, detach, and cleanup
-legacy data-01 PVCs detached from VM and retained as rollback
+legacy data-01 rollback PVCs deleted
+Metrics Server installed for guest metrics.k8s.io API
 ```
 
 Harvester observability:
@@ -114,13 +115,12 @@ kube-proxy                      Running
 
 Do not create data-platform local PVs. The storage direction is Harvester CSI
 first. `data-01` now sees only `/dev/vda`; the legacy 10 TiB retained-data PVC
-and 1 TiB hot-temp PVC are detached from the VM and retained only as rollback.
+and 1 TiB hot-temp PVC have been deleted and removed from desired state.
 
 Next platform gates:
 
 1. Add guest Kubernetes observability for CSI, Argo CD, node, namespace, and
    data-platform workload health.
 2. Run a ClickHouse-specific PVC pilot before large ingestion.
-3. Decide whether to delete the detached legacy `data-01` PVCs.
-4. Run a controlled Harvester host-maintenance CSI drill only as a separate
+3. Run a controlled Harvester host-maintenance CSI drill only as a separate
    approved operation.

@@ -27,6 +27,6 @@ Proof gate:
 The proof workload is staged in `../csi-proof` and remains an operator-run
 drill workload.
 
-Do not detach the legacy `data-01` disks until larger CSI reboot, maintenance,
-expansion, and performance drills pass and the detach plan is explicitly
-approved.
+The legacy `data-01` rollback PVCs were deleted after the CSI-first model became
+the accepted storage path. Do not recreate static local PVs unless the CSI path
+is explicitly rejected.

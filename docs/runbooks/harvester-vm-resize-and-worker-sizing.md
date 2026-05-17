@@ -73,10 +73,11 @@ Use these outside the shared general worker pool when a workload has dominant CP
 | AI VM | Workload/GPU dependent | 32-64 Gi | NVMe preferred for model/cache data | vLLM, Ollama, embedding/vector experiments |
 
 For the home server, prefer one dedicated node/VM per large workload family.
-`data-01` starts on `the-abundance` at 8 vCPU / 32 Gi. Its legacy 10 TiB and
-1 TiB PVCs are detached from the VM and retained only as rollback while the
-CSI-first model is validated. Do not design HA/read/write split until there is
-a clear operational reason.
+`data-01` starts on `the-abundance` at 8 vCPU / 32 Gi. Its workload storage
+should be created as Harvester CSI PVCs from the guest Kubernetes cluster. The
+legacy 10 TiB and 1 TiB rollback PVCs were deleted after the CSI-first model was
+accepted. Do not design HA/read/write split until there is a clear operational
+reason.
 
 ## Resize Principles
 

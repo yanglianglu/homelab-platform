@@ -61,9 +61,9 @@ final `VolumeAttachment` cleanup. The reboot left an old failed proof pod object
 that required manual deletion; storage detach was clean.
 
 CSI is the preferred general workload storage path. Harvester-level monitoring
-is enabled for host, VM, and Longhorn visibility. Large ClickHouse data and
-legacy `data-01` PVC deletion still require guest observability,
-workload-specific testing, and an explicit cleanup gate.
+is enabled for host, VM, and Longhorn visibility. The legacy `data-01` rollback
+PVCs have been deleted. Large ClickHouse data still requires guest
+observability and workload-specific testing.
 
 ## Boundaries
 

@@ -15,5 +15,5 @@ Do not create `worker-03` until real scheduling pressure or workload metrics jus
 
 `data-01` is not general worker capacity. It is pinned to `the-abundance`,
 tainted `data-platform=true:NoSchedule`, and uses a CSI-first storage model.
-The legacy 10 TiB and 1 TiB PVCs are detached from the VM and retained only as
-rollback until a separate cleanup gate deletes them.
+The legacy 10 TiB retained-data PVC and 1 TiB hot/temp PVC were deleted after
+the CSI model became the accepted storage path.

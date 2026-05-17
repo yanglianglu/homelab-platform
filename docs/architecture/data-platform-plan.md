@@ -59,8 +59,8 @@ Legacy PVCs retained outside the running VM:
 
 | Harvester PVC | Size | State | Purpose |
 | --- | ---: | --- | --- |
-| `data-01-retained-data` | 10 TiB | Detached | Rollback only |
-| `data-01-hot-temp` | 1 TiB | Detached | Rollback only |
+| `data-01-retained-data` | 10 TiB | Deleted | Former rollback volume |
+| `data-01-hot-temp` | 1 TiB | Deleted | Former rollback volume |
 
 Do not create Talos UserVolumeConfig or static local PVs unless Harvester CSI is
 rejected after proof and the local-PV fallback is explicitly approved.
@@ -71,8 +71,8 @@ drill validated provisioning, write/read, pod restart persistence, 1 Gi -> 2 Gi
 expansion, CSI node pod restart, `data-01` reboot recovery, detach, guest
 PVC/PV cleanup, and Harvester backend volume cleanup.
 
-The legacy PVCs were detached from `data-01` and retained as rollback. Delete
-them only in a separate explicit cleanup gate.
+The legacy PVCs were detached from `data-01` and later deleted in an explicit
+cleanup gate. Do not recreate them unless the CSI-first model is rejected.
 
 See `harvester-csi-client-cluster-plan.md` for CSI gates.
 

@@ -11,6 +11,7 @@ spec:
     - https://github.com/yanglianglu/homelab-platform.git
     - https://charts.external-secrets.io
     - https://charts.harvesterhci.io
+    - https://kubernetes-sigs.github.io/metrics-server/
   destinations:
     - namespace: '*'
       server: https://kubernetes.default.svc

@@ -5,6 +5,7 @@ resources:
   - platform/00-namespaces/application.yaml
   - platform/05-kube-vip/application.yaml
   - platform/10-external-secrets/application.yaml
+  - platform/15-metrics-server/application.yaml
   - platform/20-infisical/application.yaml
   - platform/30-argocd-repo-access/application.yaml
   - platform/40-policies/application.yaml

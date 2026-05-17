@@ -5,7 +5,9 @@ Shared cluster services, policies, and infrastructure-style Kubernetes resources
 Current domains:
 
 - `00-namespaces`: base namespaces and Pod Security labels
+- `05-kube-vip`: stable internal Kubernetes API VIP
 - `10-external-secrets`: External Secrets Operator Helm chart
+- `15-metrics-server`: guest cluster Metrics API provider
 - `20-infisical`: Infisical ClusterSecretStore
 - `30-argocd-repo-access`: Argo CD GitHub App repo credential ExternalSecret
 - `40-policies`: policy guardrail staging area

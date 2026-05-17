@@ -110,7 +110,7 @@ Next platform gates:
 
 1. Roll the Harvester CSI mountpoint extension to all Talos nodes.
 2. Sync the Argo CD managed Harvester CSI app from Git.
-3. Run larger CSI drills before approving large ClickHouse PVCs or legacy disk detach.
+3. Run larger CSI drills before approving large ClickHouse PVCs.
 4. Add observability before large ClickHouse ingestion.
 5. Add ingress, cert-manager, DNS, and Cloudflare Tunnel after platform storage
    and observability are stable.

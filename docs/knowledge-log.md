@@ -9,6 +9,22 @@ Each entry should start with:
 ## [YYYY-MM-DD] type | Title
 ```
 
+## [2026-05-17] status | Metrics API And Data PVC Cleanup
+
+- Source: approved request to delete legacy `data-01` rollback PVCs and enable
+  the guest Kubernetes Metrics API.
+- Pages touched: Harvester `data-01` desired state, platform Metrics Server
+  GitOps resources, storage/data-platform docs, and the Talos checkpoint.
+- Summary: deleted `data-01-retained-data` and `data-01-hot-temp` from
+  Harvester, removed them from desired state, and added Metrics Server as an
+  Argo CD managed platform app in `kube-system`.
+- Contradictions: the CSI-first model is now the only active `data-01` storage
+  model; old rollback-PVC wording was removed from current-state docs.
+- Open questions: replace `--kubelet-insecure-tls` later with kubelet serving
+  certificate approval if Metrics API hardening becomes a priority.
+- Validation: deletion left `data-01` VM and node Ready; Metrics Server render
+  showed worker placement and the expected Talos kubelet TLS flag.
+
 ## [2026-05-17] status | Argo CD Worker Placement Migration
 
 - Source: approved Argo CD placement migration gate and live validation in

@@ -88,12 +88,10 @@ observability, alert review, and a ClickHouse-specific storage drill.
 
 Required next gates:
 
-1. Review Harvester monitoring alerts without external notification routing.
-2. Add guest Kubernetes observability for CSI, Argo CD, node, namespace, and
+1. Add guest Kubernetes observability for CSI, Argo CD, node, namespace, and
    data-platform workload health.
-3. Run a ClickHouse-specific pilot using PVCs before large ingestion.
-4. Decide whether to delete the detached legacy `data-01` 10 TiB and 1 TiB PVCs.
-5. Run a controlled Harvester host-maintenance CSI drill only with a separate
+2. Run a ClickHouse-specific pilot using PVCs before large ingestion.
+3. Run a controlled Harvester host-maintenance CSI drill only with a separate
    approval gate.
 
 ## Secret Rules

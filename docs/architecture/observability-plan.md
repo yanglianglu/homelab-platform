@@ -74,6 +74,7 @@ First custom dashboard set:
 | `Homelab / Node Overview` | node CPU, memory, filesystem, network, and pressure |
 | `Homelab / Namespace & Workload Overview` | namespace and workload resource/debug view |
 | `Homelab / Storage & CSI Object State` | guest PVC/PV/StorageClass/VolumeAttachment and CSI pod state |
+| `Homelab / Storage & CSI Performance` | cross-layer guest PVC state plus Harvester Longhorn volume performance |
 | `Homelab / Control Plane & DNS` | API server, kubelet, and CoreDNS |
 | `Homelab / GitOps & Secrets` | Argo CD and External Secrets |
 
@@ -85,6 +86,22 @@ deployment. CSI visibility comes from guest Kubernetes object state:
 - StorageClass inventory
 - VolumeAttachment state
 - pod scheduling and restart state
+
+The cross-layer CSI performance dashboard keeps collection separated. It uses
+guest VictoriaMetrics for PVC, VolumeAttachment, CSI pod, and workload state.
+It expects a separate read-only Grafana datasource named `Harvester Prometheus`
+for Harvester `rancher-monitoring` / Longhorn backend metrics. The Harvester
+Prometheus inspection on 2026-05-17 showed:
+
+- Longhorn volume throughput, IOPS, latency, actual size, capacity, state, and
+  robustness metrics are present.
+- Longhorn volume metrics include `volume`, `pvc`, `pvc_namespace`, and `node`
+  labels, which are the dashboard bridge from guest PVCs to backend volumes.
+- Longhorn disk capacity, usage, status, and health metrics are present.
+- Longhorn disk IOPS and disk latency metrics are not currently exposed, so the
+  dashboard does not claim disk-level IOPS/latency visibility.
+- The Harvester datasource credential must be delivered through Infisical /
+  External Secrets and must not be committed to Git.
 
 Internal access:
 
@@ -148,8 +165,8 @@ read-only datasource if that improves navigation.
    visible.
 2. Add data-platform dashboards and reviewed alerts before ClickHouse ingestion.
 3. Run the ClickHouse CSI PVC pilot only after observability remains stable.
-4. Decide whether a single Grafana should display both Harvester and guest
-   datasources.
+4. Provision the read-only `Harvester Prometheus` datasource once the
+   least-privileged credential exists in Infisical.
 
 Deferred by operator decision on 2026-05-17:
 

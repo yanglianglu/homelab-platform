@@ -53,6 +53,18 @@ configMapGenerator:
         app.kubernetes.io/part-of: guest-observability
         grafana_dashboard: "1"
         homelab.lu/layer: guest-kubernetes
+  - name: homelab-dashboard-storage-csi-performance
+    namespace: observability
+    files:
+      - dashboards/storage-csi-performance.json
+    options:
+      labels:
+        app.kubernetes.io/component: grafana-dashboard
+        app.kubernetes.io/managed-by: kustomize
+        app.kubernetes.io/name: storage-csi-performance
+        app.kubernetes.io/part-of: guest-observability
+        grafana_dashboard: "1"
+        homelab.lu/layer: cross-layer
   - name: homelab-dashboard-control-plane-dns
     namespace: observability
     files:

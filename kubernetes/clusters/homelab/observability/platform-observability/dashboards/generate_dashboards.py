@@ -10,11 +10,19 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parent
 DS = {"type": "prometheus", "uid": "${datasource}"}
+GUEST_DS = {"type": "prometheus", "uid": "${guest_datasource}"}
+HARVESTER_DS = {"type": "prometheus", "uid": "${harvester_datasource}"}
 
 
-def target(expr: str, ref_id: str = "A", legend: str = "", instant: bool = False) -> dict[str, Any]:
+def target(
+    expr: str,
+    ref_id: str = "A",
+    legend: str = "",
+    instant: bool = False,
+    datasource: dict[str, str] = DS,
+) -> dict[str, Any]:
     data: dict[str, Any] = {
-        "datasource": DS,
+        "datasource": datasource,
         "editorMode": "code",
         "expr": expr,
         "legendFormat": legend,
@@ -48,6 +56,7 @@ def panel(
     stacked: bool = False,
     legend: bool = True,
     reduce_calc: str = "lastNotNull",
+    datasource: dict[str, str] = DS,
 ) -> dict[str, Any]:
     options: dict[str, Any]
     if ptype == "stat":
@@ -111,7 +120,7 @@ def panel(
         defaults["custom"] = custom
 
     return {
-        "datasource": DS,
+        "datasource": datasource,
         "description": description,
         "fieldConfig": {"defaults": defaults, "overrides": []},
         "gridPos": {"h": h, "w": w, "x": x, "y": y},
@@ -123,11 +132,11 @@ def panel(
     }
 
 
-def datasource_var() -> dict[str, Any]:
+def datasource_var(name: str = "datasource", text: str = "VictoriaMetrics", value: str = "VictoriaMetrics") -> dict[str, Any]:
     return {
-        "current": {"selected": False, "text": "VictoriaMetrics", "value": "VictoriaMetrics"},
+        "current": {"selected": False, "text": text, "value": value},
         "hide": 0,
-        "name": "datasource",
+        "name": name,
         "options": [],
         "query": "prometheus",
         "refresh": 1,
@@ -137,10 +146,17 @@ def datasource_var() -> dict[str, Any]:
     }
 
 
-def query_var(name: str, label_query: str, *, include_all: bool = True, multi: bool = True) -> dict[str, Any]:
+def query_var(
+    name: str,
+    label_query: str,
+    *,
+    include_all: bool = True,
+    multi: bool = True,
+    datasource: dict[str, str] = DS,
+) -> dict[str, Any]:
     return {
         "current": {"selected": False, "text": "All" if include_all else "", "value": "$__all" if include_all else ""},
-        "datasource": DS,
+        "datasource": datasource,
         "definition": label_query,
         "hide": 0,
         "includeAll": include_all,
@@ -156,7 +172,15 @@ def query_var(name: str, label_query: str, *, include_all: bool = True, multi: b
     }
 
 
-def dashboard(uid: str, title: str, tags: list[str], panels: list[dict[str, Any]], variables: list[dict[str, Any]]) -> dict[str, Any]:
+def dashboard(
+    uid: str,
+    title: str,
+    tags: list[str],
+    panels: list[dict[str, Any]],
+    variables: list[dict[str, Any]],
+    datasource_variables: list[dict[str, Any]] | None = None,
+) -> dict[str, Any]:
+    datasource_variables = datasource_variables if datasource_variables is not None else [datasource_var()]
     return {
         "annotations": {"list": [{"builtIn": 1, "datasource": {"type": "grafana", "uid": "-- Grafana --"}, "enable": True, "hide": True, "iconColor": "rgba(0, 211, 255, 1)", "name": "Annotations & Alerts", "type": "dashboard"}]},
         "editable": True,
@@ -168,7 +192,7 @@ def dashboard(uid: str, title: str, tags: list[str], panels: list[dict[str, Any]
         "refresh": "30s",
         "schemaVersion": 42,
         "tags": tags,
-        "templating": {"list": [datasource_var(), *variables]},
+        "templating": {"list": [*datasource_variables, *variables]},
         "time": {"from": "now-1h", "to": "now"},
         "timepicker": {},
         "timezone": "browser",
@@ -190,6 +214,23 @@ def build() -> None:
     workload_var = query_var("workload", 'label_values(kube_deployment_labels{namespace=~"$namespace"}, deployment)')
     sc_var = query_var("storageclass", "label_values(kube_storageclass_info, storageclass)")
     pvc_var = query_var("persistentvolumeclaim", 'label_values(kube_persistentvolumeclaim_info{namespace=~"$namespace"}, persistentvolumeclaim)')
+    guest_ns_var = query_var("namespace", "label_values(kube_namespace_created, namespace)", datasource=GUEST_DS)
+    guest_pvc_var = query_var(
+        "persistentvolumeclaim",
+        'label_values(kube_persistentvolumeclaim_info{namespace=~"$namespace"}, persistentvolumeclaim)',
+        datasource=GUEST_DS,
+    )
+    longhorn_volume_var = query_var(
+        "longhorn_volume",
+        'label_values(longhorn_volume_state{pvc_namespace=~"$namespace",pvc=~"$persistentvolumeclaim"}, volume)',
+        datasource=HARVESTER_DS,
+    )
+    longhorn_node_var = query_var("longhorn_node", "label_values(longhorn_node_status, node)", datasource=HARVESTER_DS)
+    longhorn_disk_var = query_var(
+        "longhorn_disk",
+        'label_values(longhorn_disk_capacity_bytes{node=~"$longhorn_node"}, disk)',
+        datasource=HARVESTER_DS,
+    )
 
     write(
         "guest-cluster-overview.json",
@@ -277,6 +318,59 @@ def build() -> None:
                 panel(11, "Harvester CSI Pods", "table", 16, 20, 8, 8, [target('kube_pod_status_phase{namespace="kube-system",pod=~"harvester-csi-driver.*"} == 1', instant=True)], unit="short"),
             ],
             [ns_var, pvc_var, sc_var],
+        ),
+    )
+
+    write(
+        "storage-csi-performance.json",
+        dashboard(
+            "homelab-storage-csi-performance",
+            "Homelab / Storage & CSI Performance",
+            ["homelab", "storage", "csi", "longhorn", "performance"],
+            [
+                panel(1, "PVCs Not Bound", "stat", 0, 0, 4, 4, [target('count(kube_persistentvolumeclaim_status_phase{namespace=~"$namespace",persistentvolumeclaim=~"$persistentvolumeclaim",phase!="Bound"} == 1)', instant=True, datasource=GUEST_DS)], unit="short", datasource=GUEST_DS),
+                panel(2, "VolumeAttachments Not Attached", "stat", 4, 0, 4, 4, [target("count(kube_volumeattachment_status_attached == 0)", instant=True, datasource=GUEST_DS)], unit="short", datasource=GUEST_DS),
+                panel(3, "CSI Restarts Last Hour", "stat", 8, 0, 4, 4, [target('sum(increase(kube_pod_container_status_restarts_total{namespace="kube-system",pod=~"harvester-csi-driver.*"}[1h]))', instant=True, datasource=GUEST_DS)], unit="short", datasource=GUEST_DS),
+                panel(4, "PVC Used Percent", "stat", 12, 0, 4, 4, [target('100 * sum(kubelet_volume_stats_used_bytes{namespace=~"$namespace",persistentvolumeclaim=~"$persistentvolumeclaim"}) / sum(kubelet_volume_stats_capacity_bytes{namespace=~"$namespace",persistentvolumeclaim=~"$persistentvolumeclaim"})', instant=True, datasource=GUEST_DS)], unit="percent", decimals=1, datasource=GUEST_DS),
+                panel(5, "Longhorn Volumes Degraded", "stat", 16, 0, 4, 4, [target('count(longhorn_volume_robustness{pvc_namespace=~"$namespace",pvc=~"$persistentvolumeclaim",volume=~"$longhorn_volume",state!~"healthy|unknown"} == 1)', instant=True, datasource=HARVESTER_DS)], unit="short", datasource=HARVESTER_DS),
+                panel(6, "Longhorn Nodes Down", "stat", 20, 0, 4, 4, [target('count(longhorn_node_status{node=~"$longhorn_node",condition="ready"} == 0)', instant=True, datasource=HARVESTER_DS)], unit="short", datasource=HARVESTER_DS),
+                panel(7, "Longhorn Volume Throughput", "timeseries", 0, 4, 12, 8, [
+                    target('sum by (volume,pvc_namespace,pvc,node) (longhorn_volume_read_throughput{pvc_namespace=~"$namespace",pvc=~"$persistentvolumeclaim",volume=~"$longhorn_volume"})', "A", "read {{pvc_namespace}}/{{pvc}} {{volume}} {{node}}", datasource=HARVESTER_DS),
+                    target('sum by (volume,pvc_namespace,pvc,node) (longhorn_volume_write_throughput{pvc_namespace=~"$namespace",pvc=~"$persistentvolumeclaim",volume=~"$longhorn_volume"})', "B", "write {{pvc_namespace}}/{{pvc}} {{volume}} {{node}}", datasource=HARVESTER_DS),
+                ], unit="Bps", datasource=HARVESTER_DS),
+                panel(8, "Longhorn Volume IOPS", "timeseries", 12, 4, 12, 8, [
+                    target('sum by (volume,pvc_namespace,pvc,node) (longhorn_volume_read_iops{pvc_namespace=~"$namespace",pvc=~"$persistentvolumeclaim",volume=~"$longhorn_volume"})', "A", "read {{pvc_namespace}}/{{pvc}} {{volume}} {{node}}", datasource=HARVESTER_DS),
+                    target('sum by (volume,pvc_namespace,pvc,node) (longhorn_volume_write_iops{pvc_namespace=~"$namespace",pvc=~"$persistentvolumeclaim",volume=~"$longhorn_volume"})', "B", "write {{pvc_namespace}}/{{pvc}} {{volume}} {{node}}", datasource=HARVESTER_DS),
+                ], unit="iops", datasource=HARVESTER_DS),
+                panel(9, "Longhorn Volume Latency", "timeseries", 0, 12, 12, 8, [
+                    target('avg by (volume,pvc_namespace,pvc,node) (longhorn_volume_read_latency{pvc_namespace=~"$namespace",pvc=~"$persistentvolumeclaim",volume=~"$longhorn_volume"}) / 1000000', "A", "read {{pvc_namespace}}/{{pvc}} {{volume}} {{node}}", datasource=HARVESTER_DS),
+                    target('avg by (volume,pvc_namespace,pvc,node) (longhorn_volume_write_latency{pvc_namespace=~"$namespace",pvc=~"$persistentvolumeclaim",volume=~"$longhorn_volume"}) / 1000000', "B", "write {{pvc_namespace}}/{{pvc}} {{volume}} {{node}}", datasource=HARVESTER_DS),
+                ], unit="ms", decimals=2, datasource=HARVESTER_DS),
+                panel(10, "Longhorn Volume Size", "timeseries", 12, 12, 12, 8, [
+                    target('longhorn_volume_actual_size_bytes{pvc_namespace=~"$namespace",pvc=~"$persistentvolumeclaim",volume=~"$longhorn_volume"}', "A", "actual {{pvc_namespace}}/{{pvc}} {{volume}}", datasource=HARVESTER_DS),
+                    target('longhorn_volume_capacity_bytes{pvc_namespace=~"$namespace",pvc=~"$persistentvolumeclaim",volume=~"$longhorn_volume"}', "B", "capacity {{pvc_namespace}}/{{pvc}} {{volume}}", datasource=HARVESTER_DS),
+                ], unit="bytes", datasource=HARVESTER_DS),
+                panel(11, "PVC Capacity And Usage", "timeseries", 0, 20, 12, 8, [
+                    target('kubelet_volume_stats_used_bytes{namespace=~"$namespace",persistentvolumeclaim=~"$persistentvolumeclaim"}', "A", "used {{namespace}}/{{persistentvolumeclaim}}", datasource=GUEST_DS),
+                    target('kubelet_volume_stats_available_bytes{namespace=~"$namespace",persistentvolumeclaim=~"$persistentvolumeclaim"}', "B", "available {{namespace}}/{{persistentvolumeclaim}}", datasource=GUEST_DS),
+                    target('kubelet_volume_stats_capacity_bytes{namespace=~"$namespace",persistentvolumeclaim=~"$persistentvolumeclaim"}', "C", "capacity {{namespace}}/{{persistentvolumeclaim}}", datasource=GUEST_DS),
+                ], unit="bytes", datasource=GUEST_DS),
+                panel(12, "Pod CPU And Memory Near PVC Namespace", "timeseries", 12, 20, 12, 8, [
+                    target('sum by (namespace,pod) (rate(container_cpu_usage_seconds_total{namespace=~"$namespace",container!="",image!=""}[5m]))', "A", "cpu {{namespace}}/{{pod}}", datasource=GUEST_DS),
+                    target('sum by (namespace,pod) (container_memory_working_set_bytes{namespace=~"$namespace",container!="",image!=""}) / 1073741824', "B", "memory Gi {{namespace}}/{{pod}}", datasource=GUEST_DS),
+                ], unit="short", datasource=GUEST_DS),
+                panel(13, "PVC To PV Mapping", "table", 0, 28, 8, 8, [target('kube_persistentvolumeclaim_info{namespace=~"$namespace",persistentvolumeclaim=~"$persistentvolumeclaim"}', instant=True, datasource=GUEST_DS)], unit="short", datasource=GUEST_DS),
+                panel(14, "VolumeAttachment Mapping", "table", 8, 28, 8, 8, [target("kube_volumeattachment_spec_source_persistentvolume", instant=True, datasource=GUEST_DS)], unit="short", datasource=GUEST_DS),
+                panel(15, "Longhorn Volume State", "table", 16, 28, 8, 8, [target('longhorn_volume_state{pvc_namespace=~"$namespace",pvc=~"$persistentvolumeclaim",volume=~"$longhorn_volume"} == 1', instant=True, datasource=HARVESTER_DS)], unit="short", datasource=HARVESTER_DS),
+                panel(16, "Longhorn Volume Robustness", "table", 0, 36, 8, 8, [target('longhorn_volume_robustness{pvc_namespace=~"$namespace",pvc=~"$persistentvolumeclaim",volume=~"$longhorn_volume"} == 1', instant=True, datasource=HARVESTER_DS)], unit="short", datasource=HARVESTER_DS),
+                panel(17, "Longhorn Disk Usage Percent", "bargauge", 8, 36, 8, 8, [target('100 * sum by (node,disk) (longhorn_disk_usage_bytes{node=~"$longhorn_node",disk=~"$longhorn_disk"}) / sum by (node,disk) (longhorn_disk_capacity_bytes{node=~"$longhorn_node",disk=~"$longhorn_disk"})', instant=True, datasource=HARVESTER_DS)], unit="percent", decimals=1, datasource=HARVESTER_DS),
+                panel(18, "Longhorn Disk Status And Health", "table", 16, 36, 8, 8, [target('longhorn_disk_status{node=~"$longhorn_node",disk=~"$longhorn_disk"}', "A", instant=True, datasource=HARVESTER_DS), target('longhorn_disk_health{node=~"$longhorn_node",disk=~"$longhorn_disk"}', "B", instant=True, datasource=HARVESTER_DS)], unit="short", datasource=HARVESTER_DS),
+            ],
+            [guest_ns_var, guest_pvc_var, longhorn_volume_var, longhorn_node_var, longhorn_disk_var],
+            datasource_variables=[
+                datasource_var("guest_datasource", "VictoriaMetrics", "VictoriaMetrics"),
+                datasource_var("harvester_datasource", "Harvester Prometheus", "Harvester Prometheus"),
+            ],
         ),
     )
 

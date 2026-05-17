@@ -26,3 +26,38 @@ Synced and Healthy.
 Some metric names depend on the controller version and scrape endpoint behavior.
 If a direct controller metric is missing, use kube-state-metrics object state as
 the baseline signal before adding another scrape endpoint.
+
+## Cross-Layer CSI Performance
+
+Use the `Homelab / Storage & CSI Performance` dashboard with two Grafana
+datasources:
+
+| Datasource variable | Source |
+| --- | --- |
+| `guest_datasource` | Guest VictoriaMetrics in `homelab-talos` |
+| `harvester_datasource` | Read-only Harvester `rancher-monitoring` Prometheus |
+
+Guest-side queries:
+
+| Area | Query |
+| --- | --- |
+| PVC/PV mapping | `kube_persistentvolumeclaim_info` |
+| VolumeAttachment mapping | `kube_volumeattachment_spec_source_persistentvolume` |
+| Attachment status | `kube_volumeattachment_status_attached` |
+| PVC capacity/used/available | `kubelet_volume_stats_capacity_bytes`, `kubelet_volume_stats_used_bytes`, `kubelet_volume_stats_available_bytes` |
+| CSI pod restarts | `increase(kube_pod_container_status_restarts_total{namespace="kube-system",pod=~"harvester-csi-driver.*"}[1h])` |
+
+Harvester-side Longhorn queries:
+
+| Area | Query |
+| --- | --- |
+| Volume throughput | `longhorn_volume_read_throughput`, `longhorn_volume_write_throughput` |
+| Volume IOPS | `longhorn_volume_read_iops`, `longhorn_volume_write_iops` |
+| Volume latency | `longhorn_volume_read_latency / 1000000`, `longhorn_volume_write_latency / 1000000` |
+| Volume size | `longhorn_volume_actual_size_bytes`, `longhorn_volume_capacity_bytes` |
+| Volume state | `longhorn_volume_state`, `longhorn_volume_robustness` |
+| Disk capacity and health | `longhorn_disk_capacity_bytes`, `longhorn_disk_usage_bytes`, `longhorn_disk_status`, `longhorn_disk_health` |
+
+The Harvester Prometheus datasource should be provisioned separately with a
+least-privileged read-only credential. Keep that credential in Infisical and
+materialize it with External Secrets; do not commit secure datasource values.

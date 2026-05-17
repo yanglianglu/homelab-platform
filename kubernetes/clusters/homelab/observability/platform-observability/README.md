@@ -38,12 +38,26 @@ consistent.
 | `Homelab / Node Overview` | CPU, memory, filesystem, network, pressure, and pod placement by node. |
 | `Homelab / Namespace & Workload Overview` | Namespace and workload resource use, pod phases, unavailable replicas, and restarts. |
 | `Homelab / Storage & CSI Object State` | PVC/PV/StorageClass/VolumeAttachment and Harvester CSI pod state from the guest layer. |
+| `Homelab / Storage & CSI Performance` | Cross-layer view for guest PVC state plus Harvester Longhorn volume throughput, IOPS, latency, capacity, robustness, and disk health. |
 | `Homelab / Control Plane & DNS` | API server, kubelet, and CoreDNS health and latency. |
 | `Homelab / GitOps & Secrets` | Argo CD app state and External Secrets / ClusterSecretStore health. |
 
-Direct Harvester and Longhorn backend performance metrics remain in Harvester
-monitoring. Add Harvester Prometheus as a separate read-only Grafana datasource
-before creating a cross-layer `CSI Storage Path Performance` dashboard.
+`Homelab / Storage & CSI Performance` is a shared visualization dashboard, not
+shared collection. Guest Kubernetes panels use the local `VictoriaMetrics`
+datasource. Longhorn backend panels expect a separate read-only datasource named
+`Harvester Prometheus` that points at Harvester `rancher-monitoring` Prometheus.
+Do not scrape Harvester management metrics into guest VictoriaMetrics.
+
+Harvester Prometheus currently exposes Longhorn volume metrics with
+`volume`, `pvc`, `pvc_namespace`, and `node` labels. It exposes Longhorn
+disk capacity, usage, status, and health metrics. It does not currently expose
+Longhorn disk IOPS or disk latency metrics in this environment, so the
+performance dashboard uses volume IOPS/latency and disk capacity/health.
+
+The read-only Harvester Prometheus datasource requires a dedicated credential
+and must be delivered through Infisical / External Secrets. Do not commit a
+Harvester token, kubeconfig, client certificate, or Grafana secure datasource
+value to Git.
 
 ## Deliberately Excluded
 

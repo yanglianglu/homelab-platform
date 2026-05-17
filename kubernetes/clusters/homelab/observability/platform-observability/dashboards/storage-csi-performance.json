@@ -1,0 +1,1511 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${guest_datasource}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${guest_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "count(kube_persistentvolumeclaim_status_phase{namespace=~\"$namespace\",persistentvolumeclaim=~\"$persistentvolumeclaim\",phase!=\"Bound\"} == 1)",
+          "legendFormat": "",
+          "range": false,
+          "refId": "A",
+          "instant": true
+        }
+      ],
+      "title": "PVCs Not Bound",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${guest_datasource}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 4,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${guest_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "count(kube_volumeattachment_status_attached == 0)",
+          "legendFormat": "",
+          "range": false,
+          "refId": "A",
+          "instant": true
+        }
+      ],
+      "title": "VolumeAttachments Not Attached",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${guest_datasource}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 8,
+        "y": 0
+      },
+      "id": 3,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${guest_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum(increase(kube_pod_container_status_restarts_total{namespace=\"kube-system\",pod=~\"harvester-csi-driver.*\"}[1h]))",
+          "legendFormat": "",
+          "range": false,
+          "refId": "A",
+          "instant": true
+        }
+      ],
+      "title": "CSI Restarts Last Hour",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${guest_datasource}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "percent",
+          "decimals": 1
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 12,
+        "y": 0
+      },
+      "id": 4,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${guest_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "100 * sum(kubelet_volume_stats_used_bytes{namespace=~\"$namespace\",persistentvolumeclaim=~\"$persistentvolumeclaim\"}) / sum(kubelet_volume_stats_capacity_bytes{namespace=~\"$namespace\",persistentvolumeclaim=~\"$persistentvolumeclaim\"})",
+          "legendFormat": "",
+          "range": false,
+          "refId": "A",
+          "instant": true
+        }
+      ],
+      "title": "PVC Used Percent",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${harvester_datasource}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 16,
+        "y": 0
+      },
+      "id": 5,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${harvester_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "count(longhorn_volume_robustness{pvc_namespace=~\"$namespace\",pvc=~\"$persistentvolumeclaim\",volume=~\"$longhorn_volume\",state!~\"healthy|unknown\"} == 1)",
+          "legendFormat": "",
+          "range": false,
+          "refId": "A",
+          "instant": true
+        }
+      ],
+      "title": "Longhorn Volumes Degraded",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${harvester_datasource}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 20,
+        "y": 0
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${harvester_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "count(longhorn_node_status{node=~\"$longhorn_node\",condition=\"ready\"} == 0)",
+          "legendFormat": "",
+          "range": false,
+          "refId": "A",
+          "instant": true
+        }
+      ],
+      "title": "Longhorn Nodes Down",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${harvester_datasource}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "Bps",
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            }
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 4
+      },
+      "id": 7,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${harvester_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum by (volume,pvc_namespace,pvc,node) (longhorn_volume_read_throughput{pvc_namespace=~\"$namespace\",pvc=~\"$persistentvolumeclaim\",volume=~\"$longhorn_volume\"})",
+          "legendFormat": "read {{pvc_namespace}}/{{pvc}} {{volume}} {{node}}",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${harvester_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum by (volume,pvc_namespace,pvc,node) (longhorn_volume_write_throughput{pvc_namespace=~\"$namespace\",pvc=~\"$persistentvolumeclaim\",volume=~\"$longhorn_volume\"})",
+          "legendFormat": "write {{pvc_namespace}}/{{pvc}} {{volume}} {{node}}",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "Longhorn Volume Throughput",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${harvester_datasource}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "iops",
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            }
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 4
+      },
+      "id": 8,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${harvester_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum by (volume,pvc_namespace,pvc,node) (longhorn_volume_read_iops{pvc_namespace=~\"$namespace\",pvc=~\"$persistentvolumeclaim\",volume=~\"$longhorn_volume\"})",
+          "legendFormat": "read {{pvc_namespace}}/{{pvc}} {{volume}} {{node}}",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${harvester_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum by (volume,pvc_namespace,pvc,node) (longhorn_volume_write_iops{pvc_namespace=~\"$namespace\",pvc=~\"$persistentvolumeclaim\",volume=~\"$longhorn_volume\"})",
+          "legendFormat": "write {{pvc_namespace}}/{{pvc}} {{volume}} {{node}}",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "Longhorn Volume IOPS",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${harvester_datasource}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "ms",
+          "decimals": 2,
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            }
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 12
+      },
+      "id": 9,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${harvester_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "avg by (volume,pvc_namespace,pvc,node) (longhorn_volume_read_latency{pvc_namespace=~\"$namespace\",pvc=~\"$persistentvolumeclaim\",volume=~\"$longhorn_volume\"}) / 1000000",
+          "legendFormat": "read {{pvc_namespace}}/{{pvc}} {{volume}} {{node}}",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${harvester_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "avg by (volume,pvc_namespace,pvc,node) (longhorn_volume_write_latency{pvc_namespace=~\"$namespace\",pvc=~\"$persistentvolumeclaim\",volume=~\"$longhorn_volume\"}) / 1000000",
+          "legendFormat": "write {{pvc_namespace}}/{{pvc}} {{volume}} {{node}}",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "Longhorn Volume Latency",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${harvester_datasource}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "bytes",
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            }
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 12
+      },
+      "id": 10,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${harvester_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "longhorn_volume_actual_size_bytes{pvc_namespace=~\"$namespace\",pvc=~\"$persistentvolumeclaim\",volume=~\"$longhorn_volume\"}",
+          "legendFormat": "actual {{pvc_namespace}}/{{pvc}} {{volume}}",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${harvester_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "longhorn_volume_capacity_bytes{pvc_namespace=~\"$namespace\",pvc=~\"$persistentvolumeclaim\",volume=~\"$longhorn_volume\"}",
+          "legendFormat": "capacity {{pvc_namespace}}/{{pvc}} {{volume}}",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "Longhorn Volume Size",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${guest_datasource}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "bytes",
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            }
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 20
+      },
+      "id": 11,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${guest_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "kubelet_volume_stats_used_bytes{namespace=~\"$namespace\",persistentvolumeclaim=~\"$persistentvolumeclaim\"}",
+          "legendFormat": "used {{namespace}}/{{persistentvolumeclaim}}",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${guest_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "kubelet_volume_stats_available_bytes{namespace=~\"$namespace\",persistentvolumeclaim=~\"$persistentvolumeclaim\"}",
+          "legendFormat": "available {{namespace}}/{{persistentvolumeclaim}}",
+          "range": true,
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${guest_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "kubelet_volume_stats_capacity_bytes{namespace=~\"$namespace\",persistentvolumeclaim=~\"$persistentvolumeclaim\"}",
+          "legendFormat": "capacity {{namespace}}/{{persistentvolumeclaim}}",
+          "range": true,
+          "refId": "C"
+        }
+      ],
+      "title": "PVC Capacity And Usage",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${guest_datasource}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            }
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 20
+      },
+      "id": 12,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${guest_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum by (namespace,pod) (rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\",container!=\"\",image!=\"\"}[5m]))",
+          "legendFormat": "cpu {{namespace}}/{{pod}}",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${guest_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum by (namespace,pod) (container_memory_working_set_bytes{namespace=~\"$namespace\",container!=\"\",image!=\"\"}) / 1073741824",
+          "legendFormat": "memory Gi {{namespace}}/{{pod}}",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "Pod CPU And Memory Near PVC Namespace",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${guest_datasource}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 28
+      },
+      "id": 13,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${guest_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "kube_persistentvolumeclaim_info{namespace=~\"$namespace\",persistentvolumeclaim=~\"$persistentvolumeclaim\"}",
+          "legendFormat": "",
+          "range": false,
+          "refId": "A",
+          "instant": true
+        }
+      ],
+      "title": "PVC To PV Mapping",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${guest_datasource}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 28
+      },
+      "id": 14,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${guest_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "kube_volumeattachment_spec_source_persistentvolume",
+          "legendFormat": "",
+          "range": false,
+          "refId": "A",
+          "instant": true
+        }
+      ],
+      "title": "VolumeAttachment Mapping",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${harvester_datasource}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 28
+      },
+      "id": 15,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${harvester_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "longhorn_volume_state{pvc_namespace=~\"$namespace\",pvc=~\"$persistentvolumeclaim\",volume=~\"$longhorn_volume\"} == 1",
+          "legendFormat": "",
+          "range": false,
+          "refId": "A",
+          "instant": true
+        }
+      ],
+      "title": "Longhorn Volume State",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${harvester_datasource}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 36
+      },
+      "id": 16,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${harvester_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "longhorn_volume_robustness{pvc_namespace=~\"$namespace\",pvc=~\"$persistentvolumeclaim\",volume=~\"$longhorn_volume\"} == 1",
+          "legendFormat": "",
+          "range": false,
+          "refId": "A",
+          "instant": true
+        }
+      ],
+      "title": "Longhorn Volume Robustness",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${harvester_datasource}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "percent",
+          "decimals": 1
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 36
+      },
+      "id": 17,
+      "options": {
+        "displayMode": "gradient",
+        "maxVizHeight": 300,
+        "minVizHeight": 16,
+        "minVizWidth": 8,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${harvester_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "100 * sum by (node,disk) (longhorn_disk_usage_bytes{node=~\"$longhorn_node\",disk=~\"$longhorn_disk\"}) / sum by (node,disk) (longhorn_disk_capacity_bytes{node=~\"$longhorn_node\",disk=~\"$longhorn_disk\"})",
+          "legendFormat": "",
+          "range": false,
+          "refId": "A",
+          "instant": true
+        }
+      ],
+      "title": "Longhorn Disk Usage Percent",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${harvester_datasource}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 36
+      },
+      "id": 18,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${harvester_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "longhorn_disk_status{node=~\"$longhorn_node\",disk=~\"$longhorn_disk\"}",
+          "legendFormat": "",
+          "range": false,
+          "refId": "A",
+          "instant": true
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${harvester_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "longhorn_disk_health{node=~\"$longhorn_node\",disk=~\"$longhorn_disk\"}",
+          "legendFormat": "",
+          "range": false,
+          "refId": "B",
+          "instant": true
+        }
+      ],
+      "title": "Longhorn Disk Status And Health",
+      "type": "table"
+    }
+  ],
+  "refresh": "30s",
+  "schemaVersion": 42,
+  "tags": [
+    "homelab",
+    "storage",
+    "csi",
+    "longhorn",
+    "performance"
+  ],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": false,
+          "text": "VictoriaMetrics",
+          "value": "VictoriaMetrics"
+        },
+        "hide": 0,
+        "name": "guest_datasource",
+        "options": [],
+        "query": "prometheus",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "Harvester Prometheus",
+          "value": "Harvester Prometheus"
+        },
+        "hide": 0,
+        "name": "harvester_datasource",
+        "options": [],
+        "query": "prometheus",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${guest_datasource}"
+        },
+        "definition": "label_values(kube_namespace_created, namespace)",
+        "hide": 0,
+        "includeAll": true,
+        "multi": true,
+        "name": "namespace",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(kube_namespace_created, namespace)",
+          "refId": "Variable-namespace"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${guest_datasource}"
+        },
+        "definition": "label_values(kube_persistentvolumeclaim_info{namespace=~\"$namespace\"}, persistentvolumeclaim)",
+        "hide": 0,
+        "includeAll": true,
+        "multi": true,
+        "name": "persistentvolumeclaim",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(kube_persistentvolumeclaim_info{namespace=~\"$namespace\"}, persistentvolumeclaim)",
+          "refId": "Variable-persistentvolumeclaim"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${harvester_datasource}"
+        },
+        "definition": "label_values(longhorn_volume_state{pvc_namespace=~\"$namespace\",pvc=~\"$persistentvolumeclaim\"}, volume)",
+        "hide": 0,
+        "includeAll": true,
+        "multi": true,
+        "name": "longhorn_volume",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(longhorn_volume_state{pvc_namespace=~\"$namespace\",pvc=~\"$persistentvolumeclaim\"}, volume)",
+          "refId": "Variable-longhorn_volume"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${harvester_datasource}"
+        },
+        "definition": "label_values(longhorn_node_status, node)",
+        "hide": 0,
+        "includeAll": true,
+        "multi": true,
+        "name": "longhorn_node",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(longhorn_node_status, node)",
+          "refId": "Variable-longhorn_node"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${harvester_datasource}"
+        },
+        "definition": "label_values(longhorn_disk_capacity_bytes{node=~\"$longhorn_node\"}, disk)",
+        "hide": 0,
+        "includeAll": true,
+        "multi": true,
+        "name": "longhorn_disk",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(longhorn_disk_capacity_bytes{node=~\"$longhorn_node\"}, disk)",
+          "refId": "Variable-longhorn_disk"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Homelab / Storage & CSI Performance",
+  "uid": "homelab-storage-csi-performance",
+  "version": 1,
+  "weekStart": ""
+}

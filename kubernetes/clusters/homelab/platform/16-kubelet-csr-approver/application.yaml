@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: platform-kubelet-csr-approver
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "16"
+spec:
+  project: platform
+  sources:
+    - repoURL: https://postfinance.github.io/kubelet-csr-approver
+      chart: kubelet-csr-approver
+      targetRevision: 1.2.14
+      helm:
+        releaseName: kubelet-csr-approver
+        valueFiles:
+          - $values/kubernetes/clusters/homelab/platform/16-kubelet-csr-approver/values.yaml
+    - repoURL: https://github.com/yanglianglu/homelab-platform.git
+      targetRevision: main
+      ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kube-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      limit: 5
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 3m
+    syncOptions:
+      - ServerSideApply=true

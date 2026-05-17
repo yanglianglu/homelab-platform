@@ -12,6 +12,7 @@ spec:
     - https://charts.external-secrets.io
     - https://charts.harvesterhci.io
     - https://kubernetes-sigs.github.io/metrics-server/
+    - https://postfinance.github.io/kubelet-csr-approver
     - docker.io/envoyproxy
   destinations:
     - namespace: '*'

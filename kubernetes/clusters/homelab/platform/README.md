@@ -8,6 +8,8 @@ Current domains:
 - `05-kube-vip`: stable internal Kubernetes API VIP
 - `10-external-secrets`: External Secrets Operator Helm chart
 - `15-metrics-server`: guest cluster Metrics API provider
+- `16-kubelet-csr-approver`: constrained kubelet-serving CSR approval for
+  Metrics Server TLS hardening
 - `20-infisical`: Infisical ClusterSecretStore
 - `30-argocd-repo-access`: Argo CD GitHub App repo credential ExternalSecret
 - `40-policies`: policy guardrail staging area

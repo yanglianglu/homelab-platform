@@ -19,6 +19,23 @@ Safe files to commit here:
 
 Do not commit plaintext generated files such as `controlplane.yaml`, `worker.yaml`, `talosconfig`, `kubeconfig`, or `secrets.yaml`.
 
+## Kubelet Serving Certificates
+
+`talos/clusters/homelab/patches/kubelet-serving-cert-bootstrap.yaml` enables
+kubelet serving certificate bootstrap:
+
+```yaml
+machine:
+  kubelet:
+    extraConfig:
+      serverTLSBootstrap: true
+```
+
+Apply this patch one node at a time only after the Argo CD managed
+`platform-kubelet-csr-approver` Application is running. Metrics Server must keep
+`--kubelet-insecure-tls` until every expected kubelet-serving CSR is
+`Approved,Issued`.
+
 ## macOS Helper Scripts
 
 Run helper scripts from `talos/clusters/homelab`:

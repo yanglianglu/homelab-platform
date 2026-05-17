@@ -6,6 +6,7 @@ resources:
   - platform/05-kube-vip/application.yaml
   - platform/10-external-secrets/application.yaml
   - platform/15-metrics-server/application.yaml
+  - platform/16-kubelet-csr-approver/application.yaml
   - platform/20-infisical/application.yaml
   - platform/30-argocd-repo-access/application.yaml
   - platform/40-policies/application.yaml

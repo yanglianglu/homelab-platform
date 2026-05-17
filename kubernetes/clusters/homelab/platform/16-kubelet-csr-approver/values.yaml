@@ -1,0 +1,28 @@
+fullnameOverride: kubelet-csr-approver
+namespace: kube-system
+
+replicas: 2
+leaderElection: true
+
+providerRegex: "^(cp-01|cp-02|cp-03|worker-01|worker-02|data-01)$"
+providerIpPrefixes:
+  - 192.168.1.0/24
+maxExpirationSeconds: "31536000"
+bypassDnsResolution: true
+bypassHostnameCheck: false
+ignoreNonSystemNode: true
+skipDenyStep: true
+allowedDnsNames: 1
+
+resources:
+  requests:
+    cpu: 25m
+    memory: 64Mi
+  limits:
+    cpu: 200m
+    memory: 128Mi
+
+metrics:
+  enable: true
+  serviceMonitor:
+    enabled: false

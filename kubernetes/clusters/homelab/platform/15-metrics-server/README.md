@@ -19,5 +19,7 @@ Placement:
 Talos TLS note:
 
 This first gate uses `--kubelet-insecure-tls` so Metrics Server can scrape
-Talos kubelets immediately. Replace this later with kubelet serving certificate
-approval if Metrics API hardening becomes a priority.
+Talos kubelets immediately. FIF-35 removes this only after Talos kubelet
+serving certificate bootstrap is enabled one node at a time and all six
+expected `kubernetes.io/kubelet-serving` CSRs are `Approved,Issued` through the
+constrained `platform-kubelet-csr-approver` Application.

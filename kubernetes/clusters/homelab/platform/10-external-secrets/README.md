@@ -17,10 +17,10 @@ Steady-state install:
 The Application uses `ServerSideApply=true` because External Secrets Operator
 CRDs are large enough to hit the Kubernetes client-side apply annotation limit.
 
-Placement note: steady-state ESO workloads do not tolerate the control-plane
-taint. They should schedule on general workers now that `worker-01` and
-`worker-02` exist. The `data-01` taint prevents ESO from landing on the data
-worker.
+Placement note: steady-state ESO workloads use
+`homelab.local/node-class=general` node selectors. They should schedule on
+`worker-01` or `worker-02`, not on control-plane nodes or the tainted `data-01`
+data worker.
 
 Bootstrap note: `kubernetes/bootstrap/external-secrets/install` is manual and
 break-glass only after Argo CD can read the repo. The Argo CD Application here is

@@ -19,8 +19,8 @@ Each entry should start with:
   `kubernetes/clusters/homelab/platform/10-external-secrets/values.yaml`.
 - Summary: recorded Harvester observability as operational, skipped alerting and
   logging for now, confirmed `whoami` runs on `worker-01`, confirmed `data-01`
-  remains tainted for data workloads, and removed steady-state External Secrets
-  control-plane tolerations from GitOps values.
+  remains tainted for data workloads, and set steady-state External Secrets
+  placement to the general worker node class.
 - Contradictions: Argo CD still runs with bootstrap-era control-plane placement;
   this remains a separate migration gate instead of being mixed into the ESO
   cleanup.

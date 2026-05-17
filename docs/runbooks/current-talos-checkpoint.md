@@ -78,7 +78,7 @@ Workload placement:
 apps/whoami runs on worker-01
 data-01 is tainted data-platform=true:NoSchedule
 data-01 only runs required system DaemonSets
-External Secrets steady-state values no longer tolerate control-plane nodes
+External Secrets steady-state values select homelab.local/node-class=general
 Argo CD still has bootstrap-era control-plane placement and needs a separate migration gate
 ```
 
@@ -116,8 +116,8 @@ and 1 TiB hot-temp PVC are detached from the VM and retained only as rollback.
 
 Next platform gates:
 
-1. Let Argo CD reconcile External Secrets without control-plane tolerations and
-   confirm ESO pods move to general workers.
+1. Let Argo CD reconcile External Secrets with general-worker node selectors and
+   confirm ESO pods move to `worker-01` or `worker-02`.
 2. Plan Argo CD workload placement separately; it is currently a bootstrap-era
    platform exception.
 3. Add guest Kubernetes observability for CSI, Argo CD, node, namespace, and

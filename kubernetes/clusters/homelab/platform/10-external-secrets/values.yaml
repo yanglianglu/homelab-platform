@@ -4,8 +4,15 @@ serviceAccount:
   create: true
   name: external-secrets
 
+nodeSelector:
+  homelab.local/node-class: general
+
 webhook:
   create: true
+  nodeSelector:
+    homelab.local/node-class: general
 
 certController:
   create: true
+  nodeSelector:
+    homelab.local/node-class: general

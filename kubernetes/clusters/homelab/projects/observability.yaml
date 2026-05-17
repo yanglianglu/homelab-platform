@@ -9,9 +9,13 @@ spec:
   description: Metrics, dashboards, exporters, and alerting
   sourceRepos:
     - https://github.com/yanglianglu/homelab-platform.git
+    - https://victoriametrics.github.io/helm-charts/
   destinations:
     - namespace: observability
       server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
   namespaceResourceWhitelist:
     - group: '*'
       kind: '*'

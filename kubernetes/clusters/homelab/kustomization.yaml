@@ -10,5 +10,6 @@ resources:
   - platform/30-argocd-repo-access/application.yaml
   - platform/40-policies/application.yaml
   - platform/50-harvester-csi/application.yaml
+  - observability/platform-observability/application.yaml
   - data-platform/application.yaml
   - apps/whoami/application.yaml

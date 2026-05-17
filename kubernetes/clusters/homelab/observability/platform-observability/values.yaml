@@ -1,0 +1,143 @@
+global:
+  clusterLabel: cluster
+
+argocdReleaseOverride: platform-observability
+
+victoria-metrics-operator:
+  enabled: true
+  crds:
+    plain: true
+    cleanup:
+      enabled: true
+  serviceMonitor:
+    enabled: false
+  operator:
+    disable_prometheus_converter: true
+  nodeSelector:
+    homelab.local/node-class: general
+
+defaultDashboards:
+  enabled: true
+  dashboards:
+    victoriametrics-vmalert:
+      enabled: false
+    victoriametrics-operator:
+      enabled: true
+    node-exporter-full:
+      enabled: true
+
+defaultRules:
+  create: false
+
+alertmanager:
+  enabled: false
+
+vmalert:
+  enabled: false
+
+vmcluster:
+  enabled: false
+
+vmsingle:
+  enabled: true
+  spec:
+    retentionPeriod: 14d
+    replicaCount: 1
+    nodeSelector:
+      homelab.local/node-class: general
+    storage:
+      accessModes:
+        - ReadWriteOnce
+      storageClassName: harvester
+      resources:
+        requests:
+          storage: 20Gi
+  ingress:
+    enabled: false
+  route:
+    enabled: false
+
+vmagent:
+  enabled: true
+  rbac:
+    namespaced: false
+  spec:
+    selectAllByDefault: true
+    scrapeInterval: 30s
+    externalLabels:
+      cluster: homelab-talos
+    nodeSelector:
+      homelab.local/node-class: general
+    extraArgs:
+      promscrape.streamParse: "true"
+  ingress:
+    enabled: false
+  route:
+    enabled: false
+
+grafana:
+  enabled: true
+  nodeSelector:
+    homelab.local/node-class: general
+  ingress:
+    enabled: false
+  sidecar:
+    datasources:
+      enabled: true
+      label: grafana_datasource
+      labelValue: "1"
+    dashboards:
+      enabled: true
+      label: grafana_dashboard
+      labelValue: "1"
+
+prometheus-node-exporter:
+  enabled: true
+  tolerations:
+    - operator: Exists
+  vmScrape:
+    enabled: true
+
+kube-state-metrics:
+  enabled: true
+  nodeSelector:
+    homelab.local/node-class: general
+  vmScrape:
+    enabled: true
+
+kubelet:
+  enabled: true
+
+kubeApiServer:
+  enabled: true
+
+kubeControllerManager:
+  enabled: false
+
+kubeScheduler:
+  enabled: false
+
+kubeEtcd:
+  enabled: false
+
+coreDns:
+  enabled: true
+  service:
+    enabled: false
+  vmScrape:
+    spec:
+      jobLabel: k8s-app
+      namespaceSelector:
+        matchNames:
+          - kube-system
+      selector:
+        matchLabels:
+          k8s-app: kube-dns
+      endpoints:
+        - port: metrics
+
+kubeDns:
+  enabled: false
+
+kubeProxy:
+  enabled: false

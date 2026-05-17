@@ -1,0 +1,14 @@
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: EnvoyProxy
+metadata:
+  name: internal-https
+  namespace: apps
+spec:
+  provider:
+    type: Kubernetes
+    kubernetes:
+      envoyService:
+        annotations:
+          kube-vip.io/loadbalancerIPs: 192.168.1.187
+        externalTrafficPolicy: Cluster
+        loadBalancerIP: 192.168.1.187

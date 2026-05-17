@@ -13,6 +13,7 @@ spec:
       targetRevision: v1.8.0
       helm:
         releaseName: envoy-gateway
+        skipCrds: true
         valueFiles:
           - $values/kubernetes/clusters/homelab/platform/56-envoy-gateway/values.yaml
     - repoURL: https://github.com/yanglianglu/homelab-platform.git

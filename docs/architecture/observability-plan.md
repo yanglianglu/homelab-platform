@@ -49,7 +49,7 @@ observability architecture.
 | VictoriaMetrics app version | `v1.143.0` |
 | Storage | `VMSingle` 20 Gi PVC on guest StorageClass `harvester` |
 | Retention | `14d` |
-| Grafana exposure | ClusterIP only; no ingress and no Cloudflare route |
+| Grafana exposure | ClusterIP only; no Gateway route, legacy Ingress, or Cloudflare route |
 | Alerting | Disabled/deferred |
 | Logs/traces | Not installed |
 | Harvester scraping | Not configured |
@@ -65,6 +65,17 @@ Enabled guest components:
 - node-exporter
 - Argo CD `VMServiceScrape`
 - External Secrets `VMPodScrape`
+
+First custom dashboard set:
+
+| Dashboard | Layer |
+| --- | --- |
+| `Homelab / Guest Cluster Overview` | health and capacity landing page |
+| `Homelab / Node Overview` | node CPU, memory, filesystem, network, and pressure |
+| `Homelab / Namespace & Workload Overview` | namespace and workload resource/debug view |
+| `Homelab / Storage & CSI Object State` | guest PVC/PV/StorageClass/VolumeAttachment and CSI pod state |
+| `Homelab / Control Plane & DNS` | API server, kubelet, and CoreDNS |
+| `Homelab / GitOps & Secrets` | Argo CD and External Secrets |
 
 Direct Harvester CSI metrics are not exposed by the current guest CSI
 deployment. CSI visibility comes from guest Kubernetes object state:

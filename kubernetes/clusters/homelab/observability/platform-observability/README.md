@@ -11,7 +11,7 @@ This directory defines the first guest Kubernetes observability baseline for
 - Namespace: `observability`
 - Storage: `VMSingle` uses a 20 Gi `harvester` PVC
 - Retention: 14 days
-- Exposure: internal services only; no ingress and no Cloudflare route
+- Exposure: internal services only; no Gateway route, legacy Ingress, or Cloudflare route
 - Alerting: disabled for the first gate
 
 ## Enabled Components
@@ -25,6 +25,26 @@ This directory defines the first guest Kubernetes observability baseline for
 - Argo CD `VMServiceScrape`
 - External Secrets `VMPodScrape`
 
+## Homelab Dashboards
+
+The repo provisions the first custom dashboard set as ConfigMaps labeled
+`grafana_dashboard=1`. These dashboards are generated from
+`dashboards/generate_dashboards.py` to keep panel layout and query conventions
+consistent.
+
+| Dashboard | Purpose |
+| --- | --- |
+| `Homelab / Guest Cluster Overview` | Main landing page for node, pod, PVC, scrape, Argo CD, and External Secrets health. |
+| `Homelab / Node Overview` | CPU, memory, filesystem, network, pressure, and pod placement by node. |
+| `Homelab / Namespace & Workload Overview` | Namespace and workload resource use, pod phases, unavailable replicas, and restarts. |
+| `Homelab / Storage & CSI Object State` | PVC/PV/StorageClass/VolumeAttachment and Harvester CSI pod state from the guest layer. |
+| `Homelab / Control Plane & DNS` | API server, kubelet, and CoreDNS health and latency. |
+| `Homelab / GitOps & Secrets` | Argo CD app state and External Secrets / ClusterSecretStore health. |
+
+Direct Harvester and Longhorn backend performance metrics remain in Harvester
+monitoring. Add Harvester Prometheus as a separate read-only Grafana datasource
+before creating a cross-layer `CSI Storage Path Performance` dashboard.
+
 ## Deliberately Excluded
 
 - Harvester `rancher-monitoring`
@@ -34,7 +54,7 @@ This directory defines the first guest Kubernetes observability baseline for
 - external alert routing
 - `VMCluster`
 - Cloudflare exposure
-- ingress exposure
+- Gateway or legacy Ingress exposure
 - ClickHouse ingestion
 
 ## Boundary

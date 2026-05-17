@@ -3,3 +3,80 @@ kind: Kustomization
 resources:
   - vmpodscrape-external-secrets.yaml
   - vmservicescrape-argocd.yaml
+
+configMapGenerator:
+  - name: homelab-dashboard-guest-cluster-overview
+    namespace: observability
+    files:
+      - dashboards/guest-cluster-overview.json
+    options:
+      labels:
+        app.kubernetes.io/component: grafana-dashboard
+        app.kubernetes.io/managed-by: kustomize
+        app.kubernetes.io/name: guest-cluster-overview
+        app.kubernetes.io/part-of: guest-observability
+        grafana_dashboard: "1"
+        homelab.lu/layer: guest-kubernetes
+  - name: homelab-dashboard-node-overview
+    namespace: observability
+    files:
+      - dashboards/node-overview.json
+    options:
+      labels:
+        app.kubernetes.io/component: grafana-dashboard
+        app.kubernetes.io/managed-by: kustomize
+        app.kubernetes.io/name: node-overview
+        app.kubernetes.io/part-of: guest-observability
+        grafana_dashboard: "1"
+        homelab.lu/layer: guest-kubernetes
+  - name: homelab-dashboard-namespace-workload-overview
+    namespace: observability
+    files:
+      - dashboards/namespace-workload-overview.json
+    options:
+      labels:
+        app.kubernetes.io/component: grafana-dashboard
+        app.kubernetes.io/managed-by: kustomize
+        app.kubernetes.io/name: namespace-workload-overview
+        app.kubernetes.io/part-of: guest-observability
+        grafana_dashboard: "1"
+        homelab.lu/layer: guest-kubernetes
+  - name: homelab-dashboard-storage-csi-object-state
+    namespace: observability
+    files:
+      - dashboards/storage-csi-object-state.json
+    options:
+      labels:
+        app.kubernetes.io/component: grafana-dashboard
+        app.kubernetes.io/managed-by: kustomize
+        app.kubernetes.io/name: storage-csi-object-state
+        app.kubernetes.io/part-of: guest-observability
+        grafana_dashboard: "1"
+        homelab.lu/layer: guest-kubernetes
+  - name: homelab-dashboard-control-plane-dns
+    namespace: observability
+    files:
+      - dashboards/control-plane-dns.json
+    options:
+      labels:
+        app.kubernetes.io/component: grafana-dashboard
+        app.kubernetes.io/managed-by: kustomize
+        app.kubernetes.io/name: control-plane-dns
+        app.kubernetes.io/part-of: guest-observability
+        grafana_dashboard: "1"
+        homelab.lu/layer: guest-kubernetes
+  - name: homelab-dashboard-gitops-secrets
+    namespace: observability
+    files:
+      - dashboards/gitops-secrets.json
+    options:
+      labels:
+        app.kubernetes.io/component: grafana-dashboard
+        app.kubernetes.io/managed-by: kustomize
+        app.kubernetes.io/name: gitops-secrets
+        app.kubernetes.io/part-of: guest-observability
+        grafana_dashboard: "1"
+        homelab.lu/layer: guest-kubernetes
+
+generatorOptions:
+  disableNameSuffixHash: true

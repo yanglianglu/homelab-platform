@@ -1,0 +1,21 @@
+config:
+  envoyGateway:
+    gateway:
+      controllerName: gateway.envoyproxy.io/gatewayclass-controller
+    logging:
+      level:
+        default: info
+    provider:
+      type: Kubernetes
+
+deployment:
+  pod:
+    nodeSelector:
+      homelab.local/node-class: general
+  envoyGateway:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        memory: 512Mi

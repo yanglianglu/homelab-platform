@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
   - argocd.yaml
   - external-secrets.yaml
+  - envoy-gateway-system.yaml
   - network-edge.yaml
   - observability.yaml
   - data-platform.yaml

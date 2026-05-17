@@ -12,6 +12,7 @@ spec:
     - https://charts.external-secrets.io
     - https://charts.harvesterhci.io
     - https://kubernetes-sigs.github.io/metrics-server/
+    - docker.io/envoyproxy
   destinations:
     - namespace: '*'
       server: https://kubernetes.default.svc

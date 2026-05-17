@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: platform-envoy-gateway
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "56"
+spec:
+  project: platform
+  sources:
+    - repoURL: docker.io/envoyproxy
+      chart: gateway-helm
+      targetRevision: v1.8.0
+      helm:
+        releaseName: envoy-gateway
+        valueFiles:
+          - $values/kubernetes/clusters/homelab/platform/56-envoy-gateway/values.yaml
+    - repoURL: https://github.com/yanglianglu/homelab-platform.git
+      targetRevision: main
+      ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: envoy-gateway-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      limit: 5
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 3m
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

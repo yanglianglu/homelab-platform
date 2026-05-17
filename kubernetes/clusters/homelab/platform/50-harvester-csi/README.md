@@ -5,9 +5,9 @@ This directory owns the Argo CD managed Harvester CSI integration for
 
 ## Current State
 
-Harvester CSI was installed manually on 2026-05-16 with chart
-`harvester/harvester-csi-driver` `0.1.28`. This directory now promotes the
-same integration into GitOps through `Application/platform-harvester-csi`.
+Harvester CSI was first installed manually on 2026-05-16 with chart
+`harvester/harvester-csi-driver` `0.1.28`. It is now managed through
+`Application/platform-harvester-csi`.
 
 | Object | State |
 | --- | --- |
@@ -16,11 +16,11 @@ same integration into GitOps through `Application/platform-harvester-csi`.
 | CSI controller | `3/3` available |
 | CSI node DaemonSet | `6/6` available |
 | `CSIDriver/driver.harvesterhci.io` | Present |
-| Small `data-01` proof | Passed cleanup after Talos mountpoint extension |
+| `data-01` proof | Passed provisioning, resize, reboot, detach, and cleanup |
 
 The root Argo CD app references `platform/50-harvester-csi/application.yaml`.
-After the repo is pushed and Argo CD syncs, the live CSI chart and non-secret
-resources should be reconciled from Git instead of a manual Helm release.
+The live CSI chart and non-secret resources are reconciled from Git instead of
+a manual Helm release.
 
 ## Decisions
 

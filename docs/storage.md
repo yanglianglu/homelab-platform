@@ -16,8 +16,7 @@ Storage design notes for Harvester volumes and Kubernetes storage classes.
   `harvester` StorageClass remains the default workload class and maps to host
   `slow`.
 - The Talos `harvester-csi-mountpoint` extension is a universal node contract:
-  every Talos node should carry it before broad CSI-backed scheduling is
-  allowed.
+  every Talos node now carries it before broad CSI-backed scheduling.
 
 ## Storage Class Policy
 
@@ -53,15 +52,17 @@ CSI does not change the durability model of `slow`: it remains single-replica
 HDD-backed Longhorn storage. CSI is used for Kubernetes-native PVC lifecycle,
 hot-plug automation, and operator compatibility.
 
-The small Harvester CSI proof passes on `data-01` after the
-`harvester-csi-mountpoint` Talos extension. The proof validated provisioning,
-attach, mount, write, restart persistence, scale-to-zero, `NodeUnstageVolume`,
-guest PV deletion, Harvester backend PVC deletion, and final
-`VolumeAttachment` cleanup without manual intervention.
+The Harvester CSI proof passes on `data-01` after the
+`harvester-csi-mountpoint` Talos extension rollout. The proof validated
+provisioning, attach, mount, write, restart persistence, PVC expansion, CSI node
+pod restart, `data-01` reboot recovery, scale-to-zero detach,
+`NodeUnstageVolume`, guest PV deletion, Harvester backend PVC deletion, and
+final `VolumeAttachment` cleanup. The reboot left an old failed proof pod object
+that required manual deletion; storage detach was clean.
 
 CSI is the preferred general workload storage path. Large ClickHouse data and
-legacy `data-01` disk removal still require larger reboot, maintenance,
-expansion, and performance drills.
+legacy `data-01` PVC deletion still require observability, workload-specific
+testing, and an explicit cleanup gate.
 
 ## Boundaries
 

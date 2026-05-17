@@ -49,17 +49,18 @@ cp-02 VM Running/Ready on the-elation, OS disk first
 cp-03 VM Running/Ready on the-enigmata, OS disk first
 worker-01 VM Running/Ready on the-elation, OS disk first
 worker-02 VM Running/Ready on the-enigmata, OS disk first
-data-01 VM Running/Ready on the-abundance, OS disk first, retained/hot disks attached
+data-01 VM Running/Ready on the-abundance, OS disk only
 ```
 
 Storage compatibility:
 
 ```text
-Harvester CSI installed in kube-system and promoted into Argo CD desired state
+Harvester CSI installed in kube-system and managed by Argo CD
 CSI controller 3/3 available
 CSI node DaemonSet 6/6 available
-data-01 Talos extension harvester-csi-mountpoint active; universal rollout pending
-1 Gi CSI proof on data-01 passed cleanup without manual VolumeAttachment deletion
+harvester-csi-mountpoint extension active on all Talos nodes
+CSI proof on data-01 passed provisioning, resize, reboot, detach, and cleanup
+legacy data-01 PVCs detached from VM and retained as rollback
 ```
 
 Core pod summary, abbreviated:
@@ -90,19 +91,14 @@ kube-proxy                      Running
 
 ## Current Stop Condition
 
-Do not create data-platform local PVs. The storage direction changed to
-Harvester CSI first. `data-01` still has legacy attached disks visible as `vdb`
-(10 TiB retained data) and `vdc` (1 TiB hot/temp), but they should remain unused
-until the CSI path passes larger drills or the local-PV fallback is explicitly
-approved.
+Do not create data-platform local PVs. The storage direction is Harvester CSI
+first. `data-01` now sees only `/dev/vda`; the legacy 10 TiB retained-data PVC
+and 1 TiB hot-temp PVC are detached from the VM and retained only as rollback.
 
 Next storage gate:
 
-1. Roll the `harvester-csi-mountpoint` extension to all Talos nodes before
-   broad CSI-backed workload scheduling.
-2. Keep the chart-created default `harvester` StorageClass as the normal
-   workload class mapped to host `slow`.
-3. Run larger CSI drills: PVC expansion, CSI pod restart, `data-01` VM reboot,
-   and a controlled host-maintenance scenario.
-4. Detach the legacy attached disks only after larger drills pass and the
-   detach plan is explicitly approved.
+1. Add observability for CSI, Longhorn, node disk, and data-platform workload health.
+2. Run a ClickHouse-specific PVC pilot before large ingestion.
+3. Decide whether to delete the detached legacy `data-01` PVCs.
+4. Run a controlled Harvester host-maintenance CSI drill only as a separate
+   approved operation.

@@ -12,15 +12,15 @@ The proof validates:
 
 ## Latest Result
 
-After the repo-local `harvester-csi-mountpoint` Talos extension was added to
-`data-01`, the 1 Gi proof passed write, restart persistence, scale-to-zero,
-`NodeUnstageVolume`, guest PV deletion, Harvester backend PVC deletion, and
-final `VolumeAttachment` cleanup without manual intervention.
+After the repo-local `harvester-csi-mountpoint` Talos extension was rolled to
+all Talos nodes, the proof passed write, restart persistence, 1 Gi -> 2 Gi
+expansion, CSI node pod restart, `data-01` reboot recovery, scale-to-zero
+detach, `NodeUnstageVolume`, guest PV deletion, Harvester backend PVC deletion,
+and final `VolumeAttachment` cleanup.
 
 Treat this as a passed small proof, not as production ClickHouse approval.
-Larger reboot, maintenance, expansion, and performance drills are still
-required before using CSI for large ClickHouse data or detaching the legacy
-`data-01` disks.
+ClickHouse still needs an application-specific pilot, observability, and a
+separate host-maintenance drill before large ingestion.
 
 Do not run this proof until Harvester CSI is installed, Argo CD ownership is
 clear, and the Talos mountpoint extension is present on the target node.

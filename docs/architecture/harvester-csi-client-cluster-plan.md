@@ -27,21 +27,23 @@ unavailable when its backing host or disk is unavailable.
 
 | Item | State |
 | --- | --- |
-| CSI controller | Installed manually, `3/3` available |
-| CSI node DaemonSet | Installed manually, `6/6` available |
+| CSI controller | Argo CD managed, `3/3` available |
+| CSI node DaemonSet | Argo CD managed, `6/6` available |
 | Secret | `kube-system/harvester-csi-config` from Infisical |
-| Small proof | Passed on `data-01` |
-| Talos compatibility | Fixed on `data-01` with `harvester-csi-mountpoint` extension |
-| GitOps status | Promoted in Git through `platform-harvester-csi`; pending sync until pushed/applied |
-| Legacy `data-01` disks | Still attached, unused by Kubernetes |
+| CSI proof | Passed on `data-01` through reboot, resize, detach, and cleanup |
+| Talos compatibility | `harvester-csi-mountpoint` extension active on all Talos nodes |
+| GitOps status | `platform-harvester-csi` Synced/Healthy |
+| Legacy `data-01` disks | Detached from VM; PVCs retained as rollback |
 
-The small proof passed provisioning, attach, mount, write, restart persistence,
-scale-to-zero, `NodeUnstageVolume`, guest PV deletion, Harvester backend PVC
-deletion, and final `VolumeAttachment` cleanup without manual intervention.
+The proof passed provisioning, attach, mount, write, restart persistence, 1 Gi
+to 2 Gi resize, CSI node pod restart, `data-01` reboot recovery, scale-to-zero
+detach, `NodeUnstageVolume`, guest PV deletion, Harvester backend PVC deletion,
+and final `VolumeAttachment` cleanup. The reboot left an old failed proof pod
+object that required manual deletion; storage detach itself had already
+completed.
 
 Only `data-01` had the Talos mountpoint extension at the first successful
-proof. The platform contract is now stricter: every Talos node should carry the
-same extension before broad CSI-backed workload scheduling is allowed.
+proof. The extension has now been rolled to every Talos node.
 
 ## Guest StorageClasses
 
@@ -81,17 +83,16 @@ application to `data-01`.
 ## Production Gates
 
 Harvester CSI is the standard PVC path for general workloads. It is not yet
-approved for large ClickHouse data or for detaching the legacy `data-01` disks
-until larger drills pass.
+approved for large ClickHouse data until observability, alerting, and a
+ClickHouse-specific storage drill exist.
 
 Required next gates:
 
-1. Roll the Talos mountpoint extension to every Talos node.
-2. Push/sync the Argo CD managed `platform-harvester-csi` app.
-3. Run larger drills: PVC expansion, CSI pod restart, `data-01` VM reboot,
-   host-maintenance behavior, and performance testing.
-4. Detach the legacy `data-01` 10 TiB and 1 TiB disks only after the larger
-   drills pass and a detach plan is approved.
+1. Add observability for node, disk, Longhorn, CSI, and data-platform workload health.
+2. Run a ClickHouse-specific pilot using PVCs before large ingestion.
+3. Decide whether to delete the detached legacy `data-01` 10 TiB and 1 TiB PVCs.
+4. Run a controlled Harvester host-maintenance CSI drill only with a separate
+   approval gate.
 
 ## Secret Rules
 

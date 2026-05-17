@@ -1,6 +1,8 @@
 # Desired manifest for Talos data worker VM data-01 after bootstrap.
 # data-01 joins homelab-talos as a tainted Kubernetes data node.
-# The Talos ISO PVC is kept for provenance; the VM boots from the installed OS disk.
+# The Talos ISO and legacy data PVCs are retained below for rollback/provenance,
+# but the active VM boots from and attaches only the OS disk. Workload storage
+# uses Harvester CSI from the guest Kubernetes cluster.
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -109,12 +111,6 @@ spec:
               bootOrder: 1
               disk:
                 bus: virtio
-            - name: retained-data
-              disk:
-                bus: virtio
-            - name: hot-temp
-              disk:
-                bus: virtio
           inputs:
             - bus: usb
               name: tablet
@@ -153,9 +149,3 @@ spec:
         - name: os-disk
           persistentVolumeClaim:
             claimName: data-01-os-disk
-        - name: retained-data
-          persistentVolumeClaim:
-            claimName: data-01-retained-data
-        - name: hot-temp
-          persistentVolumeClaim:
-            claimName: data-01-hot-temp

@@ -41,7 +41,7 @@ of manually mounted data disks.
 | Storage | Guest class | Host class | Purpose |
 | --- | --- | --- | --- |
 | OS disk | N/A | `slow` | Rebuildable Talos OS disk |
-| Retained data | `harvester-slow-retain` | `slow` | ClickHouse retained data |
+| Retained data | `harvester` by default; `harvester-slow-retain` when retention is required | `slow` | ClickHouse retained data |
 | Disposable data | `harvester-slow-delete` | `slow` | test PVCs and disposable app state |
 | Hot/temp | `harvester-abundance-nvme-delete` | `the-abundance-nvme` | ClickHouse temp, merges, and hot working set |
 | Replicated infrastructure | `harvester-fast-ha-retain` | `fast-ha` | Approval-gated only |
@@ -49,23 +49,30 @@ of manually mounted data disks.
 The standalone Linux data VM is the rejected alternative. The chosen model is
 Kubernetes-native, with strict node placement and CSI-managed PVC lifecycle.
 
-Current legacy disk allocation:
+Current VM disk allocation:
 
 | Guest disk | Harvester PVC | Purpose |
 | --- | --- | --- |
 | `/dev/vda` | `data-01-os-disk` | Talos OS |
-| `/dev/vdb` | `data-01-retained-data` | Unused legacy 10 TiB data allocation |
-| `/dev/vdc` | `data-01-hot-temp` | Unused legacy 1 TiB hot/temp allocation |
+
+Legacy PVCs retained outside the running VM:
+
+| Harvester PVC | Size | State | Purpose |
+| --- | ---: | --- | --- |
+| `data-01-retained-data` | 10 TiB | Detached | Rollback only |
+| `data-01-hot-temp` | 1 TiB | Detached | Rollback only |
 
 Do not create Talos UserVolumeConfig or static local PVs unless Harvester CSI is
 rejected after proof and the local-PV fallback is explicitly approved.
 
-The small CSI proof now passes on `data-01` after the repo-local
-`harvester-csi-mountpoint` Talos extension. This validates basic CSI lifecycle
-cleanup for disposable proof PVCs on that node.
+The CSI proof now passes on `data-01` after the repo-local
+`harvester-csi-mountpoint` Talos extension was rolled to every Talos node. The
+drill validated provisioning, write/read, pod restart persistence, 1 Gi -> 2 Gi
+expansion, CSI node pod restart, `data-01` reboot recovery, detach, guest
+PVC/PV cleanup, and Harvester backend volume cleanup.
 
-Keep the legacy disks attached and unused until larger CSI drills pass and a
-specific detach plan is approved.
+The legacy PVCs were detached from `data-01` and retained as rollback. Delete
+them only in a separate explicit cleanup gate.
 
 See `harvester-csi-client-cluster-plan.md` for CSI gates.
 

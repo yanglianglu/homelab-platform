@@ -74,8 +74,9 @@ Use these outside the shared general worker pool when a workload has dominant CP
 
 For the home server, prefer one dedicated node/VM per large workload family.
 `data-01` starts on `the-abundance` at 8 vCPU / 32 Gi. Its legacy 10 TiB and
-1 TiB attached disks remain unused while the CSI-first model is validated. Do
-not design HA/read/write split until there is a clear operational reason.
+1 TiB PVCs are detached from the VM and retained only as rollback while the
+CSI-first model is validated. Do not design HA/read/write split until there is
+a clear operational reason.
 
 ## Resize Principles
 

@@ -13,6 +13,10 @@ resources:
   - platform/50-harvester-csi/application.yaml
   - platform/55-gateway-api-crds/application.yaml
   - platform/56-envoy-gateway/application.yaml
+  - platform/57-cert-manager/application.yaml
+  - platform/58-internal-pki/application.yaml
+  - platform/59-trust-manager/application.yaml
+  - platform/61-internal-trust-bundle/application.yaml
   - observability/platform-observability/application.yaml
   - data-platform/application.yaml
   - apps/whoami/application.yaml

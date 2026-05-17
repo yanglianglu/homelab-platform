@@ -1,9 +1,8 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: apps
+  name: cert-manager
   labels:
-    homelab.local/internal-ca-trust: "true"
     pod-security.kubernetes.io/enforce: baseline
     pod-security.kubernetes.io/audit: restricted
     pod-security.kubernetes.io/warn: restricted

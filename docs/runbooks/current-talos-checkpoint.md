@@ -1,7 +1,8 @@
 # Runbook: Current Talos Checkpoint
 
-This checkpoint documents the current Talos state after the VM growth and
-Harvester CSI proof gates.
+This checkpoint documents the current Talos state after the VM growth,
+Harvester CSI, observability, Metrics Server hardening, and first internal
+Gateway API route gates.
 
 ## Cluster State
 
@@ -28,7 +29,7 @@ talosctl health
 
 ## Latest Verification
 
-Last checked: 2026-05-17 America/Chicago.
+Last checked: 2026-05-18 America/Chicago.
 
 Node readiness:
 
@@ -101,14 +102,38 @@ node-exporter Running on all 6 Talos nodes
 Argo CD VMServiceScrape operational
 External Secrets VMPodScrape operational
 CSI visibility provided through kube-state-metrics object state
-no Gateway route, legacy Ingress, Cloudflare route, Loki, Tempo, VMCluster, or
-external alert routing
+observability itself has no Gateway route, legacy Ingress, Cloudflare route,
+Loki, Tempo, VMCluster, or external alert routing
+```
+
+Internal Gateway API route:
+
+```text
+platform-kube-vip Synced/Healthy
+platform-gateway-api-crds Synced/Healthy
+platform-envoy-gateway Synced/Healthy
+platform-cert-manager Synced/Healthy
+platform-internal-pki Synced/Healthy
+platform-trust-manager Synced/Healthy
+platform-internal-trust-bundle Synced/Healthy
+apps-whoami-tls Synced/Healthy
+GatewayClass/envoy-gateway Accepted=True
+Gateway/apps/internal-https Programmed=True on 192.168.1.187
+HTTPRoute/apps/whoami-tls present for whoami.home.arpa
+BackendTLSPolicy/apps/whoami-tls present for verified HTTPS upstream
+Certificate/whoami-home-arpa-gateway Ready=True
+Certificate/whoami-tls-backend Ready=True
+Bundle/homelab-internal-ca Synced=True
+admin Mac resolves whoami.home.arpa to 192.168.1.187
+normal HTTPS client request returns homelab internal HTTPS backend
 ```
 
 Workload placement:
 
 ```text
 apps/whoami runs on worker-01
+apps/whoami-tls runs on worker-01
+Envoy Gateway data plane for apps/internal-https runs on worker-01
 data-01 is tainted data-platform=true:NoSchedule
 data-01 only runs required system DaemonSets
 External Secrets steady-state values select homelab.local/node-class=general
@@ -135,6 +160,9 @@ kube-proxy                      Running
 - `data-01` is a `Ready` tainted data worker.
 - `homelab-talos` kubeconfig uses the kube-vip endpoint `192.168.1.184`.
 - All created Talos VMs are pinned to their intended Harvester hosts.
+- Argo CD Applications are Synced/Healthy.
+- The first internal Gateway route stays internal-only and uses verified HTTPS
+  from Gateway to backend.
 - Core pods are running:
   - `coredns`
   - `kube-apiserver`
@@ -151,9 +179,10 @@ and 1 TiB hot-temp PVC have been deleted and removed from desired state.
 
 Next platform gates:
 
-1. Review guest observability dashboards and tune the query set after scrape
-   volume is visible.
-2. Run a ClickHouse-specific PVC pilot before large ingestion.
-3. Add reviewed, low-noise guest alerts only after dashboard review.
-4. Run a controlled Harvester host-maintenance CSI drill only as a separate
+1. Add reviewed NetworkPolicies beyond Argo CD.
+2. Clean up the duplicate Envoy Gateway VIP display if a cleaner service-address
+   model is available.
+3. Run a ClickHouse-specific PVC pilot before large ingestion.
+4. Add reviewed, low-noise guest alerts only after dashboard review.
+5. Run a controlled Harvester host-maintenance CSI drill only as a separate
    approved operation.

@@ -53,8 +53,8 @@ Admin-only surfaces include:
 - Router, switch, DNS, and future observability/admin dashboards
 
 Do not expose admin surfaces through public Gateway routes, legacy Ingress, or
-Cloudflare Tunnel as part of Stage 4. Public app exposure and identity-aware app
-protection are separate follow-up decisions.
+Cloudflare Tunnel as part of the internal Gateway API route. Public app exposure
+and identity-aware app protection are separate follow-up decisions.
 
 Operational details live in `docs/runbooks/admin-access.md`.
 
@@ -77,9 +77,10 @@ The durable implementation plan lives in
 `docs/architecture/internal-gateway-api-plan.md`.
 
 Current state: the first route is live in Kubernetes and the VIP is advertised
-by kube-vip. The remaining client-facing task is to add internal DNS for
-`whoami.home.arpa` and install/trust the internal CA on client machines that
-should browse the route without warnings.
+by kube-vip. The admin Mac resolves `whoami.home.arpa` to `192.168.1.187` and
+trusts the internal CA, so normal HTTPS works without `--resolve` or
+`--insecure`. Additional client machines or browsers need equivalent DNS and CA
+trust before they can browse the route without warnings.
 
 ## Notes
 

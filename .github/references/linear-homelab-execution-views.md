@@ -21,7 +21,8 @@ Domain labels:
 - `ai`: LLM serving, vector search, embeddings, GPU workloads, chat-with-data
 - `apps`: portfolio apps, demos, dashboards, user-facing services
 - `sandbox`: experiments that may break
-- `docs`: Notion, GitHub docs, runbooks, ADRs, documentation structure
+- `docs`: `docs/` Obsidian vault, runbooks, ADRs, knowledge index, knowledge
+  log, documentation structure
 
 Workflow labels:
 

@@ -12,10 +12,11 @@ page changes role.
 | Page | Purpose |
 | --- | --- |
 | `AGENTS.md` | Repo-wide Codex operating guide, task modes, safety gates, live-cluster mutation rules, and final-response expectations |
-| `docs/AGENTS.md` | Documentation taxonomy and GitHub/Notion split for the `docs/` tree |
-| `docs/operating-workflow.md` | End-to-end workflow across Notion, Linear, GitHub, implementation, review, documentation updates, and knowledge compilation; mirrored in Notion as Homelab Operating Workflow |
-| `docs/documentation-strategy.md` | Placement rules for GitHub versus Notion versus Linear; mirrored in Notion as Homelab Documentation Strategy |
-| `docs/knowledge-wiki.md` | Schema for the Codex-maintained LLM knowledge wiki workflow |
+| `docs/AGENTS.md` | Documentation taxonomy and Obsidian vault boundary for the `docs/` tree |
+| `docs/operating-workflow.md` | End-to-end workflow across Repo/GitHub, the `docs/` Obsidian vault, Linear, implementation, verification, and durable records |
+| `docs/documentation-strategy.md` | Placement rules for Repo/GitHub, the `docs/` Obsidian vault, and Linear |
+| `docs/codex/obsidian-vault-agent-reference.md` | Agent reference for using `docs/` as the Obsidian vault and repo-local knowledge layer |
+| `docs/knowledge-wiki.md` | Schema for the Codex-maintained repo-local knowledge workflow |
 | `docs/knowledge-log.md` | Chronological log of knowledge ingests, durable syntheses, and lint passes |
 | `.github/references/codex-collaboration-contract.md` | Discuss-first contract for implementation, Linear, repo, and durable product/tool decisions |
 
@@ -24,8 +25,6 @@ page changes role.
 | Page | Purpose |
 | --- | --- |
 | `README.md` | Top-level repo layer model, current environment summary, repository boundaries, and local access pointers |
-| `docs/adrs.md` | GitHub index for Notion-primary architecture decision records |
-| `docs/adrs/ADR-006-use-argo-cd-for-gitops.md` | Repo-local ADR content for Argo CD as the GitOps controller |
 | `docs/architecture/README.md` | Index of durable architecture notes and plans |
 | `docs/architecture/gradual-vm-growth-plan.md` | Staged VM capacity plan |
 | `docs/architecture/data-platform-plan.md` | Data worker and ClickHouse or graph placement model |
@@ -77,7 +76,7 @@ page changes role.
 
 ## Lint Queue
 
-- Decide later whether raw clipped sources need a repo directory, a Notion
-  database, or an external folder. Do not create a source inbox until there is a
-  clear ingestion workflow.
+- Decide later whether raw clipped sources need a repo directory or an external
+  folder. Do not create a source inbox until there is a clear ingestion
+  workflow.
 - Add search tooling only after this index and `rg` become insufficient.

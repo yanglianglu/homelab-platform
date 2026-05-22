@@ -3,11 +3,68 @@
 This is the append-only chronological log for the homelab knowledge layer. Use
 it to record meaningful ingests, durable syntheses, and wiki lint passes.
 
+Current policy: `docs/` is the Obsidian vault and repo-local human and agent
+knowledge layer. Notion is retired from the active workflow; older entries that
+describe Notion ownership, mirroring, or edits are historical and superseded by
+this policy.
+
 Each entry should start with:
 
 ```markdown
 ## [YYYY-MM-DD] type | Title
 ```
+
+## [2026-05-18] workflow | Move Knowledge Workflow To Obsidian-In-Docs
+
+- Source: user request to place the Obsidian vault under `docs/` and retire
+  Notion from the active workflow.
+- Pages touched: `AGENTS.md`, `docs/AGENTS.md`,
+  `docs/operating-workflow.md`, `docs/documentation-strategy.md`,
+  `docs/knowledge-wiki.md`, `docs/knowledge-index.md`,
+  `docs/codex/obsidian-vault-agent-reference.md`,
+  `docs/codex/context-management.md`,
+  `.github/references/linear-homelab-execution-views.md`, and
+  `.agents/skills/context-checkpoint/SKILL.md`.
+- Summary: replaced active Notion ownership/follow-up wording with a repo-local
+  Obsidian vault model. `/docs` is now the human and agent knowledge layer,
+  while repo/GitHub remains versioned operational truth and Linear remains
+  execution status.
+- Contradictions: older Notion log entries are historical and superseded by
+  this policy.
+- Validation: targeted Notion wording scan and `git diff --check`.
+
+## [2026-05-18] lint | Live Markdown Staleness Refresh
+
+- Source: user-approved read-only live API check against `homelab-talos` and
+  `harvester`, followed by a Markdown refresh for stale current-state claims.
+- Pages touched: bootstrap, platform, Gateway, app, network, storage,
+  data-platform, recovery, admin access, observability, and current checkpoint
+  docs.
+- Summary: removed old single-node, future cert-manager/trust-manager, deferred
+  Gateway/TLS, and stale next-gate wording. Recorded that the first internal
+  Gateway route is live, the admin Mac resolves and trusts `whoami.home.arpa`,
+  and the remaining platform gaps are NetworkPolicies beyond Argo CD, duplicate
+  Envoy VIP display cleanup, ClickHouse-specific storage validation, alerts, and
+  host-maintenance CSI drill.
+- Validation: live nodes were Ready; Argo CD Applications were Synced/Healthy;
+  Gateway, cert-manager, and trust-manager objects were Ready/Synced; normal
+  HTTPS client request returned `homelab internal HTTPS backend`.
+
+## [2026-05-18] workflow | Make Notion User-Maintained
+
+- Source: user request to update skills, agents, and Markdown wording so Codex
+  no longer uses Notion as a write destination.
+- Pages touched: repo AGENTS, docs AGENTS, context-checkpoint skill,
+  context-management docs, operating workflow, documentation strategy,
+  knowledge wiki, knowledge index, ADR index, app README, and Linear reference.
+- Summary: Codex write destinations are now GitHub and approved Linear changes.
+  Notion is user-maintained and may be referenced or suggested as a manual
+  follow-up, but Codex must not write, mirror, or maintain Notion pages.
+- Contradictions: older log entries mention prior Notion edits; those entries
+  are historical and superseded by the current policy.
+- Open questions: whether to create a separate user-maintained Notion checklist
+  in GitHub for manual updates.
+- Validation: repo-wide Notion wording scan and `git diff --check`.
 
 ## [2026-05-17] status | Metrics Server Kubelet TLS Hardening
 

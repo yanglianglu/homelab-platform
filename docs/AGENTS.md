@@ -2,7 +2,10 @@
 
 ## Scope
 
-This directory owns durable GitHub markdown for architecture, runbooks, inventory, decisions, and operating workflow. It should stay compact, current, and close to the repo state it explains.
+This directory is both the Obsidian vault and the repo documentation tree. It
+owns durable Markdown for architecture, runbooks, inventory, decisions,
+knowledge logs, agent context, and operating workflow. It should stay compact,
+current, linkable, and close to the repo state it explains.
 
 ## Taxonomy
 
@@ -20,12 +23,18 @@ This directory owns durable GitHub markdown for architecture, runbooks, inventor
 - Link related docs instead of copying full sections.
 - Preserve operational details that prevent unsafe repetition.
 
-## Notion and GitHub split
+## Obsidian Vault Boundary
 
-- GitHub owns exact commands, manifests, scripts, runbooks, and implementation details.
-- Notion owns human navigation, summaries, conceptual maps, and decision browsing.
-- Notion should not duplicate detailed runbooks from GitHub.
-- If Notion and GitHub disagree, refresh GitHub operational truth first, then summarize in Notion.
+- Repo/GitHub owns exact manifests, commands, runbooks, scripts, repo
+  structure, implementation details, deployable state, and versioned
+  operational truth.
+- `docs/` owns the Obsidian vault layer: architecture narrative, decisions,
+  synthesis, learning notes, the knowledge index, the knowledge log, source
+  notes approved for the repo, and agent-readable memory.
+- Linear owns execution status, priority, sequencing, and blockers. Check Linear
+  live before claiming current issue state.
+- Notion is historical only. Do not write to Notion, mirror to Notion, suggest
+  Notion follow-ups, or treat Notion as an active source of truth.
 
 ## Review expectation
 

@@ -35,19 +35,16 @@ The current direction is CSI-first storage instead:
 | `harvester-slow-delete` | Explicit disposable guest PVCs and tests |
 | `harvester-slow-retain` | Future retained data PVCs |
 | `harvester-abundance-nvme-delete` | Future hot/temp/cache PVCs pinned to `data-01` |
-| Legacy attached `data-01` disks | Attached but unused pending larger CSI drills |
+| Legacy attached `data-01` disks | Deleted after CSI-first cleanup; do not recreate unless the model changes |
 
 ## Remaining Growth Gates
 
-1. Roll the Talos mountpoint extension to all nodes as the universal CSI host contract.
-2. Sync the Argo CD managed Harvester CSI app from Git.
-3. Run CSI expansion, restart, reboot, cleanup, and performance drills.
-4. Use the guest observability baseline to debug Gateway/TLS work and larger
-   ClickHouse planning.
-5. Add internal Gateway API routing with Envoy Gateway, cert-manager,
-   trust-manager, and internal DNS after the platform baseline is stable. Keep
-   Cloudflare and public exposure as a separate future decision.
-6. Add `worker-03` only when scheduling pressure or workload metrics justify it.
+1. Run a ClickHouse-specific PVC pilot and performance drill before large
+   ingestion.
+2. Run a controlled Harvester host-maintenance CSI drill only as a separate
+   approved operation.
+3. Add reviewed, low-noise guest alerts after dashboard review.
+4. Add `worker-03` only when scheduling pressure or workload metrics justify it.
 
 ## Acceptance Criteria
 
@@ -57,3 +54,4 @@ The current direction is CSI-first storage instead:
 - Kubernetes API access uses `192.168.1.184`, not only `cp-01`.
 - Normal workloads schedule on workers.
 - `data-01` is monitored before large ingestion begins.
+- The first internal Gateway API route remains internal-only and healthy.

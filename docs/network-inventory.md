@@ -31,7 +31,7 @@ No dedicated firewall is planned at this stage. The AT&T router remains the gate
 | `cp-02` | Talos control-plane VM | `192.168.1.182` | Talos v1.13.0 | active | Control-plane VM on `the-elation` |
 | `cp-03` | Talos control-plane VM | `192.168.1.183` | Talos v1.13.0 | active | Control-plane VM on `the-enigmata` |
 | `homelab-talos-api` | Kubernetes API VIP | `192.168.1.184` | n/a | active | Stable kube-vip API endpoint |
-| `homelab-gateway-vip` | Internal Envoy Gateway VIP | `192.168.1.187` | kube-vip Service LB | active | Advertised for the first internal Gateway route; add internal DNS for `whoami.home.arpa` |
+| `homelab-gateway-vip` | Internal Envoy Gateway VIP | `192.168.1.187` | kube-vip Service LB | active | Advertised for the first internal Gateway route; DNS and CA trust verified on the admin Mac |
 
 ## Node Link Plan
 
@@ -50,5 +50,6 @@ No dedicated firewall is planned at this stage. The AT&T router remains the gate
 - Confirm final MAC addresses when `worker-01` and `worker-02` are created.
 - Confirm whether the `the-enigmata` link should remain 1G or be upgraded later.
 - Confirm whether retired IP `192.168.1.178` is released or reserved before reuse.
-- Add the internal DNS record `whoami.home.arpa -> 192.168.1.187` before
-  closing the first Gateway route issue.
+- Confirm any additional client machines or browsers have
+  `whoami.home.arpa -> 192.168.1.187` and trust the internal CA before treating
+  them as supported clients.

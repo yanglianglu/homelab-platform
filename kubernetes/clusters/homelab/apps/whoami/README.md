@@ -12,7 +12,7 @@ into a running workload in the `apps` namespace.
 - Namespace: `apps`
 - Service type: `ClusterIP`
 - Secrets: none
-- Gateway API/TLS: deferred to Stage 4 internal HTTPS route
+- Gateway API/TLS: covered by the separate `whoami-tls` app
 - Scheduling: normal app workload; should run on worker capacity, not on
   control-plane nodes except during an explicitly approved bootstrap exception
 

@@ -29,6 +29,10 @@ Expected checks:
   `homelab internal HTTPS backend`.
 - Gateway curl with `--resolve whoami.home.arpa:443:192.168.1.187` and
   `--cacert /trust/ca.crt` returns `homelab internal HTTPS backend`.
+- Normal client curl from the admin Mac works without `--resolve` or
+  `--insecure`.
 
-Client closeout still requires internal DNS for
-`whoami.home.arpa -> 192.168.1.187` and client trust for the internal CA.
+Client closeout is complete for the admin Mac:
+`whoami.home.arpa -> 192.168.1.187` resolves locally and the internal CA is
+trusted. Additional client machines or browsers must still receive equivalent
+DNS and CA trust before they can browse the route without warnings.

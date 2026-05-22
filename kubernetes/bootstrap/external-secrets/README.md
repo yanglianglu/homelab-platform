@@ -5,10 +5,13 @@ private GitHub repository.
 
 Apply the Kustomize wrapper instead of applying the upstream release manifest
 directly. The upstream manifest contains namespaced resources in `default`; the
-wrapper rewrites those resources into `external-secrets`, patches webhook
-certificate arguments that otherwise still refer to `default`, and adds a
-temporary control-plane toleration because this cluster currently has only
-`cp-01` as a schedulable Kubernetes node.
+wrapper rewrites those resources into `external-secrets` and patches webhook
+certificate arguments that otherwise still refer to `default`.
+
+The original bootstrap wrapper carried a temporary control-plane toleration for
+the early single-node phase. The current steady-state cluster has general worker
+nodes, and the Argo CD-managed External Secrets installation runs on worker
+capacity.
 
 ```bash
 kubectl --context homelab-talos apply --server-side -k kubernetes/bootstrap/external-secrets/install

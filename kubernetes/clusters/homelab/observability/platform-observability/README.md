@@ -90,7 +90,7 @@ kubectl --context homelab-talos -n observability port-forward svc/platform-obser
 VictoriaMetrics can be queried directly with a temporary port-forward:
 
 ```sh
-kubectl --context homelab-talos -n observability port-forward svc/vmsingle-platform-observability 8428:8428
+kubectl --context homelab-talos -n observability port-forward svc/vmsingle-platform-observability-victoria-metrics-k8s-stack 8428:8428
 ```
 
 Do not commit or print Grafana admin credentials.

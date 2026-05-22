@@ -25,7 +25,7 @@ Large analytical and graph workloads use a dedicated Talos worker in the Kuberne
 
 | Workload | Initial placement | Notes |
 | --- | --- | --- |
-| ClickHouse | `data-01` | Main OLAP engine for 10-30 TiB analysis; production ingestion waits for monitoring and storage validation |
+| ClickHouse | `data-01` | Main OLAP engine for 10-30 TiB analysis; production ingestion waits for a ClickHouse-specific storage pilot and reviewed alerts |
 | Graph database | Deferred on `data-01` | Select engine and working set before allocating 1-10 TiB |
 | Dashboards | Kubernetes observability domain | Grafana belongs in the guest cluster |
 | Metrics | Kubernetes observability domain | VictoriaMetrics starts in the guest cluster |

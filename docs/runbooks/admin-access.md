@@ -20,7 +20,7 @@ interfaces to the public internet.
 | Existing LAN only | Keep for local use | Fine at home, but not a remote admin pattern |
 | Tailscale | Choose first | Fast setup, no inbound router ports, device identity, subnet routing path |
 | Raw WireGuard | Defer | More manual key/routing work before the platform baseline is stable |
-| Cloudflare Tunnel | Not for admin baseline | Deferred until after the internal-only Gateway API route is proven |
+| Cloudflare Tunnel | Not for admin baseline | Keep separate from the proven internal-only Gateway API route |
 
 ## Initial Target Shape
 
@@ -43,7 +43,8 @@ Keep these private:
 | --- | --- | --- |
 | Harvester UI/API | `192.168.1.50` | Harvester VIP |
 | Harvester nodes | `192.168.1.241`, `192.168.1.250`, `192.168.1.244` | Node-level management |
-| Talos control plane | `192.168.1.181` | `talosctl` and Kubernetes API endpoint host |
+| Talos control plane | `192.168.1.181`, `192.168.1.182`, `192.168.1.183` | `talosctl` node endpoints |
+| Kubernetes API VIP | `192.168.1.184` | Stable `homelab-talos` API endpoint |
 | Kubernetes API | context `homelab-talos` | Use kubeconfig, never public Gateway or Ingress |
 | Argo CD | port-forward first | Do not expose until identity-aware access exists |
 | Router/switch/DNS | LAN-only addresses | Keep management private |
@@ -70,7 +71,8 @@ Keep these private:
 5. Restrict tailnet access to trusted admin identities/devices.
 6. Verify access to:
    - Harvester VIP `192.168.1.50`
-   - Talos API host `192.168.1.181`
+   - Talos control-plane nodes `192.168.1.181`, `192.168.1.182`, `192.168.1.183`
+   - Kubernetes API VIP `192.168.1.184`
    - Kubernetes context `homelab-talos`
 7. Confirm public app exposure still does not depend on this admin VPN.
 8. Update `docs/network.md`, `docs/network-inventory.md`, and `docs/ip-plan.md`
@@ -84,7 +86,7 @@ Use these after implementation, not before:
 tailscale status
 tailscale ping <subnet-router-name>
 kubectl --context homelab-talos get nodes -o wide
-talosctl --nodes 192.168.1.181 health
+talosctl --nodes 192.168.1.181,192.168.1.182,192.168.1.183 health
 ```
 
 For Argo CD, continue to prefer local-only access until identity-aware access is
@@ -96,7 +98,8 @@ kubectl --context homelab-talos -n argocd port-forward svc/argocd-server 8080:44
 
 ## Follow-Ups
 
-- Define the internal DNS and Gateway address model.
-- Install Gateway API, Envoy Gateway, cert-manager, and trust-manager for the
-  first internal HTTPS route.
-- Protect the first dashboard or test app with identity-aware access.
+- Choose and implement the first Tailscale subnet-router host.
+- Decide whether any internal apps or dashboards should get identity-aware
+  access beyond local port-forwarding.
+- Keep the internal Gateway route separate from admin access. It proves private
+  app routing, not a remote administration model.

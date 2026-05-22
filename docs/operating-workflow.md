@@ -1,18 +1,22 @@
 # Homelab Operating Workflow
 
-This document defines how Codex and the repo should move work across GitHub,
-Notion, Linear, and live operations.
+This document defines how Codex and the repo should move work across
+Repo/GitHub, the `docs/` Obsidian vault, Linear, and live operations.
 
 ## Source Of Truth
 
 | System | Owns |
 | --- | --- |
-| GitHub | Exact manifests, commands, runbooks, repo structure, implementation details |
-| Notion | Human navigation, architecture narrative, decisions, summaries, learning notes |
-| Linear | Execution status, priority, sequencing, blockers |
+| Repo/GitHub | Exact manifests, commands, runbooks, scripts, repo structure, implementation details, deployable state, and versioned operational truth |
+| `docs/` Obsidian vault | Architecture narrative, decisions, synthesis, learning notes, knowledge index, knowledge log, source notes approved for the repo, and agent-readable memory |
+| Linear | Execution status, priority, sequencing, blockers, and small verifiable work gates |
 
-If they disagree, refresh GitHub operational truth first, then summarize to
-Notion or Linear.
+If they disagree:
+
+1. Refresh repo operational truth first.
+2. Check Linear live before claiming current issue status.
+3. Use `docs/` for durable repo-local knowledge updates.
+4. Treat old Notion references as historical only.
 
 ## Collaboration Contract
 
@@ -51,7 +55,7 @@ allowed before implementation approval.
 | security | identity, secrets, access control, hardening |
 | data | ClickHouse, graph workloads, datasets, data services |
 | apps | user-facing apps and smoke tests |
-| docs | GitHub docs, Notion summaries, ADRs, runbooks |
+| docs | `docs/` Obsidian vault, repo docs, ADRs, runbooks, knowledge index, knowledge log |
 
 Prefer small gates that produce a verifiable platform capability.
 
@@ -106,18 +110,18 @@ Current baseline:
 Harvester -> Talos HA control plane -> workers -> Argo CD
 -> External Secrets / Infisical -> whoami smoke app
 -> Harvester CSI proof on data-01 -> guest observability baseline
+-> internal Gateway API route with verified HTTPS backend
 ```
 
 Next platform gates:
 
-1. Roll the Harvester CSI mountpoint extension to all Talos nodes.
-2. Sync the Argo CD managed Harvester CSI app from Git.
-3. Run larger CSI drills before approving large ClickHouse PVCs.
-4. Use the guest observability baseline to debug Gateway/TLS work and larger
-   ClickHouse planning.
-5. Add internal Gateway API routing with Envoy Gateway, cert-manager,
-   trust-manager, and internal DNS after platform storage and observability are
-   stable. Keep Cloudflare and public exposure as a separate future decision.
+1. Add reviewed NetworkPolicies beyond Argo CD.
+2. Clean up the duplicate Envoy Gateway VIP display if a cleaner service-address
+   model is available.
+3. Run a ClickHouse-specific PVC pilot before large ingestion.
+4. Add reviewed, low-noise guest alerts after dashboard review.
+5. Keep Cloudflare, public DNS, public ACME, service mesh, and public app
+   exposure as separate future decisions.
 
 ## Definition Of Done
 
@@ -125,7 +129,8 @@ A gate is done when:
 
 1. The result is implemented or the manual operation is documented.
 2. The result has been verified.
-3. GitHub reflects operational truth.
-4. Notion is updated only when human navigation or durable explanation changed.
+3. Repo/GitHub reflects operational truth.
+4. `docs/` reflects durable knowledge, architecture, runbook, ADR, or context
+   changes that should survive the chat.
 5. Linear is updated only after live status is checked or the user explicitly
    asks for a state change.

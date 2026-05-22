@@ -15,10 +15,14 @@ cert-manager Gateway support and Envoy Gateway routes are introduced.
 Install this before cert-manager Gateway support starts watching Gateway API
 resources.
 
-## Exclusions
+## Scope
 
-- No GatewayClass.
-- No Gateway.
-- No HTTPRoute.
-- No BackendTLSPolicy.
-- No public exposure.
+This CRD foundation app intentionally creates only the Gateway API and Envoy
+Gateway CRDs. It does not create live routing objects itself.
+
+Cluster-wide Gateway API objects are owned elsewhere:
+
+- `platform-envoy-gateway` owns the `GatewayClass`.
+- `apps-whoami-tls` owns the first internal `Gateway`, `HTTPRoute`, and
+  `BackendTLSPolicy`.
+- No public exposure, Cloudflare route, or NGINX Ingress is part of this track.

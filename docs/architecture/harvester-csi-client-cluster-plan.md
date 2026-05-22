@@ -33,7 +33,7 @@ unavailable when its backing host or disk is unavailable.
 | CSI proof | Passed on `data-01` through reboot, resize, detach, and cleanup |
 | Talos compatibility | `harvester-csi-mountpoint` extension active on all Talos nodes |
 | GitOps status | `platform-harvester-csi` Synced/Healthy |
-| Legacy `data-01` disks | Detached from VM; PVCs retained as rollback |
+| Legacy `data-01` disks | Deleted after explicit cleanup gate |
 
 The proof passed provisioning, attach, mount, write, restart persistence, 1 Gi
 to 2 Gi resize, CSI node pod restart, `data-01` reboot recovery, scale-to-zero
@@ -82,15 +82,14 @@ application to `data-01`.
 
 ## Production Gates
 
-Harvester CSI is the standard PVC path for general workloads. Harvester-level
-monitoring is enabled, but large ClickHouse data still requires guest
-observability, alert review, and a ClickHouse-specific storage drill.
+Harvester CSI is the standard PVC path for general workloads. Harvester and
+guest Kubernetes observability are enabled, but large ClickHouse data still
+requires alert review and an application-specific storage drill.
 
 Required next gates:
 
-1. Add guest Kubernetes observability for CSI, Argo CD, node, namespace, and
-   data-platform workload health.
-2. Run a ClickHouse-specific pilot using PVCs before large ingestion.
+1. Run a ClickHouse-specific pilot using PVCs before large ingestion.
+2. Add reviewed, low-noise alerts after dashboard review.
 3. Run a controlled Harvester host-maintenance CSI drill only with a separate
    approval gate.
 

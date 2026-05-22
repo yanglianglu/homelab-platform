@@ -14,8 +14,8 @@ Approved guest-cluster storage intent:
 
 Harvester CSI is the preferred guest-cluster storage interface. The small
 `data-01` proof now passes cleanup after the `harvester-csi-mountpoint` Talos
-extension fix. Larger reboot, maintenance, expansion, and performance drills
-are still required before any ClickHouse production PVCs are created.
+extension fix. ClickHouse production PVCs still require an application-specific
+pilot, performance checks, and a separately approved host-maintenance drill.
 
 StorageClass manifests and the Harvester CSI chart Application live under
 `../50-harvester-csi`.

@@ -1,14 +1,19 @@
 # Runbook: Repair cp-01 ISO Boot
 
-Use this when Harvester reports `cp-01` as Running/Ready, but the Talos/Kubernetes
-API at `192.168.1.181` is unreachable and the VM only shows an IPv6 address.
+Use this when Harvester reports `cp-01` as Running/Ready, but the Talos node at
+`192.168.1.181` is unreachable and the VM appears to have booted the Talos ISO
+instead of the installed OS disk.
+
+Do not treat IPv6-only VMI output as a failure by itself. Current healthy VMIs
+can show IPv6 addresses in Harvester while their Talos nodes are Ready on the
+expected IPv4 addresses inside `homelab-talos`.
 
 ## Symptom
 
 - `cp-01` VMI is Running and Ready in Harvester.
 - `192.168.1.181` does not answer ARP or ping.
 - `192.168.1.181:6443` is unreachable.
-- Harvester VMI status shows only an IPv6 address.
+- Harvester VMI status plus LAN checks suggest the expected IPv4 path is absent.
 - TCP ports `50000` and `6443` are refused on that IPv6 address.
 
 ## Likely Cause

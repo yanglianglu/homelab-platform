@@ -1,122 +1,106 @@
 # Documentation Strategy
 
-This document defines what belongs in GitHub, what belongs in Notion, and how the two should reference each other.
+This document defines how repo documentation, the `docs/` Obsidian vault, and
+Linear divide responsibility.
 
 ## Core Rule
 
-Use GitHub for operational truth that must version with the platform. Use Notion for durable knowledge, decisions, explanation, and portfolio narrative.
+Do not treat GitHub and Obsidian as competing systems. `docs/` is the local
+Obsidian editing and navigation surface for versioned Markdown in this repo.
 
 ```text
-GitHub = exact state, commands, manifests, scripts, runbooks close to code
-Notion = architecture, decisions, specs, learning, inventory, and narrative
-Linear = execution status and prioritization
+Repo/GitHub = versioned operational truth and delivery mechanism
+/docs Obsidian vault = repo-local human and agent knowledge layer
+Linear = execution status, priority, sequencing, and blockers
 ```
+
+Notion is retired from the active workflow. Do not write to Notion, mirror to
+Notion, suggest Notion follow-ups, or preserve Notion as an active
+source-of-truth category. Older Notion references are historical only.
 
 ## Placement Matrix
 
 | Content type | Primary home | Reason |
 | --- | --- | --- |
-| Kubernetes manifests | GitHub | Must be versioned and deployable |
-| Harvester desired-state summaries | GitHub | Close to infrastructure implementation |
-| Talos patches and cluster variables | GitHub | Required for repeatable cluster bootstrap |
-| Helper scripts | GitHub | Executable platform workflow |
-| Secret handling rules | GitHub and Notion | GitHub for repo rules, Notion for operating policy |
-| Runbooks with commands | GitHub first, mirrored/summarized in Notion | Commands should version with repo; Notion improves discoverability |
-| Architecture overview | Notion first, summarized in GitHub | Long-lived explanation and diagrams are easier to browse in Notion |
-| ADRs | Notion first, linked from GitHub | Decisions need context and rationale more than deployment power |
-| Roadmap | Notion and Linear | Notion explains phases; Linear tracks execution |
-| Linear issue status | Linear | Avoid stale duplicate status in docs |
-| Project specs | Notion | Product thinking and scope evolve before implementation |
-| Dataset catalog | Notion | Metadata, ownership, lineage, and freshness are knowledge-base concepts |
-| Systems catalog | Notion | Inventory is easier to browse, relate, and update in Notion |
-| Incident notes | Notion, with GitHub links when fixes happen | The learning matters beyond the code change |
-| Exact current IP/device inventory | GitHub if used for operations, Notion if only explanatory | Keep the operational source of truth in one place and link the other |
-| Knowledge-wiki schema, index, and log | GitHub | Codex needs stable repo-local rules before touching Notion or live systems |
-| Compiled knowledge pages | Notion first, GitHub when operationally close to code | Notion is the browsable wiki; GitHub keeps exact operational knowledge near manifests and scripts |
-| Raw research/source material | External source, Notion, or approved local folder | Raw sources should stay immutable and should not enter GitHub unless they are safe and intentionally versioned |
+| Kubernetes manifests | `kubernetes/` | Must be versioned and deployable |
+| Harvester desired state | `harvester/` | Owns VM, image, network, and storage desired state |
+| Talos bootstrap/config inputs | `talos/` | Required for repeatable node lifecycle |
+| Helper scripts | Repo paths close to usage | Executable platform workflow |
+| Secret handling rules | Repo docs close to implementation | Safety rules must version with the repo |
+| Exact runbooks and recovery commands | `docs/runbooks/` | Commands should version with operational truth |
+| Architecture narrative and plans | `docs/architecture/` | Durable explanation inside the Obsidian vault |
+| ADRs and decision records | `docs/architecture/` or `docs/adrs/` when present | Decisions need stable repo-local context |
+| Linear issue status | Linear | Avoid stale duplicate status in Markdown |
+| Project specs | Linear or repo Markdown when they drive implementation | Scope should be close to execution gates |
+| Dataset and systems catalogs | `docs/` when operational | Keep operational facts versioned and searchable |
+| Incident notes | `docs/` when they affect operations or fixes | Preserve lessons that change future operations |
+| Exact IP/device inventory | `docs/` | Operational source of truth must be versioned |
+| Knowledge schema, index, and log | `docs/knowledge-*.md` | Agents need stable repo-local navigation |
+| Source notes | Approved safe repo folder only when intentional | Raw material should not enter Git unless useful and safe |
+| Context checkpoints | `docs/codex/` or the relevant log/checkpoint path | Preserve agent handoff without raw transcript noise |
 
 ## Current Repo Docs Classification
 
-| File | Keep in GitHub? | Notion treatment |
-| --- | --- | --- |
-| `README.md` | Yes | Link from Homelab HQ |
-| `docs/operating-workflow.md` | Yes | Mirror as Notion workflow page |
-| `docs/documentation-strategy.md` | Yes | Mirror or summarize in Notion |
-| `docs/knowledge-wiki.md` | Yes | Mirror or summarize as the Codex-maintained knowledge workflow |
-| `docs/knowledge-index.md` | Yes | Link from Notion HQ or documentation hub after the workflow is adopted |
-| `docs/knowledge-log.md` | Yes | Summarize in Notion only when entries matter to human navigation |
-| `docs/network.md` | Yes | Summarize in Network domain page |
-| `docs/network-map.md` | Yes | Mirror diagrams or link from Notion |
-| `docs/network-inventory.md` | Yes for now | Later decide if Systems Catalog becomes primary |
-| `docs/ip-plan.md` | Yes for now | Later decide if Systems Catalog becomes primary |
-| `docs/port-map.md` | Yes for now | Later decide if Systems Catalog becomes primary |
-| `docs/hardware.md` | Yes for now | Mirror to Systems Catalog |
-| `docs/storage.md` | Yes | Link from Harvester/storage system pages |
-| `docs/talos.md` | Yes | Summarize in Talos system page |
-| `docs/runbooks/*.md` | Yes | Link from Notion Runbooks database or hub |
-| `harvester/**/*.yaml` | Yes | Link from Harvester system page |
-| `talos/**/*.yaml` | Yes | Link from Talos system page |
-| `kubernetes/README.md` | Yes | Link from Platform domain page |
-| `secrets/README.md` | Yes | Link from security policy page |
+| File | Role |
+| --- | --- |
+| `README.md` | Top-level repo layer model, current environment summary, boundaries, and access pointers |
+| `AGENTS.md` | Repo-wide Codex operating guide and safety gates |
+| `docs/AGENTS.md` | Documentation taxonomy and Obsidian vault boundary |
+| `docs/operating-workflow.md` | End-to-end workflow across Repo/GitHub, `docs/`, Linear, implementation, validation, and durable records |
+| `docs/documentation-strategy.md` | Placement rules for the repo docs tree and Obsidian vault |
+| `docs/codex/obsidian-vault-agent-reference.md` | Agent reference for using `docs/` as the Obsidian vault |
+| `docs/codex/context-management.md` | Context checkpoint and compaction guidance |
+| `docs/knowledge-wiki.md` | Schema for the Codex-maintained knowledge workflow |
+| `docs/knowledge-index.md` | Content-oriented map of important knowledge surfaces |
+| `docs/knowledge-log.md` | Chronological log of durable ingests, syntheses, lint passes, and workflow changes |
+| `docs/network*.md`, `docs/ip-plan.md`, `docs/port-map.md` | Operational network model, inventory, and planning notes |
+| `docs/hardware.md`, `docs/storage.md`, `docs/talos.md` | Platform current-state and operating notes |
+| `docs/architecture/*.md` | Architecture narrative, plans, and decision context |
+| `docs/runbooks/*.md` | Exact procedures, verification, and recovery steps |
+| `harvester/`, `talos/`, `kubernetes/`, `secrets/` | Deployable or bootstrap-adjacent operational truth and local READMEs |
 
-## Audit Result: Current Source Of Truth
+## Disagreement Handling
 
-| Area | GitHub role | Notion role | Follow-up |
-| --- | --- | --- | --- |
-| Repository overview | Primary for repo boundaries and local entry points | Link from Homelab HQ | None |
-| Operating workflow | Primary index for the repo workflow contract | Mirrored as `Homelab Operating Workflow` | Keep both aligned when workflow changes |
-| Documentation strategy | Primary index for placement rules | Mirrored as `Homelab Documentation Strategy` | Keep both aligned when placement rules change |
-| ADRs | Lightweight index only | Primary ADR content | `FIF-5` completed |
-| Network notes | Primary for operational network facts while the cluster is being built | Summaries in Network/System Catalog pages | Keep active and reserved IPs current |
-| IP plan | Primary while IP assignments affect operations | Later may become Systems Catalog summary | Move retired addresses out of active assignments |
-| Port map | Primary while switch ports affect operations | Later may become Systems Catalog summary | Update after USW-Aggregation adoption |
-| Hardware inventory | Primary while hardware facts affect deployment | Mirror to Systems Catalog | Keep VM sizing and retired VMs current |
-| Storage notes | Primary for storage classes and operational expectations | Summarize under Harvester/storage system pages | Keep aligned with `harvester/storageclasses/` |
-| Talos docs/runbooks | Primary for exact commands, scripts, and recovery steps | Link from Talos system page and runbook hub | Keep node procedures aligned with the HA control plane |
-| Harvester desired state | Primary for desired-state summaries and operator notes | Link from Harvester system page | Remove retired desired-state files |
-| Kubernetes folder | Primary for GitOps manifests | Link from Platform domain page | Keep capability layout and sync-wave docs current |
-| Secrets policy | Primary for repo safety rules and External Secrets Operator conventions | Summarize in security policy page | `FIF-18` chooses Infisical + External Secrets Operator |
+If systems disagree:
+
+1. Refresh repo operational truth first.
+2. Check Linear live before claiming current issue status.
+3. Use `docs/` for durable repo-local knowledge updates.
+4. Treat old Notion references as historical only.
 
 ## Repo Cleanup Rules
 
-The latest cleanup removed stale old-VM desired state and obsolete GitOps layout folders. The remaining cleanup problem is stale or overly sparse content, not misplaced deployment files.
-
-Use these rules for future cleanup:
-
-- Keep folders that contain deployable state, scripts, runbooks, or useful operating notes.
-- Avoid placeholder-only folders when a parent README can hold the planning note.
-- Move long-form explanation to Notion when it is not needed for command-line work.
-- Remove retired desired-state files after the live object is intentionally retired.
-- Keep historical context only when it prevents accidental recreation or IP reuse.
-
-## Future Notion-Primary Candidates
-
-These areas may move to Notion-primary once the platform stabilizes:
-
-| Area | Future Notion home | GitHub role after migration |
-| --- | --- | --- |
-| Systems inventory | Systems Catalog | Link to catalog and keep only operational facts needed by scripts/runbooks |
-| Dataset inventory | Dataset Catalog | Keep dataset schemas/manifests only if they become deployable artifacts |
-| Project specs | Project Specs | Link implementation paths and PRs |
-| Incidents and experiments | Incident / Learning Log | Link fixes, runbooks, and PRs |
+- Keep folders that contain deployable state, scripts, runbooks, or useful
+  operating notes.
+- Prefer updating an existing page over creating a small new page.
+- Avoid placeholder-only folders when a parent README can hold the planning
+  note.
+- Keep repo docs concise and link to deeper sections instead of duplicating
+  exact commands.
+- Remove retired desired-state files only after the live object is intentionally
+  retired.
+- Keep historical context only when it prevents accidental recreation, IP reuse,
+  or operational confusion.
 
 ## Duplication Rule
 
-Do not keep two full sources of truth unless there is a clear reason.
+Do not keep two full sources of truth unless there is a clear recovery reason.
 
 Use this pattern:
 
 ```text
-GitHub owns exact commands/config.
-Notion owns explanation and links to the GitHub file.
+Repo/GitHub owns exact state, commands, and deployable configuration.
+docs/ owns durable explanation, navigation, decisions, and agent-readable memory.
 Linear owns whether the work is planned, active, blocked, or done.
 ```
 
-If a Notion page mirrors a GitHub runbook, keep the Notion copy short and link to the repo file for exact commands.
+If a runbook command appears in more than one place, one copy should be the
+canonical command block and the others should link to it.
 
 ## Self-Evolving Workflow
 
-After each meaningful work session, update the operating model if the way of working changes.
+After each meaningful work session, update the operating model if the way of
+working changes.
 
 Capture:
 
@@ -124,12 +108,12 @@ Capture:
 - What information was missing.
 - Which doc should become easier to find.
 - Which Linear issue/project structure needs adjustment.
-- Whether GitHub or Notion had the wrong source of truth.
+- Whether repo operational truth or `docs/` knowledge had the wrong authority.
 
 Use this loop:
 
 ```text
-Do work -> verify result -> update GitHub if operational truth changed -> update Notion if knowledge changed -> update Linear status -> improve workflow if friction appeared
+Do work -> verify result -> update repo operational truth if changed -> update /docs durable knowledge if changed -> update Linear status only after live check or approval -> improve workflow if friction appeared
 ```
 
 When reusable knowledge is created, also update the knowledge layer:
@@ -137,10 +121,5 @@ When reusable knowledge is created, also update the knowledge layer:
 ```text
 New source or durable synthesis -> update relevant page -> update docs/knowledge-index.md if navigation changed -> append docs/knowledge-log.md
 ```
-
-The workflow itself lives in:
-
-- GitHub: `docs/operating-workflow.md`
-- Notion: `Homelab Operating Workflow`
 
 This document should be updated when documentation placement rules change.

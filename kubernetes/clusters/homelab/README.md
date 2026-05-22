@@ -14,14 +14,24 @@ It does not include raw platform resources directly.
 flowchart LR
   Root["homelab/"] --> Projects["projects/"]
   Root --> Namespaces["platform/00-namespaces"]
+  Root --> KubeVip["platform/05-kube-vip"]
   Root --> ExternalSecrets["platform/10-external-secrets"]
+  Root --> Metrics["platform/15-metrics-server"]
+  Root --> CSR["platform/16-kubelet-csr-approver"]
   Root --> Infisical["platform/20-infisical"]
   Root --> RepoAccess["platform/30-argocd-repo-access"]
   Root --> Policies["platform/40-policies"]
   Root --> HarvesterCSI["platform/50-harvester-csi"]
+  Root --> GatewayCRDs["platform/55-gateway-api-crds"]
+  Root --> Envoy["platform/56-envoy-gateway"]
+  Root --> CertManager["platform/57-cert-manager"]
+  Root --> PKI["platform/58-internal-pki"]
+  Root --> TrustManager["platform/59-trust-manager"]
+  Root --> TrustBundle["platform/61-internal-trust-bundle"]
   Root --> DataPlatform["data-platform/"]
   Root --> Network["network/"]
   Root --> Observability["observability/"]
+  Root --> Apps["apps/"]
 ```
 
 ## Domains
@@ -45,14 +55,24 @@ Argo CD sync waves make the bootstrap order explicit:
 | --- | --- |
 | `-10` | AppProjects |
 | `0` | Namespaces |
+| `5` | kube-vip API VIP and Service LoadBalancer mode |
 | `10` | External Secrets Operator |
+| `15` | Metrics Server |
+| `16` | kubelet CSR approver |
 | `20` | Infisical ClusterSecretStore |
 | `30` | Argo CD repository access ExternalSecret |
 | `40` | Policies |
-| `45` | Harvester CSI |
-| `50` | Apps |
-| `60` | Future platform services |
+| `45` | Harvester CSI and data-platform storage |
+| `50` | Plain `whoami` app smoke test |
+| `55` | Gateway API CRDs |
+| `56` | Envoy Gateway |
+| `57` | cert-manager |
+| `58` | Internal PKI |
+| `59` | trust-manager |
+| `60` | Guest observability |
+| `61` | Internal trust bundle |
 | `70` | Sandbox |
+| `80` | First internal HTTPS app route |
 
 `platform/50-harvester-csi` manages Harvester CSI through Argo CD. The guest
 `harvester` StorageClass remains the default workload class and maps to

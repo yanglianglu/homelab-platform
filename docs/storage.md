@@ -62,8 +62,8 @@ that required manual deletion; storage detach was clean.
 
 CSI is the preferred general workload storage path. Harvester-level monitoring
 is enabled for host, VM, and Longhorn visibility. The legacy `data-01` rollback
-PVCs have been deleted. Large ClickHouse data still requires guest
-observability and workload-specific testing.
+PVCs have been deleted. Large ClickHouse data still requires a
+ClickHouse-specific PVC pilot, performance checks, and reviewed alerts.
 
 ## Boundaries
 

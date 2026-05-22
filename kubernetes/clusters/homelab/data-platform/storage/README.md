@@ -21,8 +21,8 @@ Proof gate:
 - Harvester CSI is promoted into Argo CD management through
   `platform/50-harvester-csi`.
 - The small proof PVC passes on `data-01`.
-- Production ClickHouse PVCs still require expansion, reboot, maintenance, and
-  performance drills.
+- Production ClickHouse PVCs still require an application-specific pilot,
+  performance checks, and a separately approved host-maintenance drill.
 
 The proof workload is staged in `../csi-proof` and remains an operator-run
 drill workload.

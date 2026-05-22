@@ -40,7 +40,7 @@ Recommend **/compact** when:
 Recommend **/new** when:
 
 - The next task is a different domain.
-- Moving from Harvester/Talos operations to Notion cleanup.
+- Moving from Harvester/Talos operations to `docs/` Obsidian knowledge cleanup.
 - Moving from Kubernetes manifests to unrelated research.
 - Starting unrelated work.
 

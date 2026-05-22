@@ -20,9 +20,10 @@ apps/
 Do not create dev/prod splits by default. Use branch checks, local tests, policy
 guardrails, Argo CD diff/sync, and sandbox deployments.
 
-Planned application ideas stay in Notion/Linear until they are ready for GitOps
-manifests. Current candidates include the portfolio app, data lake control
-plane, chat-with-data, and analytics demos.
+Planned application ideas stay in Linear, user-maintained Notion, or local
+planning notes until they are ready for GitOps manifests. Current candidates
+include the portfolio app, data lake control plane, chat-with-data, and
+analytics demos. Codex should not write planning notes to Notion.
 
 Heavy streaming, data warehouse, and AI workloads should run as dedicated
 single-purpose VMs under `harvester/`, not as oversized shared Kubernetes

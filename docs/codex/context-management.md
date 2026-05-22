@@ -35,9 +35,12 @@ After diagnosing VM placement, boot order, or Talos reachability, checkpoint the
 
 After changing manifests, checkpoint files changed, rendered Kustomize roots, Argo CD app paths, and remaining sync risks.
 
-### Notion documentation
+### Obsidian vault cleanup
 
-Before moving from repo truth to Notion cleanup, checkpoint which GitHub docs are authoritative and what Notion should summarize.
+Before moving from repo operational truth to `docs/` knowledge cleanup,
+checkpoint which repo paths are authoritative, which `docs/` pages need durable
+updates, and what remains out of scope. Treat older Notion references as
+historical only.
 
 ### Data platform
 

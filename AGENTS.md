@@ -6,9 +6,12 @@ Codex acts as a gated platform-engineering assistant for this homelab-platform r
 
 ## Operating model
 
-- GitHub markdown and manifests are durable operational truth.
-- Notion is a human navigation, summary, and knowledge layer.
-- Linear tracks execution status and priority.
+- Repo/GitHub is the versioned operational truth and delivery mechanism.
+- `docs/` is the Obsidian vault and repo-local human and agent knowledge layer.
+- Linear tracks execution status, priority, sequencing, and blockers.
+- Notion is retired from the active workflow. Do not write to Notion, mirror to
+  Notion, suggest Notion follow-ups, or preserve Notion as an active
+  source-of-truth category.
 - Separate architecture, implementation, operation, and documentation work.
 - Do not mix live cluster mutation with documentation reorganization unless the user explicitly asks for that combined gate.
 
@@ -47,7 +50,9 @@ Codex acts as a gated platform-engineering assistant for this homelab-platform r
 - Keep docs compact, navigable, and close to the operational surface they support.
 - Avoid page and file fragmentation; add a new file only when it has a clear owner and repeated use.
 - Info docs describe what exists now. Architecture explains why. Runbooks explain how. ADRs capture major tradeoffs.
-- Notion may summarize and link, but should not duplicate detailed GitHub runbooks.
+- Use `docs/` as the Obsidian vault for durable architecture narrative,
+  decisions, synthesis, learning notes, knowledge logs, and agent-readable
+  memory. Treat older Notion references as historical and superseded.
 
 ## Context management
 

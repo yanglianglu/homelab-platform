@@ -53,11 +53,14 @@ Verified live state:
 - `BackendTLSPolicy/apps/whoami-tls` is Accepted and ResolvedRefs=True.
 - A trusted curl test through the Gateway returns the HTTPS backend response.
 
-Remaining before Linear closeout:
+Current closeout state:
 
-- Add internal DNS for `whoami.home.arpa -> 192.168.1.187`.
-- Install or otherwise trust the internal CA on client machines that should
-  browse the route without certificate warnings.
+- Cluster-side Gateway API, cert-manager, trust-manager, and backend TLS
+  verification are complete.
+- The admin Mac resolves `whoami.home.arpa -> 192.168.1.187` and trusts the
+  internal CA; normal HTTPS works without `--resolve` or `--insecure`.
+- Additional client machines or browsers need equivalent DNS and CA trust before
+  they can browse the route without warnings.
 
 ## Scope
 
@@ -72,7 +75,7 @@ a test app over HTTPS, the Gateway presents an internally trusted certificate,
 the backend service presents its own certificate, and the Gateway verifies the
 backend certificate before forwarding traffic.
 
-## Implementation Gates
+## Completed Implementation Gates
 
 1. Confirm guest observability is usable for Gateway, cert-manager,
    trust-manager, route, and backend debugging.
@@ -91,7 +94,7 @@ backend certificate before forwarding traffic.
     certificate.
 12. Add an `HTTPRoute` for the internal hostname.
 13. Add a same-namespace `BackendTLSPolicy` targeting the backend `Service`.
-14. Verify internal DNS and client trust.
+14. Verify internal DNS and client trust on the admin Mac.
 15. Document verification, rollback, and the final live state.
 
 ## Acceptance Criteria
@@ -107,9 +110,9 @@ backend certificate before forwarding traffic.
 - Backend service certificate is issued by the internal CA.
 - `HTTPRoute` is accepted and routes the internal hostname to the test service.
 - `BackendTLSPolicy` is accepted and makes Envoy use verified HTTPS upstream.
-- Internal DNS resolves the hostname to the internal Gateway address.
-- Client trust for the internal CA is documented and applied to the intended
-  admin client.
+- Internal DNS resolves the hostname to the internal Gateway address on the
+  admin Mac.
+- Client trust for the internal CA is applied to the admin Mac.
 - Rollback order is documented before live sync.
 
 ## Rollback Order
@@ -122,14 +125,14 @@ backend certificate before forwarding traffic.
    certificates or bundles already depend on them.
 6. Verify existing cluster apps remain healthy.
 
-## Open Implementation Details
+## Remaining Follow-Ups
 
-The cluster-side implementation is settled. The remaining open detail is the
-client-side DNS and trust path:
+The cluster-side implementation and the admin Mac client path are settled.
+Remaining follow-ups are broader client support and future CA ownership:
 
-- preferred internal DNS owner for `home.arpa`
-- whether the first client trust proof should use a local hosts entry, router
-  DNS, a dedicated resolver, or a future cluster-hosted DNS service
+- preferred long-term internal DNS owner for `home.arpa`
+- whether additional clients should use router DNS, a dedicated resolver, or a
+  future cluster-hosted DNS service
 - whether the internal CA should stay cluster-generated or later move to an
   externally managed/intermediate CA delivered through Infisical and External
   Secrets Operator

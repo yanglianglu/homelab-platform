@@ -1,0 +1,211 @@
+{
+  "main": {
+    "id": "1e279cc87067b24d",
+    "type": "split",
+    "children": [
+      {
+        "id": "c788bd561df53294",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "f4999d5a8cd06543",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "operating-workflow.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "operating-workflow"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "6489891c142a647c",
+    "type": "split",
+    "children": [
+      {
+        "id": "b2e3ac7c91f40a7f",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "101ac813f5b22d45",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "7c6c932464102af7",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "de3cbb3d52de3418",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "7fc22b67df48e5fe",
+    "type": "split",
+    "children": [
+      {
+        "id": "f75a670934d0693d",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "953ca9d03132c40e",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "operating-workflow.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for operating-workflow"
+            }
+          },
+          {
+            "id": "c44bd418e9901f51",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "operating-workflow.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from operating-workflow"
+            }
+          },
+          {
+            "id": "f8932c27b46d0d33",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "0b929e3a080ad9b1",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "db06d16d6bf05d0f",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "operating-workflow.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of operating-workflow"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "f4999d5a8cd06543",
+  "lastOpenFiles": [
+    "codex/obsidian-vault-agent-reference.md",
+    "network-map.md",
+    "network-inventory.md",
+    "network.md",
+    "knowledge-wiki.md",
+    "knowledge-log.md",
+    "knowledge-index.md",
+    "ip-plan.md",
+    "hardware.md",
+    "documentation-strategy.md",
+    "code-review.md",
+    "operating-workflow.md",
+    "port-map.md",
+    "storage.md",
+    "talos.md",
+    "AGENTS.md",
+    "codex/context-management.md",
+    "adrs.md",
+    "reports/fif-38-csi-drill-gate0-preflight-2026-05-17.pdf",
+    "reports/fif-21-verification-2026-05-17.md",
+    "runbooks/harvester-vm-resize-and-worker-sizing.md",
+    "runbooks/harvester-csi-attachment-debugging.md"
+  ]
+}
